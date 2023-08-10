@@ -1,0 +1,67 @@
+{% extends 'taskmanager/base.html' %} {% block content %}
+
+<div class="row mt-5">
+  <div class="col-md-3 col-sm-12"></div>
+  <div class="col-md-6 col-sm-12 p-5">
+    {% for message in messages %} {% if message.tags == 'success' %}
+    <div class="alert alert-success my-3">
+      <span class="fw-bold">Success: </span>
+      <p>{{message | safe}}</p>
+    </div>
+    {% else %}
+    <div class="alert alert-danger my-3">
+      <span class="fw-bold">Error: </span>
+      <p>{{message | safe }}</p>
+    </div>
+    {% endif %} {% endfor %}
+    <form action="" method="POST" class="form-control p-5 border shadow">
+      <h4 class="text-muted text-center mb-4">Task Assigning Portal</h4>
+      {% csrf_token %}
+      <label for="taskname" class="text-muted">Task Name</label>
+      <input
+        type="text"
+        name="taskname"
+        id="taskname"
+        class="form-control p-3 my-2"
+        placeholder="Task Name"
+        required
+      />
+      <label for="task_desc" class="text-muted">Task Descriptions</label>
+      <textarea
+        name="task_desc"
+        id="task_desc"
+        cols="10"
+        rows="5"
+        class="form-control my-2"
+        placeholder="Task brief description..."
+      ></textarea>
+      <label for="end_date" class="text-muted">Task Deadline</label>
+      <input
+        type="date"
+        name="end_date"
+        id="end_date"
+        class="form-control p-3 my-2"
+      />
+      <div class="form-group">
+        <label for="assignto" class="text-muted">Assign to</label>
+        <select name="assign_to" id="assign_to" class="form-select mt-2">
+          <option default>Select...</option>
+          {% for user in users %} {% if user == request.user %}
+          <option hidden value="{{user.id}}">{{user.first_name}}</option>
+          {% else %}
+          <option value="{{user.id}}">{{user.first_name}}</option>
+          {% endif %} {%endfor%}
+        </select>
+      </div>
+      <p class="p-0 m-0 text-danger">
+        <span class="fw-bold">Note: </span>
+        The task start date will be selected the current date automatically.
+      </p>
+      <button type="submit" class="btn text-center btn-success my-4 py-2 px-4">
+        Assign
+      </button>
+    </form>
+  </div>
+  <div class="col-md-3 col-sm-12"></div>
+</div>
+{% endblock content %}
