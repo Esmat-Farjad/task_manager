@@ -1,0 +1,47 @@
+{% extends 'taskmanager/base.html'%}
+{% load static %}
+{% block content %}
+
+
+<div class="my-5 mx-3 p-4">
+    <h3 class="text-muted">Task Evaluation portal</h3>
+    <div class="card border-0">
+        <div class="card-body">
+            {% for key in comp_task  %}
+
+            <div class="card-title fw-bold">Task title:
+                <p class="text-muted">{{key.task_name}}</p>
+            </div>
+                <div class="card-text">
+                    <span class="fw-bold">Task Description: </span>
+                    <p class="text-muted">{{key.task_desc}}</p>
+                <span class="fw-bold">Status: </span>
+                    <p class="text-primary"><i class="fa-solid fa-spinner fa-spin-pulse"></i>&nbsp; waiting for confirmation</p>
+                <small class="d-block fw-bold">Started Date: </small>
+                    <small class="text-muted">{{key.start_date}}</small>
+                <small class="d-block fw-bold">DeadLine: </small>
+                <small class="text-muted">{{key.end_date}}</small>
+            
+            </div>
+            
+                <div class="comment">
+                    {% csrf_token %}
+                    <form action="" class="form-control border-0" method="POST">
+                        <input type="text" name="task_name" id="task_name" value="{{key.task_name}}" hidden>
+                        <input type="text" name="task_desc" id="task_desc" value="{{key.task_desc}}" hidden>
+                        <input type="text" name="end_date" id="end_date" value="{{key.end_date}}" hidden>
+
+                        <textarea class="form-control" name="comment" id="comment" cols="10" rows="5"
+                            placeholder="Comment..."></textarea>
+                        <small class="text-primary d-blok "><i class="fa-solid fa-circle-info"></i>&nbsp;Drop a comment to {{key.assign_to.first_name}} {{key.assign_to.last_name}}</small>
+                        <div class="card-footer">
+                            <button type="submit" class="btn bg-maroon px-5 text-white">Confirm</button>
+                            <button type="submit" class="btn bg-maroon px-5 text-white" onclick="display()">Re-assign</button>
+                        </div>
+                    </form>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock content %}
