@@ -1,47 +1,88 @@
 {% extends 'taskmanager/base.html'%}
 {% load static %}
 {% block content %}
+<div class="row m-4">
+    {% for  value in comp_task  %}
+    <div class="col-md-3 rounded shadow border p-5 mt-5 px-4">
+        <span class="text-center ms-3 fs-3 my-5 "><i class="fa-solid fa-chart-line"></i>&nbsp;Evaluation</span>
+        <div class="ms-4">
+                {% if flag == 'all' %}
+                    <a class="nav-link mt-3" href="{% url 'taskmanager:evaluation' value.id 'all' %}">
+                        <div class="p-3 bg-maroon text-light">
+                            <i class="fa-regular fa-circle-check"></i>&nbsp;Task Information</div>
+                    </a>
+                {% else %}
+                    <a class="nav-link mt-3" href="{% url 'taskmanager:evaluation' value.id 'all' %}">
+                        <div class="p-3 cl-effect-1"><i class="fa-regular fa-circle-check"></i>&nbsp;Task Information</div>
+                    </a>
+            {% endif %}
 
-
-<div class="my-5 mx-3 p-4">
-    <h3 class="text-muted">Task Evaluation portal</h3>
-    <div class="card border-0">
-        <div class="card-body">
-            {% for key in comp_task  %}
-
-            <div class="card-title fw-bold">Task title:
-                <p class="text-muted">{{key.task_name}}</p>
-            </div>
-                <div class="card-text">
-                    <span class="fw-bold">Task Description: </span>
-                    <p class="text-muted">{{key.task_desc}}</p>
-                <span class="fw-bold">Status: </span>
-                    <p class="text-primary"><i class="fa-solid fa-spinner fa-spin-pulse"></i>&nbsp; waiting for confirmation</p>
-                <small class="d-block fw-bold">Started Date: </small>
-                    <small class="text-muted">{{key.start_date}}</small>
-                <small class="d-block fw-bold">DeadLine: </small>
-                <small class="text-muted">{{key.end_date}}</small>
+             {% if flag == 'RT' %}
+                <a class="nav-link" href="{% url 'taskmanager:evaluation' value.id 'RT' %}">
+                    <div class="p-3 bg-maroon text-light"><i class="fa-solid fa-recycle"></i>&nbsp;Re-Assign the Task</div>
+                </a>
+                {%else%}
+                    <a class="nav-link" href="{% url 'taskmanager:evaluation' value.id 'RT' %}">
+                        <div class="p-3 cl-effect-1"><i class="fa-solid fa-recycle"></i>&nbsp;Re-Assign the Task</div>
+                    </a>
+             {% endif %}           
+             {% if flag == 'CT' %}
+                <a class="nav-link" href="{% url 'taskmanager:evaluation' value.id 'CT' %}">
+                    <div class="p-3 bg-maroon text-light"><i class="fa-solid fa-calendar-check"></i>&nbsp;Confirm The Task</div>
+                </a>
+                {%else%}
+                <a class="nav-link" href="{% url 'taskmanager:evaluation' value.id 'CT' %}">
+                    <div class="p-3 cl-effect-1"><i class="fa-solid fa-calendar-check"></i>&nbsp;Confirm The Task</div>
+                </a>
+        {% endif %}
             
-            </div>
-            
-                <div class="comment">
-                    {% csrf_token %}
-                    <form action="" class="form-control border-0" method="POST">
-                        <input type="text" name="task_name" id="task_name" value="{{key.task_name}}" hidden>
-                        <input type="text" name="task_desc" id="task_desc" value="{{key.task_desc}}" hidden>
-                        <input type="text" name="end_date" id="end_date" value="{{key.end_date}}" hidden>
-
-                        <textarea class="form-control" name="comment" id="comment" cols="10" rows="5"
-                            placeholder="Comment..."></textarea>
-                        <small class="text-primary d-blok "><i class="fa-solid fa-circle-info"></i>&nbsp;Drop a comment to {{key.assign_to.first_name}} {{key.assign_to.last_name}}</small>
-                        <div class="card-footer">
-                            <button type="submit" class="btn bg-maroon px-5 text-white">Confirm</button>
-                            <button type="submit" class="btn bg-maroon px-5 text-white" onclick="display()">Re-assign</button>
-                        </div>
-                    </form>
-                </div>
-            {% endfor %}
         </div>
     </div>
+    {% endfor %}
+    <!-- confirmation platform -->
+    {% if flag == 'all' %}
+    <div class="col-md-9 col-sm-12 rounded shadow border p-5 mt-5 px-4" id="Off">
+        {% for  key in comp_task  %}
+        <p class="text-muted fw-bold fs-4">Task Title: </p>
+        <p class="text-muted">{{key.task_name}}</p>
+        <p class="text-muted fw-bold fs-4">Task Description: </p>
+        <p class="text-muted">{{key.task_desc}}</p>
+        <p class="text-muted fw-bold fs-4">Status: </p>
+        <p class="text-primary"><i class="fa-solid fa-spinner fa-spin-pulse"></i>&nbsp;waiting for confirmation</p>
+        <small class="text-muted fw-bold d-block">Started Date: </small>
+        <small class="text-muted">{{key.start_date}}</small>
+        <small class="text-muted fw-bold d-block">Started Date: </small>
+        <small class="text-muted d-block">{{key.end_date}}</small>
+            <!-- form for confirmation -->
+            <form action="" method="POST" class="form-control border-0">
+                {% csrf_token %}
+                <p class="mb-0 pb-0 text-primary"><i class="fa-solid fa-comment-dots fa-flip-horizontal"></i>&nbsp; drop a comment ot {{key.assign_to.first_name}} {{key.assign_to.last_name}}</p>
+                <textarea class="form-control" name="comment" id="comment" cols="5" rows="5" placeholder="Type comment..."></textarea>
+                <input type="number" name="index" id="index" value="{{key.id}}" hidden>
+                <button type="submit" class="btn bg-maroon text-light my-3">confirm the task</button>
+            </form>
+        {% endfor %}
+    </div>
+    {% elif flag == 'RT'%}
+    <div class="col-md-9 col-sm-12 rounded shadow border p-5 mt-5 px-4" id="Off">
+        <p class="text-muted text-center fs-4">Re-assign the task</p>
+        <form action="" class="border-0 form-control">
+            {% csrf_token %}
+            <input type="text" class="form-control py-3 mx-3">
+            
+        </form>
+    </div>
+    {% elif flag == 'CT' %}
+    <div class="col-md-9 col-sm-12 rounded shadow border p-5 mt-5 px-4" id="Off">
+        <p class="text-primary"><i class="fa-solid fa-circle-info"></i>&nbsp; Drop a comment to</p>
+        <form action="" class="border-0 form-control">
+            {% csrf_token %}
+            <textarea class="form-control" name="comment" id="confirm" cols="30" rows="10"
+                placeholder="type comment..."></textarea>
+            <button class="btn bg-maroon m-3 px-4 text-white">Confirm</button>
+        </form>
+    </div>
+    {% endif %}
 </div>
+
 {% endblock content %}
