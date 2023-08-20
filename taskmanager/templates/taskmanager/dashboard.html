@@ -1,70 +1,81 @@
-{% extends 'taskmanager/base.html' %} {% block content %} {%load static%}
-<div class="row mt-5">
-  <div class="col-md-2 mx-2 bg-light">
+{% extends 'taskmanager/base.html' %} {% block content %} 
+{%load static%}
+
+<div class="row my-5">
+<!-- The menu starts form here -->
+  <div class="col-2 shadow border">
     <div class="p-3">
       <h5 class="text-secondary mt-5">Dashboard Menu</h5>
       {% if flag == 'all' %}
-      <a href="{% url 'taskmanager:active_task' 'all'}" class="nav-link">
-        <div class="py-3 mt-3 text-light bg-dark">
+      <a href="{% url 'taskmanager:active_task' 'all' %}" class="nav-link">
+        <div class="bright py-3 mt-3 text-light bg-maroon">
           <span class="p-2">All Tasks</span>
-      </div>
+        </div>
       </a>
       {% else %}
-       <a href="{% url 'taskmanager:active_task' 'all'}" class="nav-link">
+      <a href="{% url 'taskmanager:active_task' 'all' %}" class="nav-link">
         <div class="py-3 mt-3 cl-effect-1">
           <span class="p-2">All Tasks</span>
-      </div>
+        </div>
       </a>
-      {% endif %}
-{% if flag == 'active' %}
-<a class="nav-link" href="{% url 'taskmanager:active_task' 'active' %}">
-      <div class="py-3 text-light bg-dark">
-        <span class="p-2">Active Tasks</span>
-      </div></a>
+      {% endif %} 
+      {% if flag == 'active' %}
+      <a class="nav-link" href="{% url 'taskmanager:active_task' 'active' %}">
+        <div class="bright py-3 text-light bg-maroon">
+          <span class="p-2">Active Tasks</span>
+        </div></a
+      >
       {% else %}
       <a class="nav-link" href="{% url 'taskmanager:active_task' 'active'%}">
-      <div class="py-3 cl-effect-1">
-        <span class="p-2">Active Tasks</span>
-      </div></a>
-{% endif %}
+        <div class="py-3 cl-effect-1">
+          <span class="p-2">Active Tasks</span>
+        </div></a
+      >
+      {% endif %} 
       {% if flag == 'c_task' %}
       <a class="nav-link" href="{% url 'taskmanager:active_task' 'c_task'%}">
-      <div class="py-3 text-light bg-dark">
-        <span class="p-2">Completed Tasks</span>
-      </div></a>
+        <div class="bright py-3 text-light bg-maroon">
+          <span class="p-2">Completed Tasks</span>
+        </div></a
+      >
       {% else %}
       <a class="nav-link" href="{% url 'taskmanager:active_task' 'c_task'%}">
-      <div class="py-3 cl-effect-1">
-        <span class="p-2">Completed Tasks</span>
-      </div></a>
-      {% endif %}
+        <div class="py-3 cl-effect-1">
+          <span class="p-2">Completed Tasks</span>
+        </div></a
+      >
+      {% endif %} 
       {% if flag == 'e_task' %}
       <a class="nav-link" href="{% url 'taskmanager:active_task' 'e_task'%}">
-      <div class="py-3 text-light bg-dark">
-        <span class="p-2">Expired Tasks</span>
-      </div></a>
+        <div class="bright py-3 text-light bg-maroon">
+          <span class="p-2">Expired Tasks</span>
+        </div></a
+      >
       {% else %}
       <a class="nav-link" href="{% url 'taskmanager:active_task' 'e_task'%}">
-      <div class="py-3 cl-effect-1">
-        <span class="p-2">Expired Tasks</span>
-      </div></a>
-      {% endif %}
-{% if flag == 'm_task' %}
+        <div class="py-3 cl-effect-1">
+          <span class="p-2">Expired Tasks</span>
+        </div></a
+      >
+      {% endif %} 
+      {% if flag == 'm_task' %}
       <a class="nav-link" href="{% url 'taskmanager:active_task' 'm_task'%}">
-      <div class="py-3 text-light bg-dark">
-        <span class="p-2">Your Assigned Task</span>
-      </div></a>
+        <div class="bright py-3 text-light bg-maroon">
+          <span class="p-2">Your Assigned Task</span>
+        </div></a
+      >
       {% else %}
       <a class="nav-link" href="{% url 'taskmanager:active_task' 'm_task'%}">
-      <div class="py-3 cl-effect-1">
-        <span class="p-2">Your Assigned Task</span>
-      </div></a>
+        <div class="py-3 cl-effect-1">
+          <span class="p-2">Your Assigned Task</span>
+        </div></a
+      >
       {% endif %}
-
     </div>
   </div>
-  <div class="col-md-8 bg-light">
-    <div class="text-center">
+
+  <div class="col-8 shadow border">
+     <div class="text-center">
       <img
         src="{% static 'media/profile.jpg'%}"
         class="rounded-pill border shadow border-secondary"
@@ -76,75 +87,118 @@
     </div>
     <div class="">
       <div class="shadow p-2 text-light bg-dark mt-5 mb-2 rounded">
-        <h5>You active tasks are schedualed bellow</h5>
-      </div>
-{% if tasks %}
-      <table class="table">
+        <h5>The task which is assigned to <span class="text-danger">{{request.user.first_name}} {{request.user.last_name}}</span></h5>
+    </div>
+  {% if tasks %}
+      <table class="table table-hover">
         <thead>
           <tr>
             <th scope="col">Task Name</th>
             <th scope="col">Task Description</th>
-
             <th scope="col">Start date</th>
             <th scope="col">Deadline</th>
             <th scope="col">Status</th>
-            <th scope="col">Operation</th>
-
+            <th scope="col">Operations</th>
             <th scope="col">Assigned By</th>
           </tr>
         </thead>
-        
-        <tbody class="table-group-divider">
-          
-          {% for value in tasks %}
-          <tr>
+        <tbody class="table-group-divider"> 
+        {% for value in tasks %}
+          <tr class="row-click-style" >
             <td>{{value.task_name}}</td>
-            <td width="300px">{{value.task_desc}}</td>
+            <td width="250px">{{value.task_desc}}</td>
             <td>{{value.start_date}}</td>
             <td>{{value.end_date}}</td>
-
-            {% if value.status == 1 %}
-            <td class="text-success">Active</td>
-            {% elif value.status == 0 %}
-            <td class="text-info">
-              <img src="{% static 'media/checked.png' %}" width="20px" alt="" />
-            </td>
-            {% elif value.status == -1 %}
-            <td class="text-danger">
-              <img src="{% static 'media/cancel.png' %}" width="20px" alt="" />
-            </td>
-            {% endif %}
             <td>
-              {% if value.status == 0 %}
-              <p class="text-muted" disabled>completed</p>
-              {% elif value.status == -1 %}
-              <p class="text-danger" disabled>Expired...</p>
-              {% else %}
-              <a
-                href="{% url 'taskmanager:update_tasks' value.id %}"
-                class="btn btn-danger"
-                >Complete</a
-                 >
-                {% endif %}
-                </td>
-                <td>{{value.assign_by.first_name}}</td>
-              </tr>
-            {% endfor %}
-          
-          </tbody>
-        
+  <!-- Task status starts -->
+            {% if value.status == 1 %}
+                <i class="fa-solid fa-flag-checkered fa-fade text-success fs-5"></i>
+                <p class="m-0 p-0 font-size">active</p>
+            {% elif value.status == 50 %}
+                <i class="fa-solid fa-spinner py-2 fa-spin-pulse fs-5"></i>
+                <span class="fs-6 ">Waiting...</span>
+            {% elif value.status == -1 %}
+                <i class="fa-solid fa-circle-xmark text-danger fs-5"></i>&nbsp; Expired
+            {% elif value.status == 100 %}
+                <i class="fa-solid fa-circle-check text-success fs-5"></i>
+            {% elif value.status == 80 and flag == 'm_task'%}
+                confirming &nbsp;<i class="fa-solid fa-rotate fa-spin fs-5 text-success"></i>
+            {% elif value.status == 80 %}
+                Evaluating &nbsp;<i class="fa-solid fa-rotate fa-spin fs-5 text-success"></i>
+            {% endif %}
+            </td>
+<!-- Task Status ends  -->
+<!-- Task Operation starts -->
+          <td>
+              {% if value.status == 50 %}
+                    <i class="fa-solid fa-circle-notch fa-spin fs-5 text-primary"></i>
+                    <span class="fS-6 text-primary">In Progress</span>
+                    {% if flag != 'm_task' %}
+                      <a
+                      href="{% url 'taskmanager:update_tasks' value.id 'done' %}"
+                      class="btn bg-maroon text-white">Done</a>
+                    {% endif %}
+              {% elif value.status == -1 and flag == 'm_task' %}
+                      <a href="{% url 'taskmanager:evaluation' value.id 'all' %}" class="btn bg-maroon text-white">
+                        <i class="fa-solid fa-chart-simple"></i>&nbsp;Evaluate
+                      </a>
+              {% elif value.status == -1 and flag != 'm_task'%}
+                <p class="text-danger"><i class="fa-regular fa-face-frown"></i>&nbsp; Expired</p>
+              {% elif value.status == 100 %}
+                <p class="text-info">Done <i class="fa-solid fa-check fs-5"></i></p>
+              {% elif value.status == 80 and flag == 'm_task' %}
+                <a href="{% url 'taskmanager:evaluation' value.id 'all' %}" class="btn bg-maroon text-white" >
+                  <i class="fa-solid fa-chart-simple"></i>&nbsp;Evaluate
+                </a>
+              {% elif value.status == 1 %}
+                    {% if flag != 'm_task' %}
+                      <a href="{% url 'taskmanager:update_tasks' value.id 'start' %}"
+                      class="btn bg-maroon text-white">Start</a>
+                    {% endif %}
+              {% endif %}
+            </td>
+ <!-- Task Operation ends -->
+            <td><small>{{value.assign_by.first_name}} {{value.assign_by.last_name}}</small></td>
+            </tr>
+        {% endfor %}  
+        </tbody> 
       </table>
-      {% else %}
-          <h3 class="text-muted my-5 mx-5 text-center">
-            <img src="{% static 'media/man.png'%}" width="200px" alt="">
-            <small></small>
-          </h3>
-          {% endif %}
-        </div>
-        <div class="col-md-2"></div>
-      </div>
-    </div>
+  {% else %}
+      <h3 class="text-muted my-5 mx-5 text-center">
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="{% static 'media/man.png'%}" width="200px" alt="">
+      <strong class="text-secondary d-block">empty record !</strong>
+      </h3>
+  {% endif %} 
   </div>
-
-  {% endblock content %}
+  
+ 
 </div>
+<!-- collapse Example for evaluation -->
+<div class="col-2 border shadow py-4">
+  <div class="my-3">
+  <h5 class="text-center text-muted ">Comment Received </h5>
+  {% if all_comment %}
+    <div class="list-group my-4">
+      {% for comment in all_comment %}
+      <strong class="text-dark"><i class="fa-solid fa-circle-user"></i>&nbsp;{{comment.task_id.assign_by.get_full_name}}</strong>
+      <p class="list-group-item p-3 rounded bg-light ">{{comment.comment}}
+        <small class="d-block text-success">On Completion Of :
+        <span class="text-primary"> {{comment.task_id.task_name}}</span></small>
+      </p>
+      <small class=" pt-0 mt-0"></small>
+      {% endfor %}
+    </div>
+    {% else %}
+    <div class="mx-2 rounded bg-light border text-center">
+      <h1 class="text-muted">
+        <i class="fa-solid fa-comment-slash"></i>
+        <span class="font-size d-block">No Comment</span>
+      </h1>
+    </div>
+  {% endif %}
+  
+  </div>
+</div>
+</div>
+
+{% endblock content %}

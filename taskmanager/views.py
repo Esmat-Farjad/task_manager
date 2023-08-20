@@ -4,43 +4,60 @@ from django.contrib.auth.models import User
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
-from .models import Tasks
+from .models import Tasks, Comments
 
 # Create your views here.
 def Base(request):
-    
     return render(request, 'taskmanager/base.html')
+def home(request):
+    return render(request, 'home.html')
 
 def Login(request):
-    if request.method=='POST':
-        user_name=request.POST['uname']
-        pass1=request.POST['pwd']
-        user=authenticate(request, username=user_name, password=pass1)
-        if user is not None:
-            login(request, user)
-            fname=user.first_name
-            lname=user.last_name
-            id=user.id
-            flag='all'
-            all_tasks=Tasks.objects.filter(assign_to_id=id)
-            
-            return render(request, 'taskmanager/dashboard.html', {'fname':fname, 'lname':lname, 'flag':flag, 'tasks':all_tasks})
-            
-        else:
-            messages.error(request, ('Invalid Credential !'))
-            
-    return render(request, 'taskmanager/login.html')
+    if request.user.is_authenticated:
+        return render(request, 'home.html')
+    else:
+        if request.method=='POST':
+            user_name=request.POST['uname']
+            pass1=request.POST['pwd']
+            user=authenticate(request, username=user_name, password=pass1)
+            if user is not None:
+                login(request, user)
+                fname=user.first_name
+                lname=user.last_name
+                id=user.id
+                flag='all'
+                all_tasks=Tasks.objects.filter(assign_to_id=id).order_by('-end_date')
+                all_comment=Comments.objects.filter(user_id = id)
+                return render(request, 'taskmanager/dashboard.html', {'fname':fname, 'lname':lname, 'flag':flag, 'tasks':all_tasks, 'all_comment':all_comment})
+                
+            else:
+                messages.error(request, ('Invalid Credential !'))
+    return render(request, 'taskmanager/login.html')            
+
+        
     
-def update_tasks(request, task_id):
-    st=0
-    Tasks.objects.filter(id=task_id).update(status=st)
-    user=request.user
-    fname=user.first_name
-    lname=user.last_name
-    id=user.id
-    flag='all'
-    all_tasks=Tasks.objects.filter(assign_to_id=id) 
-    return render(request, 'taskmanager/dashboard.html', {'fname':fname, 'lname':lname, 'flag':flag,'tasks':all_tasks})           
+def update_tasks(request, task_id, flag):
+    
+    if flag == 'start':
+        st=50
+        Tasks.objects.filter(id=task_id).update(status=st)
+        user=request.user
+        fname=user.first_name
+        lname=user.last_name
+        id=user.id
+        flag='all'
+        all_tasks=Tasks.objects.filter(assign_to_id=id) 
+    elif flag == 'done':
+        st=80
+        Tasks.objects.filter(id=task_id).update(status=st)
+        user=request.user
+        fname=user.first_name
+        lname=user.last_name
+        id=user.id
+        flag='all'
+        all_tasks=Tasks.objects.filter(assign_to_id=id).order_by('-end_date')
+    all_comment=Comments.objects.filter(user_id = request.user.id)
+    return render(request, 'taskmanager/dashboard.html', {'fname':fname, 'lname':lname, 'flag':flag,'tasks':all_tasks, 'all_comment':all_comment})           
     
 
 def Signup(request):
@@ -73,8 +90,9 @@ def dashboard(request):
     lname=user.last_name
     id=user.id
     flag='all'
-    all_tasks=Tasks.objects.filter(assign_to=id)
-    return render(request, 'taskmanager/dashboard.html', {'fname':fname, 'lname':lname, 'flag':flag, 'tasks':all_tasks})
+    all_comment=Comments.objects.filter(user_id = id)
+    all_tasks=Tasks.objects.filter(assign_to=id).order_by("-end_date")
+    return render(request, 'taskmanager/dashboard.html', {'fname':fname, 'lname':lname, 'flag':flag, 'tasks':all_tasks, 'all_comment':all_comment})
 
 @login_required(login_url='/taskmanager/login')
 def assign_task(request):
@@ -96,7 +114,7 @@ def assign_task(request):
 
 def Logout(request):
     logout(request)
-    return render(request, 'taskmanager/login.html')
+    return render(request, 'home.html')
 
 # dashboard operations
 def active_task(request, sign):
@@ -137,6 +155,55 @@ def active_task(request, sign):
         lname=user.last_name
         id=user.id
         flag=sign
-        all_tasks=Tasks.objects.filter(assign_to=id)
-    return render(request, 'taskmanager/dashboard.html', {'fname':fname, 'lname':lname, 'flag':flag, 'tasks':all_tasks})
+        all_tasks=Tasks.objects.filter(assign_to=id).order_by('-end_date')
+    all_comment=Comments.objects.filter(user_id = request.user.id)
+    return render(request, 'taskmanager/dashboard.html', {'fname':fname, 'lname':lname, 'flag':flag, 'tasks':all_tasks, 'all_comment':all_comment})
+
+# user profile page 
+@login_required(login_url='/taskmanager/login')
+def user_profile(request):
+    current_user=User.objects.filter(id=request.user.id)
+    m_task=Tasks.objects.filter(assign_to_id=request.user.id, status=100).count()
+    day=datetime.now()
+    today=day.strftime('%A')
+    return render(request, 'taskmanager/user_profile.html', {'c_user':current_user, 'No_task':m_task, 'today':today})
+
+
+@login_required(login_url='/taskmanager/login')
+def task_evaluate(request, tid):
+    comp_task=Tasks.objects.filter(id=tid)
+    return render(request, 'taskmanager/task_evaluate.html',{'comp_task':comp_task})
+
+def evaluation(request, tid, flag):
+    if flag == 'RT':
+        key = 'RT'
+    elif flag == 'CT':
+        key = 'CT'
+    else:
+        key = 'all'
+        
+    comp_task=Tasks.objects.filter(id=tid)
+    if request.method == 'POST':
+        task_name=request.POST['task_name']
+        task_desc=request.POST['task_desc']
+        end_date=request.POST['end_date']
+        index=request.POST['task_id']
+        st = 1
+        Tasks.objects.filter(id = index).update(task_name = task_name, task_desc = task_desc, end_date = end_date, status = st)
+        messages.success(request, "The Task Re-assigned Successfully !")
+    return render(request, 'taskmanager/task_evaluate.html',{'comp_task':comp_task,'flag':key})
+
+def Commenting(request, userId, taskId):
     
+    if request.method == 'POST':
+        task_id=taskId
+        user_id=userId
+        comment_text=request.POST['comment']
+        st=100
+        flag = 'all'
+        Tasks.objects.filter(id = task_id).update(status= st)
+        new_record= Comments(comment = comment_text, task_id_id = task_id, user_id_id = user_id,)
+        new_record.save()
+        messages.success(request, "The Task Confirmed Successfully !")
+        return redirect('taskmanager:evaluation', tid=task_id, flag=flag)
+  

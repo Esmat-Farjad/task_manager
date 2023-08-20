@@ -2,10 +2,22 @@
 {% load static %}
 {% block content %}
 <div class="row m-4">
+    <script>
+        $(function() {
+            $('.list-group').on('click', 'list-group-item', function () {
+                $('list-group-item').removeClass('active');
+                $(this).closest('.list-group-item').addClass('active');
+            });
+
+        });
+        
+    </script>
     {% for  value in comp_task  %}
     <div class="col-md-3 rounded shadow border p-5 mt-5 px-4">
-        <span class="text-center ms-3 fs-3 my-5 "><i class="fa-solid fa-chart-line"></i>&nbsp;Evaluation</span>
+        <span class="text-center ms-3 fs-3 my-5 "><i class="fa-solid fa-chart-line"></i>&nbsp; Task Evaluation</span>
         <div class="ms-4">
+               
+
                 {% if flag == 'all' %}
                     <a class="nav-link mt-3" href="{% url 'taskmanager:evaluation' value.id 'all' %}">
                         <div class="p-3 bg-maroon text-light">
@@ -48,30 +60,63 @@
         <p class="text-muted fw-bold fs-4">Task Description: </p>
         <p class="text-muted">{{key.task_desc}}</p>
         <p class="text-muted fw-bold fs-4">Status: </p>
+        {% if key.status == 80 %}
         <p class="text-primary"><i class="fa-solid fa-spinner fa-spin-pulse"></i>&nbsp;waiting for confirmation</p>
+        {% elif key.status == 100 %}
+        <p class="text-success">Completed &nbsp;<i class="fa-solid fa-circle-check"></i></p>
+        {% else %}
+           <p class="text-warning"><i class="fa-solid fa-triangle-exclamation"></i>
+        <span class="text-dark">Expired</span></p>
+           
+        {% endif %}
+        
         <small class="text-muted fw-bold d-block">Started Date: </small>
         <small class="text-muted">{{key.start_date}}</small>
         <small class="text-muted fw-bold d-block">Started Date: </small>
         <small class="text-muted d-block">{{key.end_date}}</small>
             <!-- form for confirmation -->
-            <form action="" method="POST" class="form-control border-0">
+            {% if key.status == 80 %}
+                
+            
+            <form action="{% url 'taskmanager:Commenting' key.assign_to_id key.id %}" method="POST" class="form-control border-0">
                 {% csrf_token %}
                 <p class="mb-0 pb-0 text-primary"><i class="fa-solid fa-comment-dots fa-flip-horizontal"></i>&nbsp; drop a comment ot {{key.assign_to.first_name}} {{key.assign_to.last_name}}</p>
                 <textarea class="form-control" name="comment" id="comment" cols="5" rows="5" placeholder="Type comment..."></textarea>
-                <input type="number" name="index" id="index" value="{{key.id}}" hidden>
                 <button type="submit" class="btn bg-maroon text-light my-3">confirm the task</button>
             </form>
+            {% endif %}
         {% endfor %}
     </div>
+    <!-- Task Re-assignment starts -->
     {% elif flag == 'RT'%}
-    <div class="col-md-9 col-sm-12 rounded shadow border p-5 mt-5 px-4" id="Off">
+    <div class="col-md-9 col-sm-12 rounded shadow border p-5 mt-5 px-4">
         <p class="text-muted text-center fs-4">Re-assign the task</p>
-        <form action="" class="border-0 form-control">
-            {% csrf_token %}
-            <input type="text" class="form-control py-3 mx-3">
+        {% for message in messages %}
+            <p class="text-success text-center font-size">{{message}}</p>
+        {% endfor %}
             
-        </form>
+        <div class="row">
+            <div class="col-2"></div>
+                <div class="col-8">
+                <form action="" class="border-0 form-control" method="POST">
+                    {% csrf_token %}
+                    {% for val in comp_task  %}
+                    <label for="task_name">Task Title </label>
+                    <input type="number" name="task_id" id="task_id" value="{{val.id}}" hidden class="">
+                    <input type="text" class="form-control py-3 m-3" name="task_name" id="task_name" value="{{val.task_name}}">
+                    <label for="task_desc"> Task Description </label>
+                    <textarea class="form-control py-3 mx-3" name="task_desc" id="task_desc">{{val.task_desc}}</textarea>
+                    <label for="end_date">Task Deadline </label>
+                    <input type="date" class="form-control py-3 mx-3" name="end_date" id="end_date" value="{{val.end_date|date:'Y-m-d'}}">
+                    <button type="submit" class="my-3 px-4 bg-maroon btn text-white">Re-assign</button>
+                    {% endfor %}
+                </form>
+            </div>
+            <div class="col-2"></div>
+        </div>
+        
     </div>
+    <!-- Task Re-assignment ends -->
     {% elif flag == 'CT' %}
     <div class="col-md-9 col-sm-12 rounded shadow border p-5 mt-5 px-4" id="Off">
         <p class="text-primary"><i class="fa-solid fa-circle-info"></i>&nbsp; Drop a comment to</p>

@@ -1,0 +1,129 @@
+{% extends 'taskmanager/base.html' %} {% load static %} {% block content %}
+
+<script>
+  
+  function counting(){
+      let counts = setInterval(updated);
+        let stuff = 0;
+        function updated() {
+          let count = document.getElementById("all_staff");
+          count.innerHTML = ++stuff;
+          if (stuff === 486) {
+            clearInterval(counts);
+          }
+        }
+
+      let counts2 = setInterval(updated1);
+      let task = 0;
+      function updated1() {
+        let count2 = document.getElementById("all_task");
+        count2.innerHTML = ++task;
+        if (task === 456) {
+          clearInterval(counts2);
+        }
+      }
+
+      let counts3 = setInterval(updated3);
+      let dept = 0;
+      function updated3() {
+        let count3 = document.getElementById("all_dept");
+        count3.innerHTML = ++dept;
+        if (dept === 343) {
+          clearInterval(counts3);
+        }
+      }
+
+  }  
+ 
+</script>
+
+<div class="container p-5 text-center homepage my-5 ">
+  <div class="row">
+    {% if user.is_authenticated %}
+      <div class="col-5 p-3">
+        <h1 class="fw-bold mb-0 pb-0 mt-5">Task Manager</h1>
+        <small class="text-muted p-0 m-0">An overall app to manage your workload in organization</small>
+        <div class=" mt-5 ">
+          <p class="mt-5 text-muted">Get more information about us</p>
+          <div class=" mt-5 p-1 d-flex justify-content-center">
+            <a class="nav-link" href="" data-bs-toggle="collapse" data-bs-target="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
+              <p class="rounded-pill text-white bg-maroon px-5 py-2 shadow"> learn more</p>
+            </a>
+            
+          </div>
+          <div  class="mt-5 text-light">
+            <span class="mx-4 p-3 rounded-circle bg-maroon fw-bold" id="all_staff"></span>
+            <span class="mx-4 p-3 rounded-circle bg-maroon fw-bold" id="all_task"></span>
+            <span class="mx-4 p-3 rounded-circle bg-maroon fw-bold" id="all_dept"></span>
+          </div>
+          <div class="p-3">
+            <small class="text-muted mx-4">No.of Stuff</small>
+            <small class="text-muted mx-2">No.of Tasks</small>
+            <small class="text-muted mx-2">No.of Department</small>
+          </div>
+        </div>
+      </div> 
+    {%else%}
+      <div class="col-5 p-3">
+        <h1 class="fw-bold mb-0 pb-0 mt-5">Task Manager</h1>
+        <small class="text-muted d-block  p-0 m-0">An overall app to manage your workload in organization</small>
+        <small class="text-muted d-block text-start"><i class="fa-solid fa-chevron-right text-danger"></i>&nbsp;&nbsp;Efficient</small>
+        <small class="text-muted d-block text-start p-0 m-0"><i class="fa-solid fa-chevron-right text-danger"></i>&nbsp;&nbsp;Reliable</small>
+        <small class="text-muted d-block text-start p-0 m-0"><i class="fa-solid fa-chevron-right text-danger"></i>&nbsp;&nbsp;User Friendly</small>
+
+
+        <div class=" mt p-5 ">
+          <p class="mt-5 text-muted">Take your time and start...</p>
+          <a href="{% url 'taskmanager:login' %}" class="nav-link bg-maroon border shadow py-2 px-5 rounded-pill text-white"><i class="fa-solid fa-right-to-bracket"></i>&nbsp;&nbsp;SIGN IN</a>
+          <p class="my-3">or</p>
+          <a href="{% url 'taskmanager:signup' %}" class="nav-link bg-maroon border shadow py-2 px-5 rounded-pill text-white"><i class="fa-solid fa-user-plus"></i>&nbsp;&nbsp;SIGN UP
+          </a>
+        </div>
+      </div>
+    {% endif %}
+    <div class="col-7">
+      <img src="{% static 'media/verified.png' %}" alt="" />
+    </div>
+  </div>
+  <!-- about page for extra information about task manager -->
+  <div class="about p-4 collapse" id="collapseExample">
+    <h1 class="fw-bold">About</h1>
+    <p class="text-start">
+      <span class="fw-bold">Lorem Ipsum</span> is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard
+      dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen
+      book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially
+      unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more
+      recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+      </p>
+      <p class="text-start">
+        <span class="fw-bold d-block">Why do we use it ?</span>
+        It is a long established fact that a reader will be distracted by the readable content of a page when looking at its
+        layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using
+        'Content here, content here', making it look like readable English. Many desktop publishing packages and web page
+        editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites
+        still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose
+        (injected humour and the like).
+        
+    </p>
+    <p class="text-primary">you may join us on social media also </p>
+    <div class="text-center">
+      <small class="font-size text-light">Join us on social media</small><br>
+      <span><i class="fa-brands fa-facebook text-primary social-media mx-3 "></i></span>
+      <span class="text-info social-media me-3"><i class="fa-brands fa-square-x-twitter "></i></span>
+      <span class="text-danger social-media me-3"><i class="fa-brands fa-youtube"></i></span>
+      <span class="text-dark social-media me-3"><i class="fa-brands fa-instagram"></i></span>
+      <span class="text-danger social-media"><i class="fa-solid fa-envelope"></i></span>
+    </div>
+    <div class="text-start mt-5 mx-3">
+      <img src="{% static 'media/logo.png'%}" alt="">
+      <p class="text-muted p-0 m-0"><i class="fa-solid fa-location-dot text-danger"></i> House no. 12, Street No.3, Qala fatahullah, Kabul - 12657</p>
+      <p class="text-muted p-0 m-0"><i class="fa-solid fa-phone text-danger"></i>  (+93) (0) 74 862 1879</p>
+      <p class="text-muted p-0 m-0"><i class="fa-solid fa-at text-danger"></i>  ask@immap.org</p>
+    </div>
+    <div class="">
+     
+    </div>
+  </div>
+</div>
+
+{% endblock content %}

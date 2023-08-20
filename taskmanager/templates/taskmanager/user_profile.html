@@ -1,0 +1,72 @@
+{% extends 'taskmanager/base.html' %}
+{% load static %}
+{% block content %}
+<div class="row m-2">
+    <div class="col-md-4 p-5 shadow border rounded">
+        <div class="d-flex justify-content-center">
+            <img class="shadow rounded-circle" src="{% static 'media/profile.jpg' %}" width="100px" alt="">
+        </div>
+        <h3 class="text-center m-1 text-dark fw-bold">{{request.user.get_full_name}}</h3>
+        <p class="m-0 p-0 text-center">Your personal details are displayed in the form below </p>
+        <div class="my-3">
+            {% for val in c_user  %}
+                <p class="p-0 m-0">First Name: <span class="fw-bold">{{val.first_name}}</span></p>
+                <p class="p-0 m-0">Last Name: <span class="fw-bold"> {{val.last_name}}</span></p>
+                <p class="p-0 m-0">Username: <span class="fw-bold"> {{val.username}}</span></p>
+                <p class="p-0 m-0">Email: <span class="fw-bold"> {{val.email}}</span></p>
+            {% endfor %}
+            <p class="p-0 m-0">Number of Task Done:<span class="fw-bold">{{No_task}}</span></p>
+            <button class="btn text-light px-5 rounded-pill shadow my-2 bg-maroon" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">Update</button>
+        </div>
+        <div class="text-start mx-2 my-4 collapse" id="collapseExample">
+            {% csrf_token %}
+            <form action="" class="form-control p-5 border-0">
+                {% for key in c_user %}
+                <label class="fw-bold" for="firstname">First Name </label>
+                <input type="text" class="form-control p-2 my-2" name="fname" id="firstname" value="{{key.first_name}}" required>
+                <label class="fw-bold" for="lastname">Last Name </label>
+                <input type="text" class="form-control p-2 my-2" name="lname" id="lastname" value="{{key.last_name}}" required>
+                <label class="fw-bold" for="email">Email</label>
+                <input type="email" class="form-control p-2 my-2" name="email" id="email" value="{{key.email}}" required>
+                <label class="fw-bold" for="username">Username </label>
+                <input type="text" class="form-control p-2 my-2" name="username" id="username" value="{{key.username}}" required>
+                <label class="fw-bold" for="password">Password</label>
+                <input type="password" class="form-control p-2 my-2" name="password" id="password" value="{{key.password}}" required>
+                {% endfor %}
+                <button type="submit" class="btn btn-danger mt-3">Update</button>
+                
+            </form>
+        </div>
+        <input type="number" name="num" id="num" value="{{No_task}}" hidden>
+        <input type="text" name="day" id="day" value="{{today}}" hidden>
+
+    </div>
+    <div class="col-md-8 p-5 shadow border rounded ">
+        <h3 class="text-secondary text-center fw-bold">your performance</h3>
+        <div  id="myPlot"></div>
+        
+        <script>
+            const n=document.getElementById("num").value;
+            const m=document.getElementById("day").value;
+            const xArray =["Wednesday","Thursday","Friday","Saturday","Sunday", "Monday","Tuesday"];
+            const yArray = [5,10,0,0,6,2,1];
+
+            const data = [{
+                x: xArray,
+                y: yArray,
+                type: "bar",
+                orientation: "v",
+                marker: { color: "",
+                line:{
+                    width: 2.5
+                } }
+            }];
+
+            const layout = { 
+             };
+
+            Plotly.newPlot("myPlot", data, layout);
+        </script>
+    </div>
+</div>
+{% endblock content %}

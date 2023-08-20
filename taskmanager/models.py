@@ -21,4 +21,13 @@ class Tasks(models.Model):
     def __str__(self):
         return self.task_name
     
+class Comments(models.Model):
+    #relationship
+    task_id = models.ForeignKey(Tasks, related_name='task_id', on_delete=models.CASCADE)
+    user_id = models.ForeignKey(User, related_name='user_id', on_delete=models.CASCADE)
+    #fields
+    comment = models.TextField(max_length=350)
+    com_date = models.DateField(auto_now=True)
     
+    def __str__(self):
+        return self.comment

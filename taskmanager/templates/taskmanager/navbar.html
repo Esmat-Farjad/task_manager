@@ -1,0 +1,52 @@
+
+{% block content %}
+{% load static %}
+<nav class="navbar navbar-expand-lg shadow text-white">
+  <div class="container-fluid">
+    <a class="navbar-brand mx-5" href="{% url 'home'%}"
+      >&nbsp;&nbsp;&nbsp;
+      <i class="fa-solid fa-gears text-white"></i>
+      <small class="font-size d-block text-white">Task Manager</small></a
+    >
+    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+      <div class="navbar-nav">
+        {% if user.is_authenticated %}
+        <a class="nav-link text-white" href="{% url 'taskmanager:logout'%}"
+          ><i class="fa-solid fa-right-from-bracket"></i>
+          Sign Out</a
+        >
+        <a class="nav-link text-white" href="{% url 'taskmanager:dashboard'%}"
+          ><i class="fa-solid fa-house-user"></i>
+          Dashboard</a
+        >
+        <a class="nav-link text-white" href="{% url 'taskmanager:assign_task'%}"
+          ><i class="fa-solid fa-circle-up"></i>
+          Assign Task</a
+        >
+        {% else %}
+        <a
+          class="nav-link text-white"
+          aria-current="page"
+          href="{% url 'taskmanager:signup' %}"
+          >
+          Sign up <i class="fa-solid fa-user-plus"></i></a
+        >
+        <a class="nav-link text-white" href="{% url 'taskmanager:login' %} "
+          > Sign In <i class="fa-solid fa-user-check"></i></a
+        >
+        {% endif %}
+      </div>
+    </div>
+  </div>
+  {% if user.is_authenticated %}
+  <div class="text-center text-white me-5">
+    <a class="nav-link" href="{% url 'taskmanager:user_profile'%}">
+      <i class="fa-regular fa-circle-user fs-3 me-1 my-1"></i>
+      <div class="profile">
+      <h6 class="">{{request.user.get_full_name}}</h6>
+      </div>
+    </a>
+  </div>
+  {%endif%}
+</nav>
+{% endblock content %}
