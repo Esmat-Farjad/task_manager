@@ -37,34 +37,38 @@
  
 </script>
 
-<div class="container p-5 text-center homepage my-5 ">
+<div class="m-5 homepage my-5 ">
   <div class="row">
     {% if user.is_authenticated %}
-      <div class="col-5 p-3">
+      <div class="col-6 p-2 text-center">
         <h1 class="fw-bold mb-0 pb-0 mt-5">Task Manager</h1>
-        <small class="text-muted p-0 m-0">An overall app to manage your workload in organization</small>
+        <small class="text-muted p-0 m-0 ">An overall app to manage your workload in organization</small>
         <div class=" mt-5 ">
           <p class="mt-5 text-muted">Get more information about us</p>
           <div class=" mt-5 p-1 d-flex justify-content-center">
             <a class="nav-link" href="" data-bs-toggle="collapse" data-bs-target="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
-              <p class="rounded-pill text-white bg-maroon px-5 py-2 shadow"> learn more</p>
+              <p class="rounded-pill text-white text-center bg-maroon px-5 py-2 shadow"> learn more</p>
             </a>
-            
           </div>
           <div  class="mt-5 text-light">
-            <span class="mx-4 p-3 rounded-circle bg-maroon fw-bold" id="all_staff"></span>
-            <span class="mx-4 p-3 rounded-circle bg-maroon fw-bold" id="all_task"></span>
-            <span class="mx-4 p-3 rounded-circle bg-maroon fw-bold" id="all_dept"></span>
-          </div>
-          <div class="p-3">
-            <small class="text-muted mx-4">No.of Stuff</small>
-            <small class="text-muted mx-2">No.of Tasks</small>
-            <small class="text-muted mx-2">No.of Department</small>
+            <div class="mx-3 d-flex justify-content-center">
+              <span class="mx-4 px-4 py-4 fs-2 rounded-circle bg-maroon shadow-lg fw-bold" id="all_staff"></span>
+              <span class="mx-4 px-4 py-4 fs-2 rounded-circle bg-maroon shadow-lg fw-bold" id="all_task"></span>
+              <span class="mx-4 px-4 py-4 fs-2 rounded-circle bg-maroon shadow-lg fw-bold" id="all_dept"></span>
+            </div>
+            <div class="text-dark">
+              <span class="ms-4 px-4 py-4 fs-4 fw-bold" >Stuff</span>
+              <span class="ms-5 px-4 py-4 fs-4 fw-bold">Tasks</span>
+              <span class="mx-1 px-2 py-4 fs-4 fw-bold">Departments</span>
+
+            </div>
+            
           </div>
         </div>
       </div> 
     {%else%}
-      <div class="col-5 p-3">
+    <div class="col-6 text-center p-5 ">
+      <div class="m-5 px-5">
         <h1 class="fw-bold mb-0 pb-0 mt-5">Task Manager</h1>
         <small class="text-muted d-block  p-0 m-0">An overall app to manage your workload in organization</small>
         <small class="text-muted d-block text-start"><i class="fa-solid fa-chevron-right text-danger"></i>&nbsp;&nbsp;Efficient</small>
@@ -79,9 +83,10 @@
           <a href="{% url 'taskmanager:signup' %}" class="nav-link bg-maroon border shadow py-2 px-5 rounded-pill text-white"><i class="fa-solid fa-user-plus"></i>&nbsp;&nbsp;SIGN UP
           </a>
         </div>
+        </div>
       </div>
     {% endif %}
-    <div class="col-7">
+    <div class="col-6">
       <img src="{% static 'media/verified.png' %}" alt="" />
     </div>
   </div>

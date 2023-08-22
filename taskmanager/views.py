@@ -1,10 +1,14 @@
 from datetime import datetime, timedelta, time
+from hashlib import md5
+from django.http import JsonResponse
 from django.shortcuts import redirect, render
 from django.contrib.auth.models import User
 from django.contrib import messages
-from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth import authenticate, login, logout, update_session_auth_hash
 from django.contrib.auth.decorators import login_required
-from .models import Tasks, Comments
+
+from django.contrib.auth import update_session_auth_hash
+from .models import Tasks, Comments, Profile
 
 # Create your views here.
 def Base(request):
@@ -131,7 +135,7 @@ def active_task(request, sign):
         fname=user.first_name
         lname=user.last_name
         id=user.id
-        st=0
+        st=100
         flag=sign
         all_tasks=Tasks.objects.filter(assign_to=id,status=st)
     elif sign == 'e_task':
@@ -162,11 +166,26 @@ def active_task(request, sign):
 # user profile page 
 @login_required(login_url='/taskmanager/login')
 def user_profile(request):
+    if request.method == 'POST':
+        fname=request.POST['fname']
+        lname=request.POST['lname']
+        email=request.POST['email']
+        username=request.POST['username']
+        userId=request.user.id
+        
+
+        
+        User.objects.filter(id=userId).update(first_name=fname, last_name=lname, email=email, username=username)
+        if len(request.FILES) != 0:
+            profile_image=request.FILES['image']
+            new_record=Profile(user_id=userId, image=profile_image)
+            new_record.save()
+        
     current_user=User.objects.filter(id=request.user.id)
     m_task=Tasks.objects.filter(assign_to_id=request.user.id, status=100).count()
-    day=datetime.now()
-    today=day.strftime('%A')
-    return render(request, 'taskmanager/user_profile.html', {'c_user':current_user, 'No_task':m_task, 'today':today})
+    # day=datetime.now()
+    # today=day.strftime('%A')
+    return render(request, 'taskmanager/user_profile.html', {'c_user':current_user, 'No_task':m_task})
 
 
 @login_required(login_url='/taskmanager/login')
@@ -207,3 +226,31 @@ def Commenting(request, userId, taskId):
         messages.success(request, "The Task Confirmed Successfully !")
         return redirect('taskmanager:evaluation', tid=task_id, flag=flag)
   
+  
+def changePassword(request):
+    if request.method == 'POST':
+        old=request.POST['old_password']
+        new_password=request.POST['new_password']
+        conf_pass=request.POST['confirm_pass']
+        error = ''
+        success = ''
+        status = 0
+        if update_session_auth_hash(request, request.user.password) == old:
+                error= "Password is Incorrect !"
+                status = 404
+        
+        elif old == new_password:
+            error = "The new password should not be the same as old !"
+            status = 400
+        elif new_password != conf_pass:
+            error = "The password dose not match !"
+            status = 404
+        else:
+            u=User.objects.get(id=request.user.id)
+            u.set_password(new_password)
+            u.save()
+            success="Your password changed successfully"
+            status = 200
+    data= {'status': status, 'message':success, 'error':error}
+    return JsonResponse(data, safe=False)
+          

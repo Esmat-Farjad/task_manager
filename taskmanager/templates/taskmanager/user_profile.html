@@ -4,8 +4,10 @@
 <div class="row m-2">
     <div class="col-md-4 p-5 shadow border rounded">
         <div class="d-flex justify-content-center">
-            <img class="shadow rounded-circle" src="{% static 'media/profile.jpg' %}" width="100px" alt="">
+            <img class="shadow rounded-circle border border-4 border-primary border-opacity-50" src="{{user.profile.image.url}}" width="200px" height="200px" alt="">
+            
         </div>
+        
         <h3 class="text-center m-1 text-dark fw-bold">{{request.user.get_full_name}}</h3>
         <p class="m-0 p-0 text-center">Your personal details are displayed in the form below </p>
         <div class="my-3">
@@ -16,11 +18,55 @@
                 <p class="p-0 m-0">Email: <span class="fw-bold"> {{val.email}}</span></p>
             {% endfor %}
             <p class="p-0 m-0">Number of Task Done:<span class="fw-bold">{{No_task}}</span></p>
-            <button class="btn text-light px-5 rounded-pill shadow my-2 bg-maroon" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">Update</button>
+            <button class="btn text-light px-5 rounded-pill shadow my-2 bg-maroon" 
+            data-bs-toggle="collapse" 
+            data-bs-target="#collapseExample" 
+            aria-expanded="false" 
+            aria-controls="collapseExample">
+            <i class="fa-solid fa-user-pen"></i>&nbsp;
+            Edit Profile
+            </button>
+ <!-- lunching Modal start -->
+                <p class="text-primary" type="button" data-bs-toggle="modal" data-bs-target="#examplemodal">
+                    <span class="change-password" ><i class="fa-solid fa-key"></i>&nbsp;Change Password</span>
+                </p>
+                <div class="modal fade" id="examplemodal">
+                    <div class="modal-dialog modal-dialog-centerd">
+                        <div class="modal-content">
+                            <button class="text-end fs-3 btn bg-maroon text-white" data-bs-dismiss="modal">
+                                <i class="fa-solid fa-xmark"></i>
+                            </button>
+                            <p class="text-center fs-5 pt-3">Change Password</p>
+                            <p class="text-center fs-6 text-success" id="success_message"></p>
+                            <p class="text-center fs-6 text-danger" id="error_message"></p>
+
+                            <div class="modal-body mx-3 mb-3">
+                                <form action="{% url 'taskmanager:changePassword' %}" method="POST" class="border-0 form-control" id="formPassword">
+                                    {% csrf_token %}
+                                    <input type="password" name="old_password" id="old_password" class="form-control py-2 m-3" placeholder="Enter your password" required>
+                                    
+                                    <input type="password" name="new_password" id="new_password" class="form-control py-2 m-3" placeholder="Enter your new password" required>
+                                    <input type="password" name="confirm_pass" id="confirm_pass" class="form-control py-2 m-3" placeholder="Re-enter your new password" required>
+                                 
+
+                                    <button type="submit"  class="btn bg-maroon my-3 mx-3 px-2 text-white">Change Password</button>
+                                    <span class="text-danger d-block">Note: 
+                                        <small class="text-primary font-size text-center">
+                                            Your new password should not be the same as old password.
+                                        </small>
+                                    </span>
+                                    
+                                </form>
+                            </div>
+                        </div>
+                    </div> 
+                </div>
+ <!-- Lunching Modal end -->
         </div>
         <div class="text-start mx-2 my-4 collapse" id="collapseExample">
-            {% csrf_token %}
-            <form action="" class="form-control p-5 border-0">
+            
+            <form action="" class="form-control p-5 border-0" enctype="multipart/form-data" method="POST">
+                {% csrf_token %}
                 {% for key in c_user %}
                 <label class="fw-bold" for="firstname">First Name </label>
                 <input type="text" class="form-control p-2 my-2" name="fname" id="firstname" value="{{key.first_name}}" required>
@@ -30,10 +76,11 @@
                 <input type="email" class="form-control p-2 my-2" name="email" id="email" value="{{key.email}}" required>
                 <label class="fw-bold" for="username">Username </label>
                 <input type="text" class="form-control p-2 my-2" name="username" id="username" value="{{key.username}}" required>
-                <label class="fw-bold" for="password">Password</label>
-                <input type="password" class="form-control p-2 my-2" name="password" id="password" value="{{key.password}}" required>
+                
+                <label for="image">select profile picture</label>
+                <input type="file" name="image" id="image" class="form-control">
                 {% endfor %}
-                <button type="submit" class="btn btn-danger mt-3">Update</button>
+                <button type="submit" class="btn bg-maroon text-white mt-3"><i class="fa-solid fa-user-check"></i>&nbsp;Update</button>
                 
             </form>
         </div>
@@ -66,7 +113,50 @@
              };
 
             Plotly.newPlot("myPlot", data, layout);
+
+
+
+            const form = document.getElementById("formPassword");
+            form.addEventListener('submit',async event => {
+                event.preventDefault();
+            
+                const formData = new FormData(form);
+                formData.append('csrfmiddlewaretoken','{{csrf_token}}');
+                fetch('{% url "taskmanager:changePassword" %}', {
+                    method: 'POST',
+                    body: formData,
+                }).then(response => response.json()).then(data =>{
+                    console.log(data);
+                    document.getElementById('old_password').value = '';
+                    document.getElementById('new_password').value = '';
+                    document.getElementById('confirm_pass').value = '';
+                    if (data.error) {
+                    document.getElementById('error_message').innerText = data.error;
+                    } else if (data.message){
+                    document.getElementById('success_message').innerText = data.message;
+                    }
+                    setTimeout(()=>{
+                        document.getElementById('success_message').innerText = '';
+                        document.getElementById('error_message').innerText = '';
+                    },3000);
+                    
+                    
+                   
+                }).catch (error =>{
+                   
+                    document.getElementById('error_message').innerText = data.error;
+                    setTimeout(function () {
+                        document.getElementById('error_message').style.display = "none";
+                    }, 2000);
+                    setTimeout(function () {
+                        document.getElementById('error_message').style.display = "";
+                    }, 2000);
+                   
+                });
+
+            });
         </script>
+
     </div>
 </div>
 {% endblock content %}

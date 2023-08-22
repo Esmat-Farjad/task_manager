@@ -75,10 +75,10 @@
   </div>
 
   <div class="col-8 shadow border">
-     <div class="text-center">
+     <div class="text-center p-3">
       <img
-        src="{% static 'media/profile.jpg'%}"
-        class="rounded-pill border shadow border-secondary"
+        src="{{user.profile.image.url}}"
+        class="rounded-pill border-primary border border-4 border-opacity-50 shadow-lg"
         alt="profile image"
         width="150px"
         height="150px"

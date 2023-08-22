@@ -1,4 +1,6 @@
 from django.urls import path
+
+
 from . import views
 
 app_name='taskmanager'
@@ -16,4 +18,9 @@ urlpatterns = [
     path('task_evaluate/<tid>',views.task_evaluate, name='task_evaluate'),
     path('evaluation/<tid>/<flag>',views.evaluation, name="evaluation"),
     path('Commenting/<userId>/<taskId>',views.Commenting, name='Commenting'),
+    path('changePassword/', views.changePassword, name='changePassword')
 ]
+
+
+
+
