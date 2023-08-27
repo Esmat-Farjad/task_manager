@@ -18,7 +18,9 @@ urlpatterns = [
     path('task_evaluate/<tid>',views.task_evaluate, name='task_evaluate'),
     path('evaluation/<tid>/<flag>',views.evaluation, name="evaluation"),
     path('Commenting/<userId>/<taskId>',views.Commenting, name='Commenting'),
-    path('changePassword/', views.changePassword, name='changePassword')
+    path('changePassword/', views.changePassword, name='changePassword'),
+    path('adminDashboard/', views.adminDashboard, name='adminDashboard'),
+    path('adminRoute/<flag>', views.adminRoute, name='adminRoute'),
 ]
 
 

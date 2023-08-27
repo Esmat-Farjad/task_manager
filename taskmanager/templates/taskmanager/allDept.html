@@ -1,0 +1,71 @@
+
+<div class=" mt-5 second-item">
+    <h5 class="text-center">
+        All Departments
+    </h5>
+    <!-- Search input start -->
+    <div class="row mt-3 mb-4">
+        <div class="col-md-3"></div>
+        <div class="col-md-6">
+            <form action="" class="form-control border-0 bg-dark d-flex" role="search">
+                <input type="text" class="form-control" placeholder="search">
+                <button class="btn bg-maroon rounded text-white mx-2"><i
+                        class="fa-solid fa-magnifying-glass fs-5"></i></button>
+            </form>
+        </div>
+        <div class="col-md-3"></div>
+    </div>
+    <!-- search input ends -->
+    <div class="container">
+        <div class="row">
+                <div class="col-md-4 shadow border border-secondary p-3 border-opacity-50">
+                    <h5 class="text-center my-4">
+                        Adding department
+                    </h5>
+                    {% if messages %}
+                    {% for message in messages %}
+                    <p class="text-success" id="displayMessage"><i class="fa-solid fa-circle-check fs-4"></i>
+                        &nbsp;{{message}}</p>
+                    <script>
+                        setTimeout(() => {
+                            document.getElementById('displayMessage').style.display = 'none';
+                        }, 3000);
+                    </script>
+                    {% endfor %}
+                    {% endif %}
+                    <form action="" class="form-control border-0 bg-dark text-white" method="POST">
+                        {% csrf_token %}
+                        <label for="dept_head">Department Name</label>
+                        <input type="text" class="form-control adInput text-light bg-dark" name="dept_head"
+                            id="dept_head" placeholder="Head...">
+                        <label class="mt-2" for="dept_name">Department Name</label>
+                        <input type="text" class="form-control adInput text-light bg-dark" name="dept_name"
+                            id="dept_name" placeholder="Name...">
+                        <label class="mt-2" for="dept_desc">Department description</label>
+                        <input type="text" class="form-control adInput text-light bg-dark" name="dept_desc"
+                            id="dept_desc" placeholder="Description...">
+                        <button type="submit" class="btn bg-maroon my-3 px-5 text-white">ADD</button>
+                    </form>
+                </div>
+                <div class="col-md-8 shadow border border-secondary p-3 border-opacity-50">
+                    <h5 class="text-center my-4">List of Department</h5>
+                    <ol class="list-group list-group-numbered ">
+                        {% for dept in data %}
+                        <li
+                            class="list-group-item border-bottom d-flex justify-content-between align-items-start bg-dark border-0 text-white">
+                            <div class="ms-2 me-auto">
+                                <div class="fw-bold">{{dept.department}}</div>
+                                <small class="text-secondary">{{dept.Description}}</small>
+                            </div>
+                            <span class="badge"><a href="" class="nav-link"><i
+                                        class="fa-regular fa-pen-to-square fs-5"></i></a></span>
+                            <span class="badge"><a href="" class="nav-link text-danger"><i
+                                        class="fa-solid fa-trash-can fs-5"></i></a></span>
+                            <span class="badge bg-primary rounded-pill">14</span>
+                            {% endfor %}
+                        </li>
+                    </ol>
+                </div>
+        </div>
+    </div>
+</div>

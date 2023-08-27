@@ -1,0 +1,57 @@
+{% extends 'taskmanager/base.html' %}
+{% load static %}
+{% block content %}
+<div class="row">
+    <!-- side menu starts -->
+        <div class="col-md-2 bg-dark text-white shadow border p-4 rounded">
+            <h5 class="text-center my-4">Dashboard Menu</h5>
+            <a class="nav-link mt-5" href="{% url 'taskmanager:adminRoute' 'allTask' %}" >
+                <div class="cl-effect-2 py-3 text-light">
+                    <span class="p-2 me-5 pe-5">All Tasks</span><span class="ms-5 p-2"><i class="fa-solid fa-angle-right"></i></span>
+                </div>
+            </a>
+            <!-- <div class="collapse" id="collapseExample2">
+                <h5 class="text-center my-3 text-light">
+                    Departments
+                </h5>
+                role="button" data-bs-toggle="collapse" data-bs-target="#collapseExample2" aria-controls="collapseExample2"
+                <ol class="list-group border-0 ">
+                    {% for dept in allDept  %}
+                        <li class="list-group-item border-0 rounded my-1 hover">{{dept.department}}
+                            <small class="text-secondary p-0 m-0 d-block">{{dept.Description}}</small>
+                        </li>
+                    {% endfor %}
+                </ol>
+            </div> -->
+            <a href="{% url 'taskmanager:adminRoute' 'allStuff' %}" class="nav-link mt-1">
+                <div class="cl-effect-2 py-3 text-light nav-link mt-1" >
+                    <span class="p-2 me-5 pe-3">All Stuff</span><span><i class=" ps-5 ms-5 fa-solid fa-angle-right"></i></span>
+                </div>
+            </a>
+            <a href="{% url 'taskmanager:adminRoute' 'allDept' %}" class="nav-link mt-1">
+                <div class="cl-effect-2 py-3 text-light">
+                    <span class="p-2 me-5">Departments</span><span><i class="ps-3 ms-5 fa-solid fa-angle-right"></i></span>
+                </div>
+            </a>
+            <a class="nav-link mt-1" href="">
+                <div class="cl-effect-2 py-3 text-light">
+                    <span class="p-2">checking over all data</span><span><i class=" ms-5 fa-solid fa-angle-right"></i></span>
+                </div>
+            </a>
+        </div>
+        <!-- side menu ends -->
+        <!-- body container starts -->
+        <div class="col-md-10 bg-dark shadow rounded p-4 border text-white ">
+            {% if sign == 'allTask' %}
+                {% include 'taskmanager/allTask.html' %}
+            {% elif sign == 'allStuff' %}
+                {% include 'taskmanager/allStuff.html' %}
+            {% elif sign == 'allDept' %}
+                {% include 'taskmanager/allDept.html' %}    
+            {% endif %}
+           
+        </div>
+        <!-- body container ends -->
+</div>
+
+{% endblock content %}

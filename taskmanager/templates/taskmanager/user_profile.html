@@ -16,6 +16,11 @@
                 <p class="p-0 m-0">Last Name: <span class="fw-bold"> {{val.last_name}}</span></p>
                 <p class="p-0 m-0">Username: <span class="fw-bold"> {{val.username}}</span></p>
                 <p class="p-0 m-0">Email: <span class="fw-bold"> {{val.email}}</span></p>
+                <p class="p-0 m-0">Department: 
+                    <span class="fw-bold">{{val.department.department}}</span>&nbsp;
+                    <small>({{val.department.Description}})</small>
+                </p>
+                
             {% endfor %}
             <p class="p-0 m-0">Number of Task Done:<span class="fw-bold">{{No_task}}</span></p>
             <button class="btn text-light px-5 rounded-pill shadow my-2 bg-maroon" 
@@ -155,6 +160,14 @@
                 });
 
             });
+
+
+            
+    $(document).on('shown.bs.collapse', function (event) {
+                        //console.log( "in! print e: " +event.type);
+        event.target.scrollIntoView();
+    });
+           
         </script>
 
     </div>

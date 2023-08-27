@@ -1,5 +1,5 @@
 from datetime import datetime, timedelta, time
-from hashlib import md5
+
 from django.http import JsonResponse
 from django.shortcuts import redirect, render
 from django.contrib.auth.models import User
@@ -8,11 +8,15 @@ from django.contrib.auth import authenticate, login, logout, update_session_auth
 from django.contrib.auth.decorators import login_required
 
 from django.contrib.auth import update_session_auth_hash
-from .models import Tasks, Comments, Profile
+from .models import Tasks, Comments, Profile, Department
+from django.contrib.auth import get_user_model
+User=get_user_model()
+
 
 # Create your views here.
 def Base(request):
     return render(request, 'taskmanager/base.html')
+
 def home(request):
     return render(request, 'home.html')
 
@@ -72,14 +76,17 @@ def Signup(request):
         username=request.POST['uname']
         pass1=request.POST['pass1']
         pass2=request.POST['pass2']
+        dept = request.POST['dept']
         if pass1 != pass2:
             messages.error(request, ('Password Dose Not Match !'))
         else:
-            new_record=User.objects.create_user(first_name=fname, last_name=lname, email=email, username=username, password=pass1)
+            new_record=User.objects.create_user(first_name=fname, last_name=lname, email=email, username=username, password=pass1, department_id=dept)
             new_record.save()
             messages.success(request, ('You have registered successfully !'))
             
-    return render(request, 'taskmanager/signup.html')
+    departments = Department.objects.all()
+            
+    return render(request, 'taskmanager/signup.html', {'depts':departments})
 
 @login_required(login_url='/taskmanager/login')
 def dashboard(request):
@@ -193,6 +200,7 @@ def task_evaluate(request, tid):
     comp_task=Tasks.objects.filter(id=tid)
     return render(request, 'taskmanager/task_evaluate.html',{'comp_task':comp_task})
 
+@login_required(login_url='/taskmanager/login')
 def evaluation(request, tid, flag):
     if flag == 'RT':
         key = 'RT'
@@ -212,6 +220,7 @@ def evaluation(request, tid, flag):
         messages.success(request, "The Task Re-assigned Successfully !")
     return render(request, 'taskmanager/task_evaluate.html',{'comp_task':comp_task,'flag':key})
 
+@login_required(login_url='/taskmanager/login')
 def Commenting(request, userId, taskId):
     
     if request.method == 'POST':
@@ -226,7 +235,7 @@ def Commenting(request, userId, taskId):
         messages.success(request, "The Task Confirmed Successfully !")
         return redirect('taskmanager:evaluation', tid=task_id, flag=flag)
   
-  
+@login_required(login_url='/taskmanager/login')
 def changePassword(request):
     if request.method == 'POST':
         old=request.POST['old_password']
@@ -253,4 +262,38 @@ def changePassword(request):
             status = 200
     data= {'status': status, 'message':success, 'error':error}
     return JsonResponse(data, safe=False)
-          
+
+@login_required(login_url='/taskmanager/login')
+def adminDashboard(request):
+    if request.method == 'POST':
+        dept_head = request.POST['dept_head']
+        dept_name = request.POST['dept_name']
+        dept_desc = request.POST['dept_desc']
+        new_record = Department(dept_head = dept_head, department = dept_name, Description = dept_desc)
+        new_record.save()
+        messages.success(request, "Department Added Successfully...")
+   
+    allDept = Department.objects.all()
+    return render (request, 'taskmanager/admin.html', {'allDept':allDept})
+
+
+def adminRoute(request, flag):
+    sign = 'allTask'
+    allDataValue = Tasks.objects.all()
+    if flag  == 'allTask':
+        sign = flag
+        allDataValue = Tasks.objects.all()  
+    elif flag == 'allStuff':
+        sign = flag
+        allDataValue =User.objects.all()
+    elif flag == 'allDept':
+        sign = flag
+        allDataValue = Department.objects.all() 
+    elif flag == 'allData':
+        sign = flag
+    else:
+        sign = 'allTask'      
+        
+            
+    return render(request, 'taskmanager/admin.html', {'data':allDataValue,'sign':sign})
+           

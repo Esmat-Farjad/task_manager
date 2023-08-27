@@ -1,0 +1,75 @@
+
+
+<div class=" mt-5 first-item">
+    <h5 class="text-center">
+        All Assigned Tasks
+    </h5>
+    <div class="row mt-3 mb-4">
+        <div class="col-md-3"></div>
+        <div class="col-md-6">
+            <form action="" class="form-control border-0 bg-dark d-flex" role="search">
+                <input type="text" class="form-control" placeholder="search">
+                <button class="btn bg-maroon rounded text-white mx-2"><i
+                        class="fa-solid fa-magnifying-glass fs-5"></i></button>
+            </form>
+        </div>
+        <div class="col-md-3"></div>
+    </div>
+
+    <table class="table table-dark table-hover">
+        <thead>
+            <tr class="shadow">
+                <th scope="col">#</th>
+                <th scope="col">Task Title</th>
+                <th scope="col">Task Description</th>
+                <th scope="col">Start Date</th>
+                <th scope="col">Task DeadLine</th>
+                <th scope="col">Status</th>
+                <th scope="col">Assigned To</th>
+                <th scope="col">Assigned By</th>
+                <th scope="col">Manage</th>
+
+
+
+            </tr>
+        </thead>
+        <tbody class="table-group-divider">
+            {% for task in data  %}
+            <tr class="shadow border border-secondary border-opacity-50">
+                <th scope="row">{{task.id}}</th>
+                <td>{{task.task_name}}</td>
+                <td width="300px">{{task.task_desc}}</td>
+                <td>{{task.start_date}}</td>
+                <td>{{task.end_date}}</td>
+                {% if task.status == 1 %}
+                    <td><span class="text-success"><i class="fa-solid fa-circle fa-fade"></i>&nbsp;Active</span></td>
+                {% elif task.status == -1 %}
+                <td class="text-danger"><i class="fa-solid fa-circle-xmark"></i>Expired</td>
+                {% elif task.status == 50 %}
+                <td><i class="fa-solid fa-spinner fa-spin-pulse"></i>&nbsp; in progress</td>
+                {% elif task.status == 80 %}
+                <td><i class="fa-regular fa-circle-check"></i>&nbsp;verifying...</td>
+                {% endif %}
+                <td>{{task.assign_to.get_full_name}}</td>
+                {% if task.assign_by.is_staff %}
+                    <td class="text-info">Administrator</td>
+                {%else%}
+                <td>{{task.assign_by.get_full_name}}</td>
+                {% endif %}
+                <td><a class="nav-link text-center" href="">
+                    
+                    <i class="fa-solid fa-trash-can fs-4"></i>
+                </a>
+                </td>
+                <td><a class="nav-link text-center" href=""><i class="fa-solid fa-pen-to-square fs-4"></i></a></td>
+            </tr>
+            {% endfor %}
+            
+        </tbody>
+    </table>
+    <div class="d-flex justify-content-center">
+        <a href="{% url 'taskmanager:assign_task' %}" class="nav-link mx-3"><i
+                class="fa-regular fa-paper-plane"></i>&nbsp;Assign Task</a>
+    </div>
+</div>
+

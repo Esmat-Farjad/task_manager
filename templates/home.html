@@ -130,5 +130,11 @@
     </div>
   </div>
 </div>
+<script>
+  $(document).on('shown.bs.collapse', function (event) {
+    //console.log( "in! print e: " +event.type);
+    event.target.scrollIntoView();
+  });
+</script>
 
 {% endblock content %}

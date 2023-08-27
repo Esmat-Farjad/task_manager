@@ -49,6 +49,7 @@
       }
       .cl-effect-1:hover {
         background-image: linear-gradient(to right, #8c1c2b, black);
+        border-left: 10px solid black;
         color: white;
       }
       .font-size {
@@ -59,12 +60,17 @@
         font-weight:bold;
       }
       .bright {
-        border-left: 5px solid #a52824;
+        border-left: 5px solid black;
       }
       .profile{
         width:200px;
       }
-
+      .cl-effect-2{
+        background-image: linear-gradient(to right, #8c1c2b, black);
+        border-left: 10px solid black;
+        color: white;
+      }
+      
       .footer {
         margin-top: auto;
         background-image: linear-gradient(to right, #8c1c2b, black);
@@ -79,7 +85,6 @@
         background-image:linear-gradient(to right,#8c1c2b,black);
         cursor: pointer;
       }
-     
       .sign-in-mar{
         margin-top: 6%;
         margin-bottom: 6%;
@@ -97,6 +102,16 @@
         margin-top: 10%;
       }
       
+      .hover:hover{
+        background-color: rgb(193, 194, 187);
+        cursor: pointer;
+        font-weight: 700;
+      }
+      .adInput::placeholder{
+        color: rgb(185, 185, 185) !important;
+        text-transform: lowercase;
+        
+      }
     </style>
   </head>
   <body onload="counting()">
@@ -108,10 +123,5 @@
     
     {% include 'taskmanager/footer.html' %}
   </body>
-<script>
-  $(document).on('shown.bs.collapse', function (event) {
-      //console.log( "in! print e: " +event.type);
-      event.target.scrollIntoView();
-    });
-</script>
+
 </html>

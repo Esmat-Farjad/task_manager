@@ -40,10 +40,19 @@
   </div>
   {% if user.is_authenticated %}
   <div class="text-center text-white me-5">
+    {% if request.user.is_staff %}
+      <a href="{% url 'taskmanager:adminDashboard' %}" class="nav-link">
+        <span class="fs-6"><i class="fa-brands fa-superpowers"></i>&nbsp;Administration</span>
+      </a>
+    {% else %}
     <a class="nav-link" href="{% url 'taskmanager:user_profile'%}">
       <i class="fa-regular fa-circle-user fs-3 me-1 my-1"></i>
       <div class="profile">
-      <h6 class="">{{request.user.get_full_name}}</h6>
+        <h6 class="">{{request.user.get_full_name}}</h6>
+
+    {% endif %}
+    
+    
       </div>
     </a>
   </div>
