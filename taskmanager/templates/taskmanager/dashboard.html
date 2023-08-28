@@ -90,7 +90,7 @@
         <h5>The task which is assigned to <span class="text-danger">{{request.user.first_name}} {{request.user.last_name}}</span></h5>
     </div>
   {% if tasks %}
-      <table class="table table-hover">
+      <table class="table shadow">
         <thead>
           <tr>
             <th scope="col">Task Name</th>
@@ -115,12 +115,23 @@
                 <i class="fa-solid fa-flag-checkered fa-fade text-success fs-5"></i>
                 <p class="m-0 p-0 font-size">active</p>
             {% elif value.status == 50 %}
-                <i class="fa-solid fa-spinner py-2 fa-spin-pulse fs-5"></i>
-                <span class="fs-6 ">Waiting...</span>
+              <div class="progress bg-primart-emphasis">
+                <div class="progress-bar progress-bar-striped active border" style="width:50%;">
+                  <small class="font-size6">50%</small></div>
+              </div>
+            
+                <!-- <i class="fa-solid fa-spinner py-2 fa-spin-pulse fs-5"></i>
+                <span class="fs-6 ">Waiting...</span> -->
             {% elif value.status == -1 %}
                 <i class="fa-solid fa-circle-xmark text-danger fs-5"></i>&nbsp; Expired
             {% elif value.status == 100 %}
-                <i class="fa-solid fa-circle-check text-success fs-5"></i>
+                
+                <div class="progress bg-primart-emphasis">
+                  <i class="fa-solid fa-circle-check text-success fs-6"></i>
+                  <div class="progress-bar progress-bar-striped active border" style="width:100%;">
+                    <small class="font-size6">100%</small>
+                  </div>
+                </div>
             {% elif value.status == 80 and flag == 'm_task'%}
                 confirming &nbsp;<i class="fa-solid fa-rotate fa-spin fs-5 text-success"></i>
             {% elif value.status == 80 %}
@@ -131,21 +142,26 @@
 <!-- Task Operation starts -->
           <td>
               {% if value.status == 50 %}
-                    <i class="fa-solid fa-circle-notch fa-spin fs-5 text-primary"></i>
-                    <span class="fS-6 text-primary">In Progress</span>
-                    {% if flag != 'm_task' %}
-                      <a
-                      href="{% url 'taskmanager:update_tasks' value.id 'done' %}"
-                      class="btn bg-maroon text-white">Done</a>
-                    {% endif %}
+                  <i class="fa-solid fa-circle-notch fa-spin fs-5 text-primary"></i>
+                  <span class="fS-6 text-primary">In Progress</span>
+              {% elif value.status == 50 and flag != 'm_task' %}
+                  <a
+                    href="{% url 'taskmanager:update_tasks' value.id 'done' %}"
+                    class="btn bg-maroon text-white">Done
+                  </a>
+              
               {% elif value.status == -1 and flag == 'm_task' %}
-                      <a href="{% url 'taskmanager:evaluation' value.id 'all' %}" class="btn bg-maroon text-white">
-                        <i class="fa-solid fa-chart-simple"></i>&nbsp;Evaluate
-                      </a>
+                  <a href="{% url 'taskmanager:evaluation' value.id 'all' %}" class="btn bg-maroon text-white">
+                    <i class="fa-solid fa-chart-simple"></i>&nbsp;Evaluate
+                  </a>    
               {% elif value.status == -1 and flag != 'm_task'%}
-                <p class="text-danger"><i class="fa-regular fa-face-frown"></i>&nbsp; Expired</p>
+                  <p class="text-danger">
+                    <i class="fa-regular fa-face-frown"></i>&nbsp; Expired
+                  </p>
               {% elif value.status == 100 %}
-                <p class="text-info">Done <i class="fa-solid fa-check fs-5"></i></p>
+                <p class="text-info">
+                  Done 
+                  <i class="fa-solid fa-check fs-5"></i></p>
               {% elif value.status == 80 and flag == 'm_task' %}
                 <a href="{% url 'taskmanager:evaluation' value.id 'all' %}" class="btn bg-maroon text-white" >
                   <i class="fa-solid fa-chart-simple"></i>&nbsp;Evaluate
@@ -187,11 +203,38 @@
   {% if all_comment %}
     <div class="list-group my-4">
       {% for comment in all_comment %}
-      <strong class="text-dark"><i class="fa-solid fa-circle-user"></i>&nbsp;{{comment.task_id.assign_by.get_full_name}}</strong>
-      <p class="list-group-item p-3 rounded bg-light ">{{comment.comment}}
-        <small class="d-block text-success">On Completion Of :
-        <span class="text-primary"> {{comment.task_id.task_name}}</span></small>
-      </p>
+      
+      {% if comment.task_id.assign_by.get_full_name == None %}
+      <table>
+        <tr>
+          <td style="vertical-align: top;" class="p-2"><i class="fa-solid fa-user-tie fs-3"></i></td>
+          <td>
+            <span class="list-group-item p-3 rounded bg-dark text-light shadow">
+              <small class="fw-bold d-block">Administrator&nbsp;<i class="fa-solid fa-pencil"></i></small>
+              <small>{{comment.comment}}</small>
+            <p class="mb-0 pb-0 mt-2"><small class="fw-bold">on completion of:</small></p>
+            <span class="fw-bold com_text"> {{comment.task.task_name}}</span>
+          </span>
+        </td>
+        </tr>
+      </table>
+        
+      {% else %}
+      <table>
+        <tr>
+          <td style="vertical-align: top;" class="p-2"><img src="{{user.profile.image.url}}" alt=""></td>
+          <td>
+            <span class="list-group-item p-3 rounded bg-dark text-light shadow">
+              <small class="fw-bold d-block">{{comment.task_id.assign_by.get_full_name}}&nbsp;<i class="fa-solid fa-pencil"></i></small>
+              <small>{{comment.comment}}</small>
+              <p class="mb-0 pb-0 mt-2"><small class="fw-bold">on completion of:</small></p>
+              <span class="fw-bold com_text"> {{comment.task.task_name}}</span>
+            </span>
+          </td>
+        </tr>
+      </table>
+      {% endif %}
+      
       <small class=" pt-0 mt-0"></small>
       {% endfor %}
     </div>
