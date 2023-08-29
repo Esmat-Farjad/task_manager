@@ -1,17 +1,17 @@
 {% extends 'taskmanager/base.html'%}
 {% load static %}
 {% block content %}
+<div class="m-5 d-flex justify-content-center text-success">
+    {% for message in messages  %}
+        <p id="show-message">{{message}}</p>
+    {% endfor %}
+</div>
+<script>
+    setTimeout(()=>{
+        document.getElementById("show-message").style.display = "none";
+    },3000);
+</script>
 <div class="row m-4">
-    <script>
-        $(function() {
-            $('.list-group').on('click', 'list-group-item', function () {
-                $('list-group-item').removeClass('active');
-                $(this).closest('.list-group-item').addClass('active');
-            });
-
-        });
-        
-    </script>
     {% for  value in comp_task  %}
     <div class="col-md-3 rounded shadow border p-5 mt-5 px-4">
         <span class="text-center ms-3 fs-3 my-5 "><i class="fa-solid fa-chart-line"></i>&nbsp; Task Evaluation</span>

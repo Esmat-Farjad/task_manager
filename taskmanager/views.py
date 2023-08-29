@@ -15,10 +15,14 @@ User=get_user_model()
 
 # Create your views here.
 def Base(request):
+    
     return render(request, 'taskmanager/base.html')
 
 def home(request):
-    return render(request, 'home.html')
+    task = Tasks.objects.all().count()
+    staff = User.objects.all().count()
+    dept = Department.objects.all().count()
+    return render(request, 'home.html', {'task':task, 'staff':staff, 'dept':dept})
 
 def Login(request):
     if request.user.is_authenticated:
@@ -63,7 +67,7 @@ def update_tasks(request, task_id, flag):
         lname=user.last_name
         id=user.id
         flag='all'
-        all_tasks=Tasks.objects.filter(assign_to_id=id).order_by('-end_date')
+        all_tasks=Tasks.objects.filter(assign_to_id=id).order_by('end_date')
     all_comment=Comments.objects.filter(user_id = request.user.id)
     return render(request, 'taskmanager/dashboard.html', {'fname':fname, 'lname':lname, 'flag':flag,'tasks':all_tasks, 'all_comment':all_comment})           
     
@@ -97,13 +101,11 @@ def dashboard(request):
             Tasks.objects.filter(id=val.id).update(status=st)
             
     user=request.user
-    fname=user.first_name
-    lname=user.last_name
     id=user.id
     flag='all'
     all_comment=Comments.objects.filter(user_id = id)
     all_tasks=Tasks.objects.filter(assign_to=id).order_by("-end_date")
-    return render(request, 'taskmanager/dashboard.html', {'fname':fname, 'lname':lname, 'flag':flag, 'tasks':all_tasks, 'all_comment':all_comment})
+    return render(request, 'taskmanager/dashboard.html', {'flag':flag, 'tasks':all_tasks, 'all_comment':all_comment})
 
 @login_required(login_url='/taskmanager/login')
 def assign_task(request):
@@ -131,44 +133,34 @@ def Logout(request):
 def active_task(request, sign):
     if sign == 'active':
         user=request.user
-        fname=user.first_name
-        lname=user.last_name
         id=user.id
         st=1
         flag=sign
         all_tasks=Tasks.objects.filter(assign_to=id,status=st)
     elif sign == 'c_task':
         user=request.user
-        fname=user.first_name
-        lname=user.last_name
         id=user.id
         st=100
         flag=sign
         all_tasks=Tasks.objects.filter(assign_to=id,status=st)
     elif sign == 'e_task':
         user=request.user
-        fname=user.first_name
-        lname=user.last_name
         id=user.id
         st= -1
         flag=sign
         all_tasks=Tasks.objects.filter(assign_to=id,status=st)
     elif sign == 'm_task':
         user=request.user
-        fname=user.first_name
-        lname=user.last_name
         id=user.id
         flag=sign
         all_tasks=Tasks.objects.filter(assign_by=id)
     else:
         user=request.user
-        fname=user.first_name
-        lname=user.last_name
         id=user.id
         flag=sign
         all_tasks=Tasks.objects.filter(assign_to=id).order_by('-end_date')
     all_comment=Comments.objects.filter(user_id = request.user.id)
-    return render(request, 'taskmanager/dashboard.html', {'fname':fname, 'lname':lname, 'flag':flag, 'tasks':all_tasks, 'all_comment':all_comment})
+    return render(request, 'taskmanager/dashboard.html', {'flag':flag, 'tasks':all_tasks, 'all_comment':all_comment})
 
 # user profile page 
 @login_required(login_url='/taskmanager/login')
@@ -197,8 +189,9 @@ def user_profile(request):
 
 @login_required(login_url='/taskmanager/login')
 def task_evaluate(request, tid):
+    flag='all'
     comp_task=Tasks.objects.filter(id=tid)
-    return render(request, 'taskmanager/task_evaluate.html',{'comp_task':comp_task})
+    return render(request, 'taskmanager/task_evaluate.html',{'comp_task':comp_task, 'flag':flag})
 
 @login_required(login_url='/taskmanager/login')
 def evaluation(request, tid, flag):
@@ -230,7 +223,7 @@ def Commenting(request, userId, taskId):
         st=100
         flag = 'all'
         Tasks.objects.filter(id = task_id).update(status= st)
-        new_record= Comments(comment = comment_text, task_id_id = task_id, user_id_id = user_id,)
+        new_record= Comments(comment = comment_text, task_id = task_id, user_id = user_id,)
         new_record.save()
         messages.success(request, "The Task Confirmed Successfully !")
         return redirect('taskmanager:evaluation', tid=task_id, flag=flag)

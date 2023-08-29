@@ -1,43 +1,48 @@
 {% extends 'taskmanager/base.html' %} {% load static %} {% block content %}
 
 <script>
-  
-  function counting(){
-      let counts = setInterval(updated);
-        let stuff = 0;
-        function updated() {
-          let count = document.getElementById("all_staff");
-          count.innerHTML = ++stuff;
-          if (stuff === 486) {
-            clearInterval(counts);
-          }
-        }
 
-      let counts2 = setInterval(updated1);
-      let task = 0;
-      function updated1() {
-        let count2 = document.getElementById("all_task");
-        count2.innerHTML = ++task;
-        if (task === 456) {
-          clearInterval(counts2);
-        }
+  function counting() {
+    let x = document.getElementById("task").value;
+    
+    let counts = setInterval(updated);
+    let stuff = 0;
+    function updated() {
+      let count = document.getElementById("all_task");
+      count.innerHTML = ++stuff;
+      if (stuff === Number(x)) {
+        clearInterval(counts);
       }
-
-      let counts3 = setInterval(updated3);
-      let dept = 0;
-      function updated3() {
-        let count3 = document.getElementById("all_dept");
-        count3.innerHTML = ++dept;
-        if (dept === 343) {
-          clearInterval(counts3);
-        }
+    }
+    let y = document.getElementById("staff").value;
+    let counts2 = setInterval(updated1);
+    let task = 0;
+    function updated1() {
+      let count2 = document.getElementById("all_staff");
+      count2.innerHTML = ++task;
+      if (task === Number(y)) {
+        clearInterval(counts2);
       }
+    }
+    let z = document.getElementById("dept").value;
+    let counts3 = setInterval(updated3);
+    let dept = 0;
+    function updated3() {
+      let count3 = document.getElementById("all_dept");
+      count3.innerHTML = ++dept;
+      if (dept === Number(z)) {
+        clearInterval(counts3);
+      }
+    }
 
-  }  
- 
+  }
+
 </script>
+<input type="number"id="staff" hidden value="{{task}}">
+<input type="number" id="task" hidden value="{{staff}}">
+<input type="number" id="dept" hidden value="{{dept}}">
 
-<div class="m-5 homepage my-5 ">
+<div class="homepage p-5 ">
   <div class="row">
     {% if user.is_authenticated %}
       <div class="col-6 p-2 text-center">
@@ -50,18 +55,22 @@
               <p class="rounded-pill text-white text-center bg-maroon px-5 py-2 shadow"> learn more</p>
             </a>
           </div>
-          <div  class="mt-5 text-light">
+          <div  class="mt-5">
             <div class="mx-3 d-flex justify-content-center">
-              <span class="mx-4 px-4 py-4 fs-2 rounded-circle bg-maroon shadow-lg fw-bold" id="all_staff"></span>
-              <span class="mx-4 px-4 py-4 fs-2 rounded-circle bg-maroon shadow-lg fw-bold" id="all_task"></span>
-              <span class="mx-4 px-4 py-4 fs-2 rounded-circle bg-maroon shadow-lg fw-bold" id="all_dept"></span>
+              <div class="border border-secondary text-dark border-opacity-50 px-5 py-3 fs-3 shadow mx-2">
+              <span class="d-block" id="all_staff"></span>
+              <small class="fs-6"><i class="fa-solid fa-user-group"></i>&nbsp;Stuff Members</small>
+              </div>
+              <div class="border border-secondary text-dark border-opacity-50 px-5 py-3 fs-3 shadow mx-2">
+                <span class="d-block" id="all_task"></span>
+                <small class="fs-6"><i class="fa-solid fa-briefcase"></i>&nbsp;Tasks</small>
+              </div>
+              <div class="border border-secondary text-dark border-opacity-50 px-5 py-3 fs-3 shadow mx-2">
+                <span class="d-block" id="all_dept"></span>
+                <small class="fs-6"><i class="fa-solid fa-puzzle-piece"></i> &nbsp;Departments</small>
+              </div>
             </div>
-            <div class="text-dark">
-              <span class="ms-4 px-4 py-4 fs-4 fw-bold" >Stuff</span>
-              <span class="ms-5 px-4 py-4 fs-4 fw-bold">Tasks</span>
-              <span class="mx-1 px-2 py-4 fs-4 fw-bold">Departments</span>
 
-            </div>
             
           </div>
         </div>
@@ -91,7 +100,9 @@
     </div>
   </div>
   <!-- about page for extra information about task manager -->
-  <div class="about p-4 collapse" id="collapseExample">
+  
+  <div class="about p-4 collapse text-center border rounded shadow" id="collapseExample">
+
     <h1 class="fw-bold">About</h1>
     <p class="text-start">
       <span class="fw-bold">Lorem Ipsum</span> is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard
@@ -110,9 +121,9 @@
         (injected humour and the like).
         
     </p>
-    <p class="text-primary">you may join us on social media also </p>
+    <p class="text-primary"><small>you may join us on social media also </small></p>
     <div class="text-center">
-      <small class="font-size text-light">Join us on social media</small><br>
+      <small class="font-size">Join us on social media</small><br>
       <span><i class="fa-brands fa-facebook text-primary social-media mx-3 "></i></span>
       <span class="text-info social-media me-3"><i class="fa-brands fa-square-x-twitter "></i></span>
       <span class="text-danger social-media me-3"><i class="fa-brands fa-youtube"></i></span>
