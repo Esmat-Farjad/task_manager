@@ -10,17 +10,29 @@
     </div>
   </div>
   <div class="col-md-6 col-sm-12 p-3">
-    {% for message in messages %} {% if message.tags == 'success' %}
-    <div class="alert alert-success my-3">
-      <span class="fw-bold">Success: </span>
-      <p>{{message | safe}}</p>
-    </div>
-    {% else %}
-    <div class="alert alert-danger my-3">
-      <span class="fw-bold">Error: </span>
-      <p>{{message | safe }}</p>
-    </div>
-    {% endif %} {% endfor %}
+    <!-- system message display start -->
+    {% if messages %}
+      {% for message in messages %}
+        {% if message.tags == 'success' %}
+          <div class="alert alert-success text-center" id="show-message">
+            <i class="fa-solid fa-circle-check fs-1 text-success"></i>
+            <p class="fw-bold m-0 p-0">Message</p>
+            <p class="m-0 p-0">{{message}}</p>
+          </div>
+        {% else %}
+          <div class="alert alert-danger text-center" id="show-message">
+            <i class="fa-solid fa-triangle-exclamation"></i>
+            <p class="fw-bold m-0 p-0">Message</p>
+            <p class="m-0 p-0">{{message}}</p>
+          </div>
+        {% endif %}
+    {% endfor %}
+    <script>
+      setTimeout(() => {
+        document.getElementById("show-message").style.display = "none";
+      }, 3000);
+    </script>
+    <!-- system message display end -->
     <form action="" method="POST" class="form-control p-5 border shadow">
       <h4 class="text-muted text-center mb-4">Task Assigning Portal</h4>
       {% csrf_token %}
