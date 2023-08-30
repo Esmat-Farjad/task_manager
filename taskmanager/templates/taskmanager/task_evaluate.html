@@ -2,18 +2,22 @@
 {% load static %}
 {% block content %}
 <div class="m-5 d-flex justify-content-center text-success">
-    {% for message in messages  %}
-        <p id="show-message">{{message}}</p>
-    {% endfor %}
+{% if messages %}
+{% for message in messages %}
+<div class="alert alert-success text-center" id="show-message">
+    <i class="fa-solid fa-circle-check fs-1 text-success"></i>
+    <p class="fw-bold m-0 p-0">Message</p>
+    <p class="m-0 p-0">{{message}}</p>
 </div>
+{% endfor %}
 <script>
-    setTimeout(()=>{
+    setTimeout(() => {
         document.getElementById("show-message").style.display = "none";
-    },3000);
+    }, 3000);
 </script>
 <div class="row m-4">
     {% for  value in comp_task  %}
-    <div class="col-md-3 rounded shadow border p-5 mt-5 px-4">
+    <div class="col-md-3 rounded shadow border p-5 px-4">
         <span class="text-center ms-3 fs-3 my-5 "><i class="fa-solid fa-chart-line"></i>&nbsp; Task Evaluation</span>
         <div class="ms-4">
                
@@ -53,7 +57,7 @@
     {% endfor %}
     <!-- confirmation platform -->
     {% if flag == 'all' %}
-    <div class="col-md-9 col-sm-12 rounded shadow border p-5 mt-5 px-4" id="Off">
+    <div class="col-md-9 col-sm-12 rounded shadow border p-5 px-4" id="Off">
         {% for  key in comp_task  %}
         <p class="text-muted fw-bold fs-4">Task Title: </p>
         <p class="text-muted">{{key.task_name}}</p>
@@ -89,7 +93,7 @@
     </div>
     <!-- Task Re-assignment starts -->
     {% elif flag == 'RT'%}
-    <div class="col-md-9 col-sm-12 rounded shadow border p-5 mt-5 px-4">
+    <div class="col-md-9 col-sm-12 rounded shadow border p-5 px-4">
         <p class="text-muted text-center fs-4">Re-assign the task</p>
         {% for message in messages %}
             <p class="text-success text-center font-size">{{message}}</p>
@@ -105,7 +109,7 @@
                     <input type="number" name="task_id" id="task_id" value="{{val.id}}" hidden class="">
                     <input type="text" class="form-control py-3 m-3" name="task_name" id="task_name" value="{{val.task_name}}">
                     <label for="task_desc"> Task Description </label>
-                    <textarea class="form-control py-3 mx-3" name="task_desc" id="task_desc">{{val.task_desc}}</textarea>
+                    <textarea class="form-control py-3 mx-3" name="task_desc" id="task_desc" rows="10">{{val.task_desc}}</textarea>
                     <label for="end_date">Task Deadline </label>
                     <input type="date" class="form-control py-3 mx-3" name="end_date" id="end_date" value="{{val.end_date|date:'Y-m-d'}}">
                     <button type="submit" class="my-3 px-4 bg-maroon btn text-white">Re-assign</button>

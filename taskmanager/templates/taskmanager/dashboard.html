@@ -128,8 +128,8 @@
               <div class="card-footer bg-white">
                 <span class="fw-bold">Status: </span>
                 {% if task.status == -1 and task.assign_by_id == request.user.id %}
-                <p class=""><i class="fa-solid fa-circle-info text-warning fs-5"></i> Expired </p>
-                <a href="" class="nav-link">
+                 Expired&nbsp;<i class="fa-solid fa-circle-info text-warning"></i>
+                <a href="{% url 'taskmanager:evaluation' task.id 'RT' %}" class="nav-link btn text-light bg-maroon py-2 px-3 shadow my-2">
                   <i class="fa-solid fa-arrow-up-right-from-square"></i> &nbsp; Evaluate
                 </a>
                 {% elif task.status == -1 and task.assign_by_id != request.user.id %}
@@ -137,10 +137,10 @@
                   <i class="fa-solid fa-circle-info text-warning fs-5"></i> Expired
                 </p>
                 {% elif task.status == 1 and task.assign_by_id == request.user.id %}
-                <p>
-                  <i class="fa-solid fa-circle text-success fs-5"></i>&nbsp; Active
-                  <a href="" class="nav-link text-danger">Cancel</a>
-                </p>
+                
+                   Active&nbsp;<i class="fa-solid fa-circle text-success"></i>
+                  <a href="{% url 'taskmanager:manageTask' task.id 'Remove' %}" class="nav-link btn text-light bg-maroon py-2 px-3 shadow my-2">Cancel</a>
+               
                 {% elif task.status == 1 and task.assign_by_id != request.user.id %}
                 <p class="p-0 m-0 d-inline">
                   <span class="text-success">Active</span>&nbsp;
@@ -174,7 +174,7 @@
                     </div>
                   </div>
                   <span class="d-flex justify-content-start">
-                    <a href="{% url 'taskmanager:task_evaluate' task.id %}" class="nav-link bg-maroon text-light py-2 px-3 shadow btn my-2">
+                    <a href="{% url 'taskmanager:evaluation' task.id 'CT' %}" class="nav-link bg-maroon text-light py-2 px-3 shadow btn my-2">
                       <i class="fa-regular fa-circle-check"></i>&nbsp;Confirm</a>
                   </span>
                 {% elif task.status == 80 and task.assign_by_id != request.user.id %}

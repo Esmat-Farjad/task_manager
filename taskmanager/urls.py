@@ -21,6 +21,8 @@ urlpatterns = [
     path('changePassword/', views.changePassword, name='changePassword'),
     path('adminDashboard/', views.adminDashboard, name='adminDashboard'),
     path('adminRoute/<flag>', views.adminRoute, name='adminRoute'),
+    path('manageTask/<tid>/<flag>', views.manageTask, name='manageTask'),
+    path('manageDept/<did>/<flag>', views.manageDept, name='manageDept'),
 ]
 
 

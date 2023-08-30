@@ -38,7 +38,7 @@ def Login(request):
                 lname=user.last_name
                 id=user.id
                 flag='all'
-                all_tasks=Tasks.objects.filter(assign_to_id=id).order_by('-end_date')
+                all_tasks=Tasks.objects.filter(assign_to_id=id).order_by('-start_date')
                 all_comment=Comments.objects.filter(user_id = id)
                 return render(request, 'taskmanager/dashboard.html', {'fname':fname, 'lname':lname, 'flag':flag, 'tasks':all_tasks, 'all_comment':all_comment})
                 
@@ -67,7 +67,7 @@ def update_tasks(request, task_id, flag):
         lname=user.last_name
         id=user.id
         flag='all'
-        all_tasks=Tasks.objects.filter(assign_to_id=id).order_by('end_date')
+        all_tasks=Tasks.objects.filter(assign_to_id=id).order_by('-start_date')
     all_comment=Comments.objects.filter(user_id = request.user.id)
     return render(request, 'taskmanager/dashboard.html', {'fname':fname, 'lname':lname, 'flag':flag,'tasks':all_tasks, 'all_comment':all_comment})           
     
@@ -104,7 +104,7 @@ def dashboard(request):
     id=user.id
     flag='all'
     all_comment=Comments.objects.filter(user_id = id)
-    all_tasks=Tasks.objects.filter(assign_to=id).order_by("-end_date")
+    all_tasks=Tasks.objects.filter(assign_to=id).order_by("-start_date")
     return render(request, 'taskmanager/dashboard.html', {'flag':flag, 'tasks':all_tasks, 'all_comment':all_comment})
 
 @login_required(login_url='/taskmanager/login')
@@ -158,7 +158,7 @@ def active_task(request, sign):
         user=request.user
         id=user.id
         flag=sign
-        all_tasks=Tasks.objects.filter(assign_to=id).order_by('-end_date')
+        all_tasks=Tasks.objects.filter(assign_to=id).order_by('-start_date')
     all_comment=Comments.objects.filter(user_id = request.user.id)
     return render(request, 'taskmanager/dashboard.html', {'flag':flag, 'tasks':all_tasks, 'all_comment':all_comment})
 
@@ -195,6 +195,7 @@ def task_evaluate(request, tid):
 
 @login_required(login_url='/taskmanager/login')
 def evaluation(request, tid, flag):
+    
     if flag == 'RT':
         key = 'RT'
     elif flag == 'CT':
@@ -262,20 +263,27 @@ def adminDashboard(request):
         dept_head = request.POST['dept_head']
         dept_name = request.POST['dept_name']
         dept_desc = request.POST['dept_desc']
-        new_record = Department(dept_head = dept_head, department = dept_name, Description = dept_desc)
-        new_record.save()
-        messages.success(request, "Department Added Successfully...")
+        operation = request.POST['operation']
+        did = request.POST['deptID']
+        if operation:
+            Department.objects.filter(id = did).update(dept_head = dept_head, department = dept_name, Description = dept_desc)
+            messages.success(request, "Department Updated Successfully.")
+        else:
+            new_record = Department(dept_head = dept_head, department = dept_name, Description = dept_desc)
+            new_record.save()
+            messages.success(request, "Department Added Successfully...")
    
-    allDept = Department.objects.all()
-    return render (request, 'taskmanager/admin.html', {'allDept':allDept})
+    allDeptartment = Department.objects.all()
+    sign = 'allDept'
+    return render (request, 'taskmanager/admin.html', {'data':allDeptartment, 'sign':sign})
 
 
 def adminRoute(request, flag):
     sign = 'allTask'
-    allDataValue = Tasks.objects.all()
+    allDataValue = Tasks.objects.all().order_by('-start_date')
     if flag  == 'allTask':
         sign = flag
-        allDataValue = Tasks.objects.all()  
+        allDataValue = Tasks.objects.all().order_by('-start_date')  
     elif flag == 'allStuff':
         sign = flag
         allDataValue =User.objects.all()
@@ -289,4 +297,32 @@ def adminRoute(request, flag):
         
             
     return render(request, 'taskmanager/admin.html', {'data':allDataValue,'sign':sign})
-           
+
+def manageTask(request, tid, flag):
+    if tid and flag:
+        if flag == 'Remove':
+            Tasks.objects.filter(id=tid).delete()
+            allDataValue=Tasks.objects.all().order_by('-start_date')
+            messages.success(request, "Task Removed Successfully !")
+            sign='allTask'
+            return render(request, 'taskmanager/admin.html', {'data':allDataValue,'sign':sign})
+        elif flag == 'edit':
+            flag='RT'
+            com_task= Tasks.objects.filter(id = tid)
+            return render(request, 'taskmanager/task_evaluate.html', {'comp_task':com_task,'flag':flag})
+        
+        
+def manageDept(request, did, flag):
+    if did and flag:
+        if flag == 'edit':
+            temp = Department.objects.filter(id = did)
+            op = 'update'
+            sign = 'allDept'
+            allDataValue = Department.objects.all()
+            return render(request, 'taskmanager/admin.html', {'temp':temp, 'op':op,'sign':sign,'data':allDataValue})
+        elif flag == 'Remove':
+            Department.objects.filter(id = did).delete()
+            sign = 'allDept'
+            allDataValue = Department.objects.all()
+            messages.success(request, "Department Removed Successfully.")
+            return render(request, 'taskmanager/admin.html', {'sign':sign,'data':allDataValue})
