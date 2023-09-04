@@ -45,7 +45,7 @@
         <span class="fs-6"><i class="fa-brands fa-superpowers"></i>&nbsp;Administration</span>
       </a>
     {% else %}
-    <a class="nav-link" href="{% url 'taskmanager:user_profile'%}">
+    <a class="nav-link" href="{% url 'taskmanager:user_profile' request.user.id %}">
       <i class="fa-regular fa-circle-user fs-3 me-1 my-1"></i>
       <div class="profile">
         <h6 class="">{{request.user.get_full_name}}</h6>

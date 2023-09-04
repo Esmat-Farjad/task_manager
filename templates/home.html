@@ -4,27 +4,37 @@
 
   function counting() {
     let x = document.getElementById("task").value;
+    if( x != 0) {
+      let counts = setInterval(updated);
+      let stuff = 0;
+      function updated() {
+        let count = document.getElementById("all_task");
+        count.innerHTML = ++stuff;
+        if (stuff === Number(x)) {
+          clearInterval(counts);
+        }
+      }    
+    } else {
+      document.getElementById("all_task").innerHTML = 0;
+    }
     
-    let counts = setInterval(updated);
-    let stuff = 0;
-    function updated() {
-      let count = document.getElementById("all_task");
-      count.innerHTML = ++stuff;
-      if (stuff === Number(x)) {
-        clearInterval(counts);
-      }
-    }
     let y = document.getElementById("staff").value;
-    let counts2 = setInterval(updated1);
-    let task = 0;
-    function updated1() {
-      let count2 = document.getElementById("all_staff");
-      count2.innerHTML = ++task;
-      if (task === Number(y)) {
-        clearInterval(counts2);
-      }
+    if ( y !== 0){
+      let counts2 = setInterval(updated1);
+      let task = 0;
+      function updated1() {
+        let count2 = document.getElementById("all_staff");
+        count2.innerHTML = ++task;
+        if (task === Number(y)) {
+          clearInterval(counts2);
+        }
+      }  
+    } else {
+      document.getElementById("all_staff").innerHTML = 0;
     }
+
     let z = document.getElementById("dept").value;
+    if (z != 0) {
     let counts3 = setInterval(updated3);
     let dept = 0;
     function updated3() {
@@ -34,12 +44,14 @@
         clearInterval(counts3);
       }
     }
-
+  } else {
+    document.getElementById("all_dept").innerHTML = 0;
   }
+}
 
 </script>
-<input type="number"id="staff" hidden value="{{task}}">
-<input type="number" id="task" hidden value="{{staff}}">
+<input type="number"id="staff" hidden value="{{staff}}">
+<input type="number" id="task" hidden value="{{task}}">
 <input type="number" id="dept" hidden value="{{dept}}">
 
 <div class="homepage p-5 ">

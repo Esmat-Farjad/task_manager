@@ -1,4 +1,6 @@
-{% extends 'taskmanager/base.html' %} {% block content %}
+{% extends 'taskmanager/base.html' %} 
+{% load static %}
+{% block content %}
 
 <div class="row mt-5">
   <div class="col-md-3 col-sm-12">
@@ -25,8 +27,9 @@
             <p class="fw-bold m-0 p-0">Message</p>
             <p class="m-0 p-0">{{message}}</p>
           </div>
-        {% endif %}
+          {% endif %}
     {% endfor %}
+    {% endif %}
     <script>
       setTimeout(() => {
         document.getElementById("show-message").style.display = "none";

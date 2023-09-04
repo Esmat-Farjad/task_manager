@@ -8,6 +8,7 @@ comment_status= [("pending", "Pending"), ("approved", "Approved")]
 # Create your models here.
 class CustomUser(AbstractUser):
     department=models.ForeignKey("Department",on_delete=models.CASCADE,null=True,blank=True)
+    
    
     def __str__(self):
         return self.username

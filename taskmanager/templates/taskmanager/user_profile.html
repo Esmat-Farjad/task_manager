@@ -4,24 +4,25 @@
 <div class="row m-2">
     <div class="col-md-4 p-5 shadow border rounded">
         <div class="d-flex justify-content-center">
-            <img class="shadow rounded-circle border border-4 border-primary border-opacity-50" src="{{user.profile.image.url}}" width="200px" height="200px" alt="">
-            
+            <img class="shadow rounded-circle border border-4 border-primary border-opacity-50" src="{{c_user.profile.image.url}}" width="200px" height="200px" alt="">
+        </div>
+        <div>
+            <i class="fa-solid fa-camera text-center"></i>
         </div>
         
         <h3 class="text-center m-1 text-dark fw-bold">{{request.user.get_full_name}}</h3>
         <p class="m-0 p-0 text-center">Your personal details are displayed in the form below </p>
         <div class="my-3">
-            {% for val in c_user  %}
-                <p class="p-0 m-0">First Name: <span class="fw-bold">{{val.first_name}}</span></p>
-                <p class="p-0 m-0">Last Name: <span class="fw-bold"> {{val.last_name}}</span></p>
-                <p class="p-0 m-0">Username: <span class="fw-bold"> {{val.username}}</span></p>
-                <p class="p-0 m-0">Email: <span class="fw-bold"> {{val.email}}</span></p>
+            
+                <p class="p-0 m-0">First Name: <span class="fw-bold">{{c_user.first_name}}</span></p>
+                <p class="p-0 m-0">Last Name: <span class="fw-bold"> {{c_user.last_name}}</span></p>
+                <p class="p-0 m-0">Username: <span class="fw-bold"> {{c_user.username}}</span></p>
+                <p class="p-0 m-0">Email: <span class="fw-bold"> {{c_user.email}}</span></p>
                 <p class="p-0 m-0">Department: 
-                    <span class="fw-bold">{{val.department.department}}</span>&nbsp;
-                    <small>({{val.department.Description}})</small>
+                    <span class="fw-bold">{{c_user.department.department}}</span>&nbsp;
+                    <small>({{c_user.department.Description}})</small>
                 </p>
                 
-            {% endfor %}
             <p class="p-0 m-0">Number of Task Done:<span class="fw-bold">{{No_task}}</span></p>
             <button class="btn text-light px-5 rounded-pill shadow my-2 bg-maroon" 
             data-bs-toggle="collapse" 
@@ -72,19 +73,17 @@
             
             <form action="" class="form-control p-5 border-0" enctype="multipart/form-data" method="POST">
                 {% csrf_token %}
-                {% for key in c_user %}
                 <label class="fw-bold" for="firstname">First Name </label>
-                <input type="text" class="form-control p-2 my-2" name="fname" id="firstname" value="{{key.first_name}}" required>
+                <input type="text" class="form-control p-2 my-2" name="fname" id="firstname" value="{{c_user.first_name}}" required>
                 <label class="fw-bold" for="lastname">Last Name </label>
-                <input type="text" class="form-control p-2 my-2" name="lname" id="lastname" value="{{key.last_name}}" required>
+                <input type="text" class="form-control p-2 my-2" name="lname" id="lastname" value="{{c_user.last_name}}" required>
                 <label class="fw-bold" for="email">Email</label>
-                <input type="email" class="form-control p-2 my-2" name="email" id="email" value="{{key.email}}" required>
+                <input type="email" class="form-control p-2 my-2" name="email" id="email" value="{{c_user.email}}" required>
                 <label class="fw-bold" for="username">Username </label>
-                <input type="text" class="form-control p-2 my-2" name="username" id="username" value="{{key.username}}" required>
+                <input type="text" class="form-control p-2 my-2" name="username" id="username" value="{{c_user.username}}" required>
                 
                 <label for="image">select profile picture</label>
                 <input type="file" name="image" id="image" class="form-control">
-                {% endfor %}
                 <button type="submit" class="btn bg-maroon text-white mt-3"><i class="fa-solid fa-user-check"></i>&nbsp;Update</button>
                 
             </form>
@@ -101,12 +100,12 @@
             const n=document.getElementById("num").value;
             const m=document.getElementById("day").value;
             const xArray =["Wednesday","Thursday","Friday","Saturday","Sunday", "Monday","Tuesday"];
-            const yArray = [5,10,0,0,6,2,1];
+            const yArray = new Array(n,0 );
 
             const data = [{
                 x: xArray,
                 y: yArray,
-                type: "bar",
+                type: "graph",
                 orientation: "v",
                 marker: { color: "",
                 line:{

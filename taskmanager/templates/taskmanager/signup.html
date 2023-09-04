@@ -25,70 +25,41 @@
     </script>
     {% endif %}
     <!-- system message display end -->
-  <div class="row">
-    <div class="col-md-2"></div>
-    <div class="col-md-8 text-center">
-      <form action="" method="POST" class="form-control p-5 mw-100 shadow">
-        {% csrf_token %}
-        <h1 class="text-secondary text-center m-5">Sign up</h1>
-        <input
-          type="text"
-          name="fname"
-          id="fname"
-          class="form-control p-2 my-3"
-          placeholder="Enter Your First Name"
-          required
-        />
-        <input
-          type="text"
-          name="lname"
-          id="lname"
-          class="form-control p-2 my-3"
-          placeholder="Enter Your Last Name"
-          required
-        />
-        <select name="dept" id="dept" class="form-select">
-          <option value="" disabled selected>select---</option>
-          {% for dp in depts  %}
-            <option value="{{dp.id}}">({{dp.department}})
-              <small class="">{{dp.Description}}</small>
-            </option>
-          {% endfor %}
-        </select>
-        <input type="email" name="email" id="email" class="form-control p-2 my-3" placeholder="Enter Your Email" required />
-        <input
-          type="text"
-          name="uname"
-          id="uname"
-          class="form-control p-2 my-3"
-          placeholder="Enter Your Username"
-          required
-        />
-        <input
-          type="password"
-          name="pass1"
-          id="password1"
-          class="form-control p-2 my-3"
-          placeholder="Enter Your Password"
-          required
-        />
-        <input
-          type="password"
-          name="pass2"
-          id="password2"
-          class="form-control p-2 my-3"
-          placeholder="Confirm your password"
-          required
-        />
-        <p class="m-0 p-0 text-primary text-start">
-          Please fill the details correctly.
-        </p>
-        <button type="submit" class="btn btn-success btn-md m-4 px-3 py-2">
-          Register
-        </button>
-      </form>
-    </div>
-    <div class="col-md-2"></div>
-  </div>
+      <div class="row">
+        <div class="col-md-2"></div>
+        <div class="col-md-8 text-center">
+          <form action="" method="POST" class="form-control p-5 mw-100 shadow">
+            {% csrf_token %}
+            <h1 class="text-secondary text-center m-5">Sign up</h1>
+            <input type="text" name="fname" id="fname" class="form-control p-2 my-3" placeholder="Enter Your First Name"
+              required />
+            <input type="text" name="lname" id="lname" class="form-control p-2 my-3" placeholder="Enter Your Last Name"
+              required />
+            <select name="dept" id="dept" class="form-select">
+              <option value="" disabled selected>select---</option>
+              {% for dp in depts %}
+              <option value="{{dp.id}}">({{dp.department}})
+                <small class="">{{dp.Description}}</small>
+              </option>
+              {% endfor %}
+            </select>
+            <input type="email" name="email" id="email" class="form-control p-2 my-3" placeholder="Enter Your Email"
+              required />
+            <input type="text" name="uname" id="uname" class="form-control p-2 my-3" placeholder="Enter Your Username"
+              required />
+            <input type="password" name="pass1" id="password1" class="form-control p-2 my-3" placeholder="Enter Your Password"
+              required />
+            <input type="password" name="pass2" id="password2" class="form-control p-2 my-3"
+              placeholder="Confirm your password" required />
+            <p class="m-0 p-0 text-primary text-start">
+              Please fill the details correctly.
+            </p>
+            <button type="submit" class="btn btn-success btn-md m-4 px-3 py-2">
+              Register
+            </button>
+          </form>
+        </div>
+        <div class="col-md-2"></div>
+      </div>
 </div>
 {% endblock content%}

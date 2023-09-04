@@ -84,12 +84,11 @@ def Signup(request):
         if pass1 != pass2:
             messages.error(request, ('Password Dose Not Match !'))
         else:
-            new_record=User.objects.create_user(first_name=fname, last_name=lname, email=email, username=username, password=pass1, department_id=dept)
+            new_record=User.objects.create_user(first_name=fname, last_name=lname, email=email, username=username, password=pass1, department_id=dept, is_active=False)
             new_record.save()
             messages.success(request, ('You have registered successfully !'))
-            
+            return render(request, 'taskmanager/not_active.html')
     departments = Department.objects.all()
-            
     return render(request, 'taskmanager/signup.html', {'depts':departments})
 
 @login_required(login_url='/taskmanager/login')
@@ -164,26 +163,26 @@ def active_task(request, sign):
 
 # user profile page 
 @login_required(login_url='/taskmanager/login')
-def user_profile(request):
+def user_profile(request,userID):
     if request.method == 'POST':
         fname=request.POST['fname']
         lname=request.POST['lname']
         email=request.POST['email']
         username=request.POST['username']
-        userId=request.user.id
-        
+        userId=userID
 
-        
         User.objects.filter(id=userId).update(first_name=fname, last_name=lname, email=email, username=username)
         if len(request.FILES) != 0:
             profile_image=request.FILES['image']
             new_record=Profile(user_id=userId, image=profile_image)
             new_record.save()
         
-    current_user=User.objects.filter(id=request.user.id)
+    current_user=User.objects.get(pk=userID)
+    # current_user=User.objects.filter(id=userID).select_related('profile')
     m_task=Tasks.objects.filter(assign_to_id=request.user.id, status=100).count()
     # day=datetime.now()
     # today=day.strftime('%A')
+    print(current_user)
     return render(request, 'taskmanager/user_profile.html', {'c_user':current_user, 'No_task':m_task})
 
 
@@ -326,3 +325,21 @@ def manageDept(request, did, flag):
             allDataValue = Department.objects.all()
             messages.success(request, "Department Removed Successfully.")
             return render(request, 'taskmanager/admin.html', {'sign':sign,'data':allDataValue})
+        
+        
+def approval(request, index):
+    if index:
+        User.objects.filter(id = index).update(is_active = True)
+        allDataValue= User.objects.all()
+        sign = 'allStuff'
+        return render(request, 'taskmanager/admin.html', {'data':allDataValue,'sign':sign})
+
+def deleteUser(request, userIndex):
+    if userIndex:
+        # uid = userIndex
+        # User.objects.filter(id = uid).delete()
+        messages.success(request, userIndex)
+        allDataValue =User.objects.all()
+        sign = 'allStuff'
+        return render(request, 'taskmanager/admin.html', {'data':allDataValue,'sign':sign})
+       

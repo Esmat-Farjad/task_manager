@@ -1,7 +1,7 @@
 
-<div class=" mt-5 second-item">
+<div class=" mt-5 second-item mb-5">
     <h5 class="text-center">
-        All Stuff Members
+        All Active Stuff Members
     </h5>
     <!-- Search input start -->
     <div class="row mt-3 mb-4">
@@ -16,6 +16,11 @@
         <div class="col-md-3"></div>
     </div>
     <!-- search input ends -->
+    <div class="mt-5 mb-3">
+        <span class="bg-success text-white fs-5 p-2 px-3  w-5 rounded-end-pill">
+            <i class="fa-solid fa-user-check"></i>&nbsp;Active User 
+        </span>
+    </div>
     <div class="table">
         <table class="table table-dark">
             <thead>
@@ -29,20 +34,52 @@
             </thead>
             <tbody class="table-group-divider">
                 {% for  stuff in data  %}
-                <tr>
-                    <th scope="row">{{stuff.id}}</th>
-                    <td>{{stuff.get_full_name}}</td>
-                    <td>{{stuff.email}}</td>
-                    <td>{{stuff.department.department}}</td>
-                    {% if stuff.is_staff %}
-                        <td class="text-info">Not Permitted </td>
-                    {% else %}
-                    <td><a class="nav-link text-center" href=""><i class="fa-solid fa-trash-can fs-4"></i></a>
+                    {% if stuff.is_active %}
                     
-                    <td><a class="nav-link text-center" href=""><i class="fa-solid fa-pen-to-square fs-4"></i></a></td>
-                     
-                </tr>
-                {% endif %}
+                        <tr>
+                            <th scope="row" id="stuff_id">{{stuff.id}}</th>
+                            <td>{{stuff.get_full_name}}</td>
+                            <td>{{stuff.email}}</td>
+                            <td>{{stuff.department.department}}</td>
+                            {% if stuff.is_staff %}
+                            <td class="text-info">Not Permitted </td>
+                            {% else %}
+                            <td>
+                                <a href="{% url 'taskmanager:user_profile' stuff.id %}" role="button" class="nav-link text-center d-inline ms-2">
+                                    <i class="fa-solid fa-pen-to-square fs-5"></i>&nbsp;Edit
+                               
+                                <a class="nav-link text-center d-inline me-2" id="linked" href="#modalExample" data-bs-toggle="modal">
+                                    <i class="fa-solid fa-trash-can fs-5"></i>&nbsp;Remove
+                                </a>
+                                
+                            </td>
+                            {% endif %}
+                        </tr>
+                    {% endif %}
+                    <!-- </a>modal -->
+                    <div class="modal fade" id="modalExample">
+                        <div class="modal-dialog modal-dialog-centered text-white">
+                            <div class="modal-content bg-dark px-5 border border-secondary border-opacity-50 shadow">
+                                <div class="modal-header">
+                                    <h3 class="modal-title text-white">Conformation</h3>
+                                    <span class="text-end text-danger" data-bs-dismiss="modal" role="button">
+                                        <i class="fa-solid fa-xmark fs-4"></i>
+                                    </span>
+                                </div>
+                                <div class="modal-body text-white">
+                                    <p>&nbsp;Are you sure you want to delete the user ?</p>
+                                    <p class="text-white" id="modal_body"></p>
+                                    <div class="text-end">
+                                        <input type="number" id="stuffid" value="{{stuff.id}}">
+                                        <a href="{% url 'taskmanager:deleteUser' stuff.id %}"
+                                            class="btn bg-maroon my-2 px-3 text-white">Delete</a>
+                                        <a href="" class="btn bg-maroon my-2 px-3 text-white" data-bs-dismiss="modal">Cancel</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- modal -->
                 {% endfor %}
                 
             </tbody>
@@ -54,4 +91,50 @@
         <a href="" class="nav-link mx-3"><i class="fa-regular fa-pen-to-square"></i>&nbsp;Update Stuff</a>
         <a href="" class="nav-link mx-3"><i class="fa-regular fa-pen-to-square"></i>&nbsp;Update Stuff</a>
     </div>
+    
+<hr>
+    <div class="mt-5 mb-3">
+    <span class="bg-warning text-dark fs-5 p-2 w-5 px-3 rounded-end-pill">
+    <i class="fa-solid fa-user-clock "></i>&nbsp; Pending User
+    </span>
+    </div>
+    <div class="table mb-5">
+        <table class="table table-dark">
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Full Name</th>
+                    <th scope="col">Email</th>
+                    <th scope="col">Department</th>
+                    <th scope="col">status</th>
+                </tr>
+            </thead>
+            <tbody class="table-group-divider">
+                {% for stuff in data %}
+                    {% if stuff.is_active == 0 %}
+                        <tr>
+                            <th scope="row">{{stuff.id}}</th>
+                            <td>{{stuff.get_full_name}}</td>
+                            <td>{{stuff.email}}</td>
+                            <td>{{stuff.department.department}}</td>
+                            {% if stuff.is_staff %}
+                                <td class="text-info">Not Permitted </td>
+                            {% else %}
+                                <td>
+                                    <a href="{% url 'taskmanager:approval' stuff.id %}" class="nav-link text-warning">
+                                        <i class="fa-solid fa-clock fa-spin"></i>&nbsp; pending...
+                                    </a>
+                                </td>
+                            {% endif %}
+                        
+                        </tr>
+                    {% endif %}
+                
+                
+                {% endfor %}
+    
+            </tbody>
+        </table>
+    </div>
 </div>
+
