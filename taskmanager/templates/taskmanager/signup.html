@@ -1,30 +1,7 @@
 {% extends 'taskmanager/base.html' %} {% block content%}
 
 <div class="container p-5">
-    <!-- system message display start -->
-    {% if messages %}
-      {% for message in messages %}
-        {% if message.tags == 'success' %}
-          <div class="alert alert-success text-center" id="show-message">
-            <i class="fa-solid fa-circle-check fs-1 text-success"></i>
-            <p class="fw-bold m-0 p-0">Message</p>
-            <p class="m-0 p-0">{{message}}</p>
-          </div>
-        {% else %}
-          <div class="alert alert-danger text-center text-danger" id="show-message">
-            <i class="fa-solid fa-triangle-exclamation"></i>
-            <p class="fw-bold m-0 p-0">Message</p>
-            <p class="m-0 p-0">{{message}}</p>
-          </div>
-        {% endif %}
-    {% endfor %}
-    <script>
-      setTimeout(() => {
-        document.getElementById("show-message").style.display = "none";
-      }, 3000);
-    </script>
-    {% endif %}
-    <!-- system message display end -->
+
       <div class="row">
         <div class="col-md-2"></div>
         <div class="col-md-8 text-center">

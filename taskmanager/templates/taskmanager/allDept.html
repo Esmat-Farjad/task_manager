@@ -79,32 +79,32 @@
                                 </a>
                             </span>
                             <span class="mx-4">
-                                <a href="#modalExample" class="nav-link text-danger" data-bs-toggle="modal" role="button" aria-expanded="false" aria-controls="modalExample">
+                                <a href="{% url 'taskmanager:manageDept' dept.id 'Remove' %}" class="nav-link text-danger">
                                     <i class="fa-solid fa-trash-can fs-6"></i>Remove
                                 </a>
                             </span>
-                            <span class="badge bg-primary rounded-pill">14</span>
-                            <!-- modal dialog start -->
-                            <div class="modal fade " id="modalExample" aria-hidden="true" aria-labelledby="modalHeader" tabindex="-1">
-                                <div class="modal-dialog modal-dialog-centered">
-                                    <div class="modal-content bg-dark text-white border border-secondary border-opacity-50 py-3 ps-4">
-                                        <div class="model-header">
-                                            <h4 class="modal-title fw-bold">Confirmation</h4>
-                                        </div>
-                                        <div class="modal-body">
-                                            <p><i class="fa-solid fa-circle-question"></i>&nbsp;Are you sure you want to delete the department?</p>
-                                            <a class="btn px-3 bg-maroon text-white my-3 shadow"
-                                                href="{% url 'taskmanager:manageDept' dept.id 'Remove' %}">Remove</a>
-                                            <span class="btn px-3 bg-maroon text-white " data-bs-dismiss="modal">cancel</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- modal dialog ends -->
                             {% endfor %}
                         </li>
                     </ol>
                 </div>
         </div>
     </div>
+
 </div>
+                                <!-- modal dialog start -->
+                                <!-- <div class="modal fade " id="modalExample" aria-hidden="true" aria-labelledby="modalHeader" tabindex="-1">
+                                                                <div class="modal-dialog modal-dialog-centered">
+                                                                    <div class="modal-content bg-dark text-white border border-secondary border-opacity-50 py-3 ps-4">
+                                                                        <div class="model-header">
+                                                                            <h4 class="modal-title fw-bold">Confirmation</h4>
+                                                                        </div>
+                                                                        <div class="modal-body">
+                                                                            <p><i class="fa-solid fa-circle-question"></i>&nbsp;Are you sure you want to delete the department?</p>
+                                                                            <a class="btn px-3 bg-maroon text-white my-3 shadow"
+                                                                                href="{% url 'taskmanager:manageDept' dept.id 'Remove' %}">Remove</a>
+                                                                            <span class="btn px-3 bg-maroon text-white " data-bs-dismiss="modal">cancel</span>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div> -->
+                                <!-- modal dialog ends -->

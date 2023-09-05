@@ -137,10 +137,41 @@
         width: 100%;
         margin-bottom: 5%;
       }
+      .alert{
+        opacity: 0;
+        font-size: x-small;
+      }
     </style>
   </head>
   <body onload="counting()">
     {% include 'taskmanager/navbar.html' %} 
+        {% if messages %}
+        <script>
+          $(document).ready(function() {
+            $('.alert').animate({left:'30%', right:'30%',opacity: '1', fontSize:'20px'},"3000","linear");
+          });
+        </script>
+        {% for message in messages %}
+        {% if message.tags == 'success' %}
+        <div class="alert alert-success text-center my-3 position-absolute start-50 top-20 z-3 text-center" id="show-message">
+          <i class="fa-solid fa-circle-check fs-1 text-success"></i>
+          <p class="fw-bold m-0 p-0">Message</p>
+          <p class="m-0 p-0">{{message}}</p>
+        </div>
+        {% else %}
+        <div class="alert alert-danger text-center text-danger my-3 position-absolute start-50 top-20 z-3 text-center" id="show-message">
+          <i class="fa-solid fa-triangle-exclamation"></i>
+          <p class="fw-bold m-0 p-0">Message</p>
+          <p class="m-0 p-0">{{message}}</p>
+        </div>
+        {% endif %}
+        {% endfor %}
+        <script>
+          setTimeout(() => {
+            document.getElementById("show-message").style.display = "none";
+          }, 3000);
+        </script>
+        {% endif %}
 
     {% block content%} 
 

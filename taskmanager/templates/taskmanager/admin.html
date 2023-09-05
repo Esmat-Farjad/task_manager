@@ -1,7 +1,7 @@
 {% extends 'taskmanager/base.html' %}
 {% load static %}
 {% block content %}
-<div class="row">
+<div class="row h-100">
     <!-- side menu starts -->
         <div class="col-md-2 bg-dark text-white shadow border p-4 rounded">
             <h5 class="text-center my-4">Dashboard Menu</h5>
@@ -41,23 +41,7 @@
         </div>
         <!-- side menu ends -->
         <!-- body container starts -->
-        <div class="col-md-10 bg-dark shadow rounded p-4 border text-white ">
-            {% if messages %}
-            {% for message in messages %}
-            <div class="alert alert-success text-center" id="show-message">
-                <i class="fa-solid fa-circle-check fs-1 text-success"></i>
-                <p class="fw-bold m-0 p-0">Message</p>
-                <p class="m-0 p-0">{{message}}</p>
-            </div>
-            {% endfor %}
-            <script>
-                setTimeout(() => {
-                    document.getElementById("show-message").style.display = "none";
-                }, 3000);
-            </script>
-            {% endif %}
-
-
+        <div class="col-md-10 bg-dark text-white">
             {% if sign == 'allTask' %}
                 {% include 'taskmanager/allTask.html' %}
             {% elif sign == 'allStuff' %}

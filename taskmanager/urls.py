@@ -24,7 +24,9 @@ urlpatterns = [
     path('manageTask/<tid>/<flag>', views.manageTask, name='manageTask'),
     path('manageDept/<did>/<flag>', views.manageDept, name='manageDept'),
     path('approval/<index>', views.approval, name='approval'),
-    path('deleteUser/<userIndex>', views.deleteUser, name='deleteUser'),
+    path('deleteUser/<sid>', views.deleteUser, name='deleteUser'),
+    path('searchUser/', views.searchUser, name='searchUser'),
+    path('searchTask/', views.searchTask, name='searchTask'),
 ]
 
 

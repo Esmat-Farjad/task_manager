@@ -3,20 +3,23 @@
         All Tasks
     </h5>
 </div>
-<!-- {% if messages %}
-{% for message in messages %}
-<div class="alert alert-success text-center" id="show-message">
-    <i class="fa-solid fa-circle-check fs-1 text-success"></i>
-    <p class="fw-bold m-0 p-0">Message</p>
-    <p class="m-0 p-0">{{message}}</p>
+<!-- Search input start -->
+<div class="row mt-3 mb-4">
+    <div class="col-md-3"></div>
+    <div class="col-md-6">
+        <form action="{% url 'taskmanager:searchTask' %}" method="POST" class="form-control border-0 bg-dark d-flex"
+            role="search">
+            {% csrf_token %}
+            <input type="text" name="task_title" id="task_title" class="form-control"
+                placeholder="Enter the task title to find..">
+            <button type="submit" class="btn bg-maroon rounded text-white mx-2"><i
+                    class="fa-solid fa-magnifying-glass fs-5"></i></button>
+        </form>
+    </div>
+    <div class="col-md-3"></div>
 </div>
-{% endfor %}
-<script>
-    setTimeout(()=>{
-        document.getElementById("show-message").style.display = "none";
-    },3000);
-</script>
-{% endif %} -->
+<!-- search input ends -->
+
 <div class="">
     {% if data %}
         <ol class="list-group">
@@ -70,13 +73,17 @@
                                 </span>
                             {% elif task.status == 100 %}
                                 <small class="text-info">Completed&nbsp;<i class="fa-solid fa-circle-check"></i></small>
-                                <a href="#modalExample" class="nav-link d-inline ms-4 text-danger" data-bs-toggle="modal" role="button" aria-expanded="false" aria-controls="modalExample">Remove&nbsp;<i class="fa-solid fa-eraser"></i></a>
-                                <a href="{% url 'taskmanager:manageTask' task.id 'edit' %}" class="nav-link ms-4 text-primary d-inline">edit/Re-assign&nbsp;<i class="fa-regular fa-pen-to-square"></i></a>
+                                <a href="{% url 'taskmanager:manageTask' task.id 'Remove' %}" 
+                                class="nav-link d-inline ms-4 text-danger">Remove&nbsp;
+                                <i class="fa-solid fa-eraser"></i></a>
+                                <a href="{% url 'taskmanager:manageTask' task.id 'edit' %}" 
+                                class="nav-link ms-4 text-primary d-inline">edit/Re-assign&nbsp;
+                                <i class="fa-regular fa-pen-to-square"></i></a>
                             {% endif %}
                         </div>
                     </div>
                 </li>
-                <div class="modal fade " id="modalExample" aria-hidden="true" aria-labelledby="modalHeader" tabindex="-1">
+                <!-- <div class="modal fade " id="modalExample" aria-hidden="true" aria-labelledby="modalHeader" tabindex="-1">
                     <div class="modal-dialog modal-dialog-centered">
                         <div class="modal-content bg-dark text-white border border-secondary border-opacity-50 py-3 ps-4">
                             <div class="model-header">
@@ -90,7 +97,7 @@
                             </div>
                         </div>
                     </div>
-                </div>
+                </div> -->
             {% endfor %}
         </ol>
     {% else %}

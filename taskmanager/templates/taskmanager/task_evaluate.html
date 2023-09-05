@@ -2,19 +2,6 @@
 {% load static %}
 {% block content %}
 <div class="m-5 d-flex justify-content-center text-success">
-{% if messages %}
-{% for message in messages %}
-<div class="alert alert-success text-center" id="show-message">
-    <i class="fa-solid fa-circle-check fs-1 text-success"></i>
-    <p class="fw-bold m-0 p-0">Message</p>
-    <p class="m-0 p-0">{{message}}</p>
-</div>
-{% endfor %}
-<script>
-    setTimeout(() => {
-        document.getElementById("show-message").style.display = "none";
-    }, 3000);
-</script>
 <div class="row m-4">
     {% for  value in comp_task  %}
     <div class="col-md-3 rounded shadow border p-5 px-4">

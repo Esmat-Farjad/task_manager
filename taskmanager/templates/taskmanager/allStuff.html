@@ -1,16 +1,16 @@
 
 <div class=" mt-5 second-item mb-5">
     <h5 class="text-center">
-        All Active Stuff Members
+        All Stuff Members
     </h5>
     <!-- Search input start -->
     <div class="row mt-3 mb-4">
         <div class="col-md-3"></div>
         <div class="col-md-6">
-            <form action="" class="form-control border-0 bg-dark d-flex" role="search">
-                <input type="text" class="form-control" placeholder="search">
-                <button class="btn bg-maroon rounded text-white mx-2"><i
-                        class="fa-solid fa-magnifying-glass fs-5"></i></button>
+            <form action="{% url 'taskmanager:searchUser' %}" method="POST" class="form-control border-0 bg-dark d-flex" role="search">
+                {% csrf_token %}
+                <input type="text" name="stuff" id="stuff" class="form-control" placeholder="Enter the stuff first name to find...">
+                <button type="submit" class="btn bg-maroon rounded text-white mx-2"><i class="fa-solid fa-magnifying-glass fs-5"></i></button>
             </form>
         </div>
         <div class="col-md-3"></div>
@@ -35,7 +35,6 @@
             <tbody class="table-group-divider">
                 {% for  stuff in data  %}
                     {% if stuff.is_active %}
-                    
                         <tr>
                             <th scope="row" id="stuff_id">{{stuff.id}}</th>
                             <td>{{stuff.get_full_name}}</td>
@@ -48,38 +47,14 @@
                                 <a href="{% url 'taskmanager:user_profile' stuff.id %}" role="button" class="nav-link text-center d-inline ms-2">
                                     <i class="fa-solid fa-pen-to-square fs-5"></i>&nbsp;Edit
                                
-                                <a class="nav-link text-center d-inline me-2" id="linked" href="#modalExample" data-bs-toggle="modal">
+                                <a class="nav-link text-center d-inline me-2" href="{% url 'taskmanager:deleteUser' stuff.id %}">
                                     <i class="fa-solid fa-trash-can fs-5"></i>&nbsp;Remove
-                                </a>
-                                
+                                </a>   
                             </td>
                             {% endif %}
                         </tr>
                     {% endif %}
-                    <!-- </a>modal -->
-                    <div class="modal fade" id="modalExample">
-                        <div class="modal-dialog modal-dialog-centered text-white">
-                            <div class="modal-content bg-dark px-5 border border-secondary border-opacity-50 shadow">
-                                <div class="modal-header">
-                                    <h3 class="modal-title text-white">Conformation</h3>
-                                    <span class="text-end text-danger" data-bs-dismiss="modal" role="button">
-                                        <i class="fa-solid fa-xmark fs-4"></i>
-                                    </span>
-                                </div>
-                                <div class="modal-body text-white">
-                                    <p>&nbsp;Are you sure you want to delete the user ?</p>
-                                    <p class="text-white" id="modal_body"></p>
-                                    <div class="text-end">
-                                        <input type="number" id="stuffid" value="{{stuff.id}}">
-                                        <a href="{% url 'taskmanager:deleteUser' stuff.id %}"
-                                            class="btn bg-maroon my-2 px-3 text-white">Delete</a>
-                                        <a href="" class="btn bg-maroon my-2 px-3 text-white" data-bs-dismiss="modal">Cancel</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- modal -->
+                    
                 {% endfor %}
                 
             </tbody>

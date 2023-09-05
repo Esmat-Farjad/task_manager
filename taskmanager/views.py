@@ -6,7 +6,7 @@ from django.contrib.auth.models import User
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout, update_session_auth_hash
 from django.contrib.auth.decorators import login_required
-
+from django.db.models import Count
 from django.contrib.auth import update_session_auth_hash
 from .models import Tasks, Comments, Profile, Department
 from django.contrib.auth import get_user_model
@@ -34,13 +34,16 @@ def Login(request):
             user=authenticate(request, username=user_name, password=pass1)
             if user is not None:
                 login(request, user)
-                fname=user.first_name
-                lname=user.last_name
-                id=user.id
-                flag='all'
-                all_tasks=Tasks.objects.filter(assign_to_id=id).order_by('-start_date')
-                all_comment=Comments.objects.filter(user_id = id)
-                return render(request, 'taskmanager/dashboard.html', {'fname':fname, 'lname':lname, 'flag':flag, 'tasks':all_tasks, 'all_comment':all_comment})
+                if user.is_staff:
+                    sign = 'allTask'
+                    allDataValue = Tasks.objects.all().order_by('-start_date')
+                    return render(request, 'taskmanager/admin.html', {'data':allDataValue,'sign':sign})
+                else:
+                    id=user.id
+                    flag='all'
+                    all_tasks=Tasks.objects.filter(assign_to_id=id).order_by('-start_date')
+                    all_comment=Comments.objects.filter(user_id = id)
+                    return render(request, 'taskmanager/dashboard.html', {'flag':flag, 'tasks':all_tasks, 'all_comment':all_comment})
                 
             else:
                 messages.error(request, ('Invalid Credential !'))
@@ -279,6 +282,7 @@ def adminDashboard(request):
 
 def adminRoute(request, flag):
     sign = 'allTask'
+    no_of_stuff = 0
     allDataValue = Tasks.objects.all().order_by('-start_date')
     if flag  == 'allTask':
         sign = flag
@@ -288,14 +292,14 @@ def adminRoute(request, flag):
         allDataValue =User.objects.all()
     elif flag == 'allDept':
         sign = flag
-        allDataValue = Department.objects.all() 
+        allDataValue = Department.objects.all()
     elif flag == 'allData':
         sign = flag
     else:
         sign = 'allTask'      
         
             
-    return render(request, 'taskmanager/admin.html', {'data':allDataValue,'sign':sign})
+    return render(request, 'taskmanager/admin.html', {'data':allDataValue,'sign':sign, 'no_stuff':no_of_stuff})
 
 def manageTask(request, tid, flag):
     if tid and flag:
@@ -317,14 +321,16 @@ def manageDept(request, did, flag):
             temp = Department.objects.filter(id = did)
             op = 'update'
             sign = 'allDept'
+            no_of_stuff = User.objects.values('department').annotate(d_count=Count('department')).order_by('department')
             allDataValue = Department.objects.all()
-            return render(request, 'taskmanager/admin.html', {'temp':temp, 'op':op,'sign':sign,'data':allDataValue})
+            return render(request, 'taskmanager/admin.html', {'temp':temp, 'op':op,'sign':sign,'data':allDataValue, 'no_stuff':no_of_stuff})
         elif flag == 'Remove':
             Department.objects.filter(id = did).delete()
             sign = 'allDept'
+            no_of_stuff = User.objects.values('department').annotate(d_count=Count('department')).order_by('department')
             allDataValue = Department.objects.all()
             messages.success(request, "Department Removed Successfully.")
-            return render(request, 'taskmanager/admin.html', {'sign':sign,'data':allDataValue})
+            return render(request, 'taskmanager/admin.html', {'sign':sign,'data':allDataValue, 'no_stuff':no_of_stuff})
         
         
 def approval(request, index):
@@ -334,12 +340,37 @@ def approval(request, index):
         sign = 'allStuff'
         return render(request, 'taskmanager/admin.html', {'data':allDataValue,'sign':sign})
 
-def deleteUser(request, userIndex):
-    if userIndex:
-        # uid = userIndex
-        # User.objects.filter(id = uid).delete()
-        messages.success(request, userIndex)
+def deleteUser(request, sid):
+    if sid:
+        uid = sid
+        User.objects.filter(id = uid).delete()
+        messages.success(request, "The Stuff deleted successfully !")
         allDataValue =User.objects.all()
         sign = 'allStuff'
         return render(request, 'taskmanager/admin.html', {'data':allDataValue,'sign':sign})
-       
+
+def searchUser(request):
+    if request.method == 'POST':
+        s_name = request.POST['stuff']
+        data = User.objects.filter(first_name = s_name)
+        if data:
+            sign = 'allStuff'
+            return render(request, 'taskmanager/admin.html', {'data':data,'sign':sign})
+        else: 
+            messages.error(request, "Oops.. ! User dose not exist !")
+            data = User.objects.all()
+            sign = 'allStuff'
+            return render(request, 'taskmanager/admin.html', {'data':data,'sign':sign})
+        
+def searchTask(request):
+    if request.method == 'POST':
+        task_title = request.POST['task_title']
+        data = Tasks.objects.filter(task_name = task_title)
+        if data:
+            sign = 'allTask'
+            return render(request, 'taskmanager/admin.html', {'sign':sign, 'data':data})
+        else:
+            messages.error(request, "Oops...! Tasks not found !")
+            data = Tasks.objects.all().order_by('-start_date')
+            sign = 'allTask'
+            return render(request, 'taskmanager/admin.html',{'data':data, 'sign':sign})
