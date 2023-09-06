@@ -277,12 +277,13 @@ def adminDashboard(request):
    
     allDeptartment = Department.objects.all()
     sign = 'allDept'
-    return render (request, 'taskmanager/admin.html', {'data':allDeptartment, 'sign':sign})
+    member = Department.objects.annotate(num_user=Count('customuser'))
+    return render (request, 'taskmanager/admin.html', {'data':allDeptartment, 'sign':sign, 'no_stuff':member})
 
 
 def adminRoute(request, flag):
     sign = 'allTask'
-    no_of_stuff = 0
+    member= ''
     allDataValue = Tasks.objects.all().order_by('-start_date')
     if flag  == 'allTask':
         sign = flag
@@ -293,13 +294,15 @@ def adminRoute(request, flag):
     elif flag == 'allDept':
         sign = flag
         allDataValue = Department.objects.all()
+        member = Department.objects.annotate(num_user=Count('customuser'))
+          
     elif flag == 'allData':
         sign = flag
     else:
         sign = 'allTask'      
         
             
-    return render(request, 'taskmanager/admin.html', {'data':allDataValue,'sign':sign, 'no_stuff':no_of_stuff})
+    return render(request, 'taskmanager/admin.html', {'data':allDataValue,'sign':sign, 'no_stuff':member})
 
 def manageTask(request, tid, flag):
     if tid and flag:
@@ -321,16 +324,18 @@ def manageDept(request, did, flag):
             temp = Department.objects.filter(id = did)
             op = 'update'
             sign = 'allDept'
-            no_of_stuff = User.objects.values('department').annotate(d_count=Count('department')).order_by('department')
+            
             allDataValue = Department.objects.all()
-            return render(request, 'taskmanager/admin.html', {'temp':temp, 'op':op,'sign':sign,'data':allDataValue, 'no_stuff':no_of_stuff})
+            member = Department.objects.annotate(num_user=Count('customuser'))
+            return render(request, 'taskmanager/admin.html', {'temp':temp, 'op':op,'sign':sign,'data':allDataValue, 'no_stuff':member})
         elif flag == 'Remove':
             Department.objects.filter(id = did).delete()
             sign = 'allDept'
-            no_of_stuff = User.objects.values('department').annotate(d_count=Count('department')).order_by('department')
+            
             allDataValue = Department.objects.all()
+            member = Department.objects.annotate(num_user=Count('customuser'))
             messages.success(request, "Department Removed Successfully.")
-            return render(request, 'taskmanager/admin.html', {'sign':sign,'data':allDataValue, 'no_stuff':no_of_stuff})
+            return render(request, 'taskmanager/admin.html', {'sign':sign,'data':allDataValue, 'no_stuff':member})
         
         
 def approval(request, index):
