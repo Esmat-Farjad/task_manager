@@ -27,6 +27,8 @@ urlpatterns = [
     path('deleteUser/<sid>', views.deleteUser, name='deleteUser'),
     path('searchUser/', views.searchUser, name='searchUser'),
     path('searchTask/', views.searchTask, name='searchTask'),
+    path('getDetails/<sid>', views.getDetails, name='getDetails'),
+    path('appliedFilter/',views.appliedFilter, name='appliedFilter'),
 ]
 
 

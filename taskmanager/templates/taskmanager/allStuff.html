@@ -16,11 +16,54 @@
         <div class="col-md-3"></div>
     </div>
     <!-- search input ends -->
+    <!-- filter starts -->
+    <span class="bg-maroon text-white py-2 px-3 rounded-end-pill">
+        <a href="#collapseFilter" class="nav-link d-inline" data-bs-toggle="collapse">
+            <i class="fa-solid fa-sliders"></i>&nbsp;Filter <span class="ms-3"><i class="fa-solid fa-sort"></i></span>
+        </a>
+    </span>
+    <div class="collapse my-3 position-absolute z-3 " id="collapseFilter"> 
+        <form class="filter-form" action="{% url 'taskmanager:appliedFilter' %}" method="POST">
+            {% csrf_token %}
+            <span class="fs-6 d-block text-opacity-0 bg-maroon rounded-top py-2 px-2">
+                <i class="fa-solid fa-circle-info"></i>&nbsp;Filter the stuff by their department
+                <hr class="ms-3 me-5">
+            </span>
+            <div class="form-check form-switch bg-maroon text-white rounded-bottom d-flex shadow" type=""> 
+                    {% for val in dept_list %}
+                    <span class="ms-3">
+                        <input class="form-check-input p-2 rounded" name="department" type="checkbox" role="switch" id="department"
+                            value="{{val.id}}"></span>
+                    <span class="me-5">
+                       <p class="form-check-label px-2 " for="department">{{val.department}}</p>
+                    </span>
+                    {% endfor %} 
+            </div>
+        </form>
+        
+    </div>
+    <script>
+        jQuery("input[type = 'checkbox']").change(function () {
+            jQuery('.filter-form').submit();
+        });
+    </script>
+    <!-- filter ends -->
     <div class="mt-5 mb-3">
         <span class="bg-success text-white fs-5 p-2 px-3  w-5 rounded-end-pill">
             <i class="fa-solid fa-user-check"></i>&nbsp;Active User 
         </span>
     </div>
+    {% if filterMessage %}
+    <div class="text-center mb-4">
+        <span class=" bg-dark border border-secondary border-opacity-50 py-3 px-4 z-3 shadow">
+            {% for f in filterMessage %}
+                <p class="d-inline fs-5 shadow"><i class="fa-solid fa-tags"></i>&nbsp;{{f.Description}} Stuff</p>
+                
+            {% endfor %}
+            
+        </span>
+    </div>
+    {% endif %}
     <div class="table">
         <table class="table table-dark">
             <thead>

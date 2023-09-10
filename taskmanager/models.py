@@ -14,22 +14,24 @@ class CustomUser(AbstractUser):
         return self.username
 
 class Department(models.Model):
-    dept_head = models.CharField(max_length=100)
-    department = models.CharField(max_length=250)
+    name = models.CharField(max_length=250)
     Description = models.TextField(max_length=300)
+    dept_head = models.CharField(max_length=100)
    
     def __str__(self):
-        return self.dept_head
+        return self.name
 
 
-class Tasks(models.Model):
+class Task(models.Model):
     # relationships
     assign_by=models.ForeignKey(CustomUser,related_name='assigned_by' ,on_delete=models.CASCADE)
     assign_to=models.ForeignKey(CustomUser,related_name='assigned_to' ,on_delete=models.CASCADE)
+    dept = models.ForeignKey(Department, on_delete=models.CASCADE, null=True, blank=True)
     
     # fields
     task_name=models.CharField(max_length=100)
     task_desc=models.CharField(max_length=250)
+    
     status=models.IntegerField(default=0)
     # CharField
     # Choices
@@ -43,7 +45,7 @@ class Tasks(models.Model):
     
 class Comments(models.Model):
     #relationship
-    task = models.ForeignKey(Tasks, on_delete=models.CASCADE,null=True)
+    task = models.ForeignKey(Task, on_delete=models.CASCADE,null=True)
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE,null=True)
     #fields
     comment = models.TextField(max_length=350)

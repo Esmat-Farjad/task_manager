@@ -1,0 +1,78 @@
+{% extends 'taskmanager/base.html' %}
+{% load static %}
+{% block content %}
+<div class="bg-dark text-white p-5">
+    <div class="container rounded shadow border border-secondary border-opacity-50 mt-5">
+        <span class="px-3 py-4 position-absolute bg-maroon text-white rounded-bottom-pill shadow">
+            <i class="fa-solid fa-id-card-clip fs-5 "></i>
+        </span>
+        <div class="row my-5">
+            <div class="col-md-4 border-end">
+
+                <div class="py-3 pe-5">
+                    <p class="fs-3 mt-3 text-center">Department Stuff</p>
+                    {% if stuff %}
+                    <ol class="list-group list-group-flush">
+                        {% for key in stuff %}
+                        <li class="list-group-item bg-dark text-white"><i
+                                class="fa-solid fa-user-tag"></i>&nbsp;{{key.first_name}}
+                            {{key.last_name}}</li>
+                        {% endfor %}
+                    </ol>
+                    {% else %}
+                    <hr>
+                    <p class="text-center text-white-50 fs-1"><i class="fa-regular fa-folder-open"></i></p>
+                    <p class="text-center fs-4 text-white-50">No Stuff Found !</p>
+                    {% endif %}
+
+
+                </div>
+            </div>
+            <div class="col md-6 text-center">
+                <div class="">
+                    <p class="fs-3 mt-3">{{departmentDetails.Description}}</p>
+                    <div class="d-flex justify-content-center p-3 mb-5">
+                        <div class="mx-3 border border-secondary border-opacity-50 shadow py-2 pe-2">
+                            <p class="bg-maroon text-white rounded-end-pill px-3 shadow mt-1 py-1">Head of Department
+                            </p>
+                            <small class="px-3 fw-bold"><i
+                                    class="fa-solid fa-user-gear rounded-circle border p-1"></i>&nbsp;{{departmentDetails.dept_head}}</small>
+                        </div>
+                        <div class="mx-3 border border-secondary border-opacity-50 shadow py-2 pe-2">
+                            <p class="bg-maroon text-white rounded-end-pill px-3 shadow mt-1 py-1">Department Name</p>
+                            <small class="px-3 fw-bold"><i
+                                    class="fa-solid fa-puzzle-piece rounded-circle border p-1"></i>&nbsp;{{departmentDetails.department}}</small>
+                        </div>
+                    </div>
+                    <p class="fw-bold">Head of Department Details</p>
+                    <p class="text-white-50">
+                        <small><b>Head of Department</b>Lorem Ipsum is simply dummy text of the printing and typesetting
+                            industry. Lorem Ipsum has been the industry's standard
+                            dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled
+                            it to make a type specimen
+                            book. It has survived not only five centuries, but also the leap into electronic
+                            typesetting, remaining essentially
+                            unchanged. It was popularised in the 1960s with the release of Letraset sheets containing
+                            Lorem Ipsum passages, and more
+                            recently with desktop publishing software like Aldus PageMaker including versions of Lorem
+                            Ipsum.</small>
+                    </p>
+                    <div class="text-center">
+                        <small class="d-block">contact information</small>
+                        <span class=""><i
+                                class="fa-solid shadow icon-design fa-mobile-screen-button border rounded-circle p-2 mx-1"></i>&nbsp;
+                            (+93) 0 77 765 7890</span>
+                        <span class=""><i
+                                class="fa-brands shadow icon-design fa-x-twitter border rounded-circle p-2 mx-1"></i>
+                            &nbsp; hod.official</span>
+                        <span class=""><i
+                                class="fa-solid shadow icon-design fa-at border rounded-circle p-2 mx-1">&nbsp;</i>hod@gmail.com</span>
+
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-2"></div>
+        </div>
+    </div>
+</div>
+{% endblock content %}

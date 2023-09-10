@@ -41,7 +41,7 @@
   {% if user.is_authenticated %}
   <div class="text-center text-white me-5">
     {% if request.user.is_staff %}
-      <a href="{% url 'taskmanager:adminRoute' 'allTask' %}" class="nav-link">
+      <a href="{% url 'taskmanager:adminRoute' 'allData' %}" class="nav-link">
         <span class="fs-6"><i class="fa-brands fa-superpowers"></i>&nbsp;Administration</span>
       </a>
     {% else %}

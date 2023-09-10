@@ -1,12 +1,18 @@
 {% extends 'taskmanager/base.html' %}
 {% load static %}
 {% block content %}
-<div class="mt-5 text-center">
-    <p class="text-warning fs-1 mb-0 pb-0"><i class="fa-solid fa-circle-info"></i>&nbsp;</p>
-    <p class="text-warning p-0 mt-0 fs-3">Your account is not activated !</p>
-    <p class="text-muted m-0 p-0 ms-4">We've sent a notification email to administrator for activation of your account.
-    </p>
-    <p class="text-muted m-0 p-0 ms-4">Once the administrator approved your account you can log in to your account.</p>
-    <p class="text-muted m-0 p-0 ms-4">Please waite until your account become active... </p>
+<div class="row mt-5">
+    <div class="col-md-3"></div>
+    <div class="col-md-6">
+        <div class="mt-5 text-center">
+            <p class="text-warning fs-1 mb-0 pb-0"><i class="fa-solid fa-circle-info"></i>&nbsp;</p>
+            <p class="text-warning p-0 mt-0 fs-3">Your account is not activated !</p>
+            <p class="text-muted m-0 p-0 ms-4">We've sent a notification email to administrator for activation of your account.
+            </p>
+            <p class="text-muted m-0 p-0 ms-4">Once the administrator approved your account you can log in to your account.</p>
+            <p class="text-muted m-0 p-0 ms-4">Please waite until your account become active... </p>
+        </div>
+    </div>
+    <div class="col-md-3"></div>
 </div>
 {% endblock content %}

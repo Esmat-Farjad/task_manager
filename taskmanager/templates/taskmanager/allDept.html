@@ -3,15 +3,13 @@
     <h5 class="text-center">
         All Departments
     </h5>
-    <!-- Search input start --> 
-
+    <!-- search form starts -->
     <div class="row mt-3 mb-4">
         <div class="col-md-3"></div>
         <div class="col-md-6">
             <form action="" class="form-control border-0 bg-dark d-flex" role="search">
                 <input type="text" class="form-control" placeholder="search">
-                <button class="btn bg-maroon rounded text-white mx-2"><i
-                        class="fa-solid fa-magnifying-glass fs-5"></i></button>
+                <button class="btn bg-maroon rounded text-white mx-2"><i class="fa-solid fa-magnifying-glass fs-5"></i></button>
             </form>
         </div>
         <div class="col-md-3"></div>
@@ -67,8 +65,7 @@
                     <h5 class="text-center my-4">List of Department</h5>
                     <ol class="list-group list-group-numbered ">
                         {% for dept in data %}
-                        <li
-                            class="list-group-item border-bottom d-flex justify-content-between align-items-start bg-dark border-0 text-white">
+                        <li class="list-group-item border-bottom d-flex justify-content-between align-items-start bg-dark border-0 text-white">
                             <div class="ms-2 me-auto">
                                 <div class="fw-bold">{{dept.department}}</div>
                                 <small class="text-secondary">{{dept.Description}}</small>
@@ -88,37 +85,22 @@
                     </ol>
                 </div>
         </div>
-        <div class="my-3">
-            <h4 class="text-center my-4">
-                Department Stuff Details
-            </h4>
+
+        <div class="my-5 d-flex justify-content-center">
             {% for value in no_stuff %}
-                <div class="d-flex justify-content-center">
-                    <a class="collapse-open" href="" onclick="handleCollapse()"> click here</a>
-                    <div class="border border-secondary text-light border-opacity-50 shadow-lg mx-2 ">
-                        <div class="my-2">
-                        <small class="fs-6 bg-maroon rounded-end-pill px-3 shadow" id="all_staff">{{value.department}}</small>
+                    <a class="nav-link" href="{% url 'taskmanager:getDetails' value.id %}" role="button">
+                    <div class="border border-secondary border-opacity-50 m-2 shadow">
+                        <div class="py-1">
+                            <small class="fs-6 bg-maroon rounded-end-pill shadow px-3" id="all_staff">{{value.department}}</small>
                         </div>
-                        <div class="px-3 pb-2 text-center">
+                        <div class="px-3 py-2">
                             <small class="fs-6">{{value.num_user}} &nbsp;&nbsp;<i class="fa-solid fa-user-group"></i>&nbsp;Stuff Member</small>
                         </div>
-                    <nb /div>
-                </div>
-            {% endfor %}
-            
-            <div class="collapse" id="collapseInfo">
-                <div class="header">
-                    <div class="title">
-                        this is the title
                     </div>
-                </div>
-                <div class="body">
-                    this is the body of collapse
-                </div>
-            </div>
-                
-                
+                    </a>
+            {% endfor %}  
         </div>
+        
     </div>
 </div>
                        
