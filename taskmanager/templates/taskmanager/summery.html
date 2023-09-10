@@ -1,0 +1,61 @@
+
+<div class="container">
+    <div class="text-center m-5">
+        <h5>Summery of Tasks</h5>
+    </div>
+    <div class="mx-3 d-flex justify-content-center text-white">
+        <div class="border border-secondary border-opacity-50 px-4 py-2 fs-3 shadow mx-2 z-3">
+            <span class="d-block text-center">{{job.task_count}}</span>
+            <small class="fs-6"><i class="fa-solid fa-briefcase"></i> &nbsp;Total Tasks</small>
+        </div>
+        <div class="border border-secondary border-opacity-50 px-4 py-2 fs-3 shadow mx-2 z-3">
+            <span class="d-block text-center">{{job.d_list}}</span>
+            <small class="fs-6"><i class="fa-solid fa-puzzle-piece"></i>&nbsp;Total Department</small>
+        </div>
+        <div class="border border-secondary border-opacity-50 px-4 py-2 fs-3 shadow mx-2 z-3">
+            <span class="d-block text-center">{{job.user_count}}</span>
+            <small class="fs-6"><i class="fa-solid fa-users-line"></i></i>&nbsp;Total User</small>
+        </div>
+    </div>
+    <hr>
+    <div class="text-center my-4">
+        <h5>Tasks Details</h5>
+    </div>
+    <div class="mx-3 d-flex justify-content-center text-white">
+        <div class="border border-secondary border-opacity-50 px-4 py-2 fs-3 shadow mx-2 z-3">
+            <span class="d-block text-center">{{job.comp}}</span>
+            <small class="fs-6"><i class="fa-solid text-success fa-circle-check"></i>&nbsp;Completed Tasks</small>
+        </div>
+        <div class="border border-secondary border-opacity-50 px-4 py-2 fs-3 shadow mx-2 z-3">
+            <span class="d-block text-center">{{job.active}}</span>
+            <small class="fs-6"><i class="fa-regular text-info fa-circle-dot"></i>&nbsp;Active Tasks</small>
+        </div>
+        <div class="border border-secondary border-opacity-50 px-4 py-2 fs-3 shadow mx-2 z-3">
+            <span class="d-block text-center">{{job.pro}}</span>
+            <small class="fs-6">In Progress Tasks</small>
+            <div class="progress" role="progressbar" aria-label="Info example" aria-valuenow="50" aria-valuemin="0"
+                aria-valuemax="100">
+                <div class="progress-bar bg-info text-dark" style="width: 50%">50%</div>
+            </div>
+        </div>
+        <div class="border border-secondary border-opacity-50 px-4 py-2 fs-3 shadow mx-2 z-3">
+            <span class="d-block text-center">{{job.wait}}</span>
+            <small class="fs-6"><i class="fa-solid fa-spinner fa-spin-pulse"></i>&nbsp;Confirming Tasks</small>
+            <div class="progress" role="progressbar" aria-label="Info example" aria-valuenow="80" aria-valuemin="0"
+            aria-valuemax="100">
+            <div class="progress-bar bg-info text-dark" style="width: 80%">80%</div>
+        </div>
+        </div>
+        <div class="border border-secondary border-opacity-50 px-4 py-2 fs-3 shadow mx-2 z-3">
+            <span class="d-block text-center">{{job.exp}}</span>
+            <small class="fs-6"><i class="fa-solid text-danger fa-circle-xmark"></i>&nbsp;Expired Tasks</small>
+        </div>
+    </div>
+    <hr>
+    <div class="text-center my-4">
+        <h5 class="">Tasks Details Department wise</h5>
+        
+    </div>
+
+
+</div>
