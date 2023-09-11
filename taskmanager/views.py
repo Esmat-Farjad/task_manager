@@ -226,7 +226,7 @@ def Commenting(request, userId, taskId):
         user_id=userId
         comment_text=request.POST['comment']
         st=100
-        flag = 'all'
+        flag = 'CT'
         Task.objects.filter(id = task_id).update(status= st)
         new_record= Comments(comment = comment_text, task_id = task_id, user_id = user_id,)
         new_record.save()
@@ -270,10 +270,10 @@ def adminDashboard(request):
         operation = request.POST['operation']
         did = request.POST['deptID']
         if operation:
-            Department.objects.filter(id = did).update(dept_head = dept_head, department = dept_name, Description = dept_desc)
+            Department.objects.filter(id = did).update(dept_head = dept_head, name = dept_name, Description = dept_desc)
             messages.success(request, "Department Updated Successfully.")
         else:
-            new_record = Department(dept_head = dept_head, department = dept_name, Description = dept_desc)
+            new_record = Department(dept_head = dept_head, name = dept_name, Description = dept_desc)
             new_record.save()
             messages.success(request, "Department Added Successfully...")
    
@@ -304,7 +304,8 @@ def adminRoute(request, flag):
            'comp':comp,
            'd_list':d_list,
            'user_count':member,
-           'task_count':task_count}
+           'task_count':task_count,
+           }
     if flag  == 'allTask':
         sign = flag
         dept_list = Department.objects.all()
@@ -312,6 +313,7 @@ def adminRoute(request, flag):
     elif flag == 'allStuff':
         sign = flag
         allDataValue =User.objects.all()
+        dept_list = Department.objects.all()
     elif flag == 'allDept':
         sign = flag
         allDataValue = Department.objects.all()
@@ -322,7 +324,7 @@ def adminRoute(request, flag):
         member = User.objects.all().count()
         dept_list = Department.objects.all().count()
   
-    return render(request, 'taskmanager/admin.html', {'data':allDataValue,'sign':sign, 'no_stuff':member,'dept_list':dept_list,'job':job})
+    return render(request, 'taskmanager/admin.html', {'data':allDataValue,'sign':sign, 'no_stuff':member,'dept_list':dept_list,'job':job,'dept_task':dept_task})
 
 def manageTask(request, tid, flag):
     if tid and flag:
@@ -408,7 +410,7 @@ def getDetails(request, sid):
         d = Department.objects.get(id = sid)
         u = User.objects.filter(department_id = sid)
       
-        return render(request, 'taskmanager/dept_details.html',{'stuff':u})
+        return render(request, 'taskmanager/dept_details.html',{'stuff':u, 'departmentDetails':d})
     
 def appliedFilter(request):
     if request.method == 'POST':

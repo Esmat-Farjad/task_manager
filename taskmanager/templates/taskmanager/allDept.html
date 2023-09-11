@@ -1,10 +1,10 @@
 
 <div class=" mt-5 second-item">
-    <h5 class="text-center">
+    <h5 class="text-center mb-5">
         All Departments
     </h5>
     <!-- search form starts -->
-    <div class="row mt-3 mb-4">
+    <!-- <div class="row mt-3 mb-4">
         <div class="col-md-3"></div>
         <div class="col-md-6">
             <form action="" class="form-control border-0 bg-dark d-flex" role="search">
@@ -13,7 +13,7 @@
             </form>
         </div>
         <div class="col-md-3"></div>
-    </div>
+    </div> -->
     <!-- search input ends -->
     <div class="container">
         <div class="row">
@@ -27,7 +27,7 @@
                         <form action="{% url 'taskmanager:adminDashboard' %}" class="form-control border-0 bg-dark text-white" method="POST">
                             {% csrf_token %}
                             <label  for="dept_name">Department Name</label>
-                            <input type="text" value="{{tmp.department}}" class="form-control adInput text-light bg-dark" name="dept_name" id="dept_name"
+                            <input type="text" value="{{tmp.name}}" class="form-control adInput text-light bg-dark" name="dept_name" id="dept_name"
                                 placeholder="Name...">
                             <label class="mt-2" for="dept_head">Department head</label>
                             <input type="text" value="{{tmp.dept_head}}" class="form-control adInput text-light bg-dark" name="dept_head"
@@ -67,7 +67,7 @@
                         {% for dept in data %}
                         <li class="list-group-item border-bottom d-flex justify-content-between align-items-start bg-dark border-0 text-white">
                             <div class="ms-2 me-auto">
-                                <div class="fw-bold">{{dept.department}}</div>
+                                <div class="fw-bold">{{dept.name}}</div>
                                 <small class="text-secondary">{{dept.Description}}</small>
                             </div>
                             <span class="mx-4">
@@ -91,7 +91,7 @@
                     <a class="nav-link" href="{% url 'taskmanager:getDetails' value.id %}" role="button">
                     <div class="border border-secondary border-opacity-50 m-2 shadow">
                         <div class="py-1">
-                            <small class="fs-6 bg-maroon rounded-end-pill shadow px-3" id="all_staff">{{value.department}}</small>
+                            <small class="fs-6 bg-maroon rounded-end-pill shadow px-3" id="all_staff">{{value.name}}</small>
                         </div>
                         <div class="px-3 py-2">
                             <small class="fs-6">{{value.num_user}} &nbsp;&nbsp;<i class="fa-solid fa-user-group"></i>&nbsp;Stuff Member</small>

@@ -148,6 +148,32 @@
       .text-active{
         color:#31b062;
       }
+      .progress-bar{
+        animation: grow 1.5s ease-out forwards;
+      }
+      @keyframes grow{
+        from{
+          transform: scaleX(0);
+        }
+      }
+      .fs-xsm{
+        font-size:small;
+        font-family: Verdana, Geneva, Tahoma, sans-serif;
+        color: rgb(201, 201, 201);
+        font-weight: lighter;
+      }
+      .border-animation{
+        border: 1px solid red;
+        animation: moving 5s infinite;
+      }
+      @keyframes moving{
+        from{border:1px solid rgb(9, 92, 95);}
+        to{border:1px solid rgb(18, 136, 233);}
+      }
+      .search-input::-webkit-input-placeholder {
+        color: white;
+        opacity: 0.5;
+      }
     </style>
   </head>
   <body onload="counting()">

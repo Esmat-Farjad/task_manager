@@ -45,7 +45,7 @@
           {% if user == request.user %}
           <option hidden value="{{user.id}}">{{user.first_name}}</option>
           {% else %}
-          <option value="{{user.id}}">{{user.first_name}} ({{user.department.department}})</option>
+          <option value="{{user.id}}">{{user.first_name}} ({{user.department.name}})</option>
           {% endif %} {%endfor%}
         </select>
       </div>

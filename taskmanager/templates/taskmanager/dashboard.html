@@ -116,11 +116,16 @@
                   <small class="me-5"><b>Start Date: </b><i class="fa-solid fa-calendar-day"></i> &nbsp;{{task.start_date}}</small>
                   <small class=" ms-5"><b>Dead line: <i class="fa-regular fa-calendar"></i>&nbsp; </b>{{task.end_date}}</small>
                   <p>
-                    <b>Assigned By: </b>
-                    {% if task.assign_by_id.get_full_name == '' %}
+                    
+                    {% if task.assign_by.is_staff%}
+                      <b>Assigned By: </b>
                     <span class="text-primary">Administrator</span>
+                    {% elif task.assign_by_id == request.user.id %}
+                      <b>Assigned To: </b>
+                      {{task.assign_to.get_full_name}}
                     {% else %}
-                    {{task.assign_by.get_full_name}}
+                      <b>Assigned By: </b>
+                      {{task.assign_by.get_full_name}}
                     {% endif %}
                   </p>
                 </div>

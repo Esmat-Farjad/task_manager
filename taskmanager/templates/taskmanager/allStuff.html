@@ -7,9 +7,9 @@
     <div class="row mt-3 mb-4">
         <div class="col-md-3"></div>
         <div class="col-md-6">
-            <form action="{% url 'taskmanager:searchUser' %}" method="POST" class="form-control border-0 bg-dark d-flex" role="search">
+            <form action="{% url 'taskmanager:searchUser' %}" method="POST" class="form-control  border-0 bg-dark d-flex" role="search">
                 {% csrf_token %}
-                <input type="text" name="stuff" id="stuff" class="form-control" placeholder="Enter the stuff first name to find...">
+                <input type="text" name="stuff" id="stuff" class="form-control search-input bg-dark" placeholder="Enter the stuff first name to find...">
                 <button type="submit" class="btn bg-maroon rounded text-white mx-2"><i class="fa-solid fa-magnifying-glass fs-5"></i></button>
             </form>
         </div>
@@ -33,9 +33,10 @@
                     {% for val in dept_list %}
                     <span class="ms-3">
                         <input class="form-check-input p-2 rounded" name="department" type="checkbox" role="switch" id="department"
-                            value="{{val.id}}"></span>
+                            value="{{val.id}}">
+                    </span>
                     <span class="me-5">
-                       <p class="form-check-label px-2 " for="department">{{val.department}}</p>
+                       <p class="form-check-label px-2 " for="department">{{val.name}}</p>
                     </span>
                     {% endfor %} 
             </div>
@@ -82,7 +83,7 @@
                             <th scope="row" id="stuff_id">{{stuff.id}}</th>
                             <td>{{stuff.get_full_name}}</td>
                             <td>{{stuff.email}}</td>
-                            <td>{{stuff.department.department}}</td>
+                            <td>{{stuff.department.name}}</td>
                             {% if stuff.is_staff %}
                             <td class="text-info">Not Permitted </td>
                             {% else %}
