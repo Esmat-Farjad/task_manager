@@ -48,7 +48,8 @@
         border: 1px solid white;
       }
       .cl-effect-1:hover {
-        background-image: linear-gradient(to right, #8c1c2b, black);
+        background-image: linear-gradient(to right,#a73d3d,#242323);
+        /*background-image: linear-gradient(to right, #8c1c2b, black);*/
         border-left: 10px solid black;
         color: white;
       }
@@ -72,14 +73,16 @@
         width:200px;
       }
       .cl-effect-2{
-        background-image: linear-gradient(to right, #8c1c2b, black);
+        background-image: linear-gradient(to right,#a73d3d,#242323);
+        /*background-image: linear-gradient(to right, #8c1c2b, black);*/
         border-left: 10px solid black;
         color: white;
       }
       
       .footer {
         margin-top: auto;
-        background-image: linear-gradient(to right, #8c1c2b, black);
+        /*background-image: linear-gradient(to right, #8c1c2b, black);*/
+        background-image: linear-gradient(to right,#a73d3d,#242323);
       }
       .change-password{
         cursor: pointer;
@@ -88,7 +91,8 @@
         text-decoration:underline;
       }
       .bg-maroon{
-        background-image:linear-gradient(to right,#8c1c2b,black);
+        /*background-image:linear-gradient(to right,#8c1c2b,black);*/
+        background-image: linear-gradient(to right,#a73d3d,#242323);
         cursor: pointer;
       }
       .sign-in-mar{
@@ -174,9 +178,20 @@
         color: white;
         opacity: 0.5;
       }
+      .bg-hover{
+        text-decoration: none;
+        color: rgb(255, 249, 249);
+        font-weight: 600;
+      }
+      .bg-hover:hover{
+        background-color: white;
+        color: #070707;
+        font-weight: bold;
+        
+      }
     </style>
   </head>
-  <body onload="counting()">
+  <body onload="counting()" class="mb-0 pb-0">
     {% include 'taskmanager/navbar.html' %} 
         {% if messages %}
         <script>

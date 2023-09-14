@@ -67,7 +67,7 @@
             
             <form action="{% url 'taskmanager:Commenting' key.assign_to_id key.id %}" method="POST" class="form-control border-0">
                 {% csrf_token %}
-                <p class="mb-0 pb-0 text-primary"><i class="fa-solid fa-comment-dots fa-flip-horizontal"></i>&nbsp; drop a comment ot {{key.assign_to.first_name}} {{key.assign_to.last_name}}</p>
+                <p class="mb-0 pb-0 text-primary"><i class="fa-solid fa-comment-dots fa-flip-horizontal"></i>&nbsp; drop a comment ot {{key.assign_to.get_full_name}}</p>
                 <textarea class="form-control" name="comment" id="comment" cols="5" rows="5" placeholder="Type comment..."></textarea>
                 <button type="submit" class="btn bg-maroon text-light my-3">confirm the task</button>
             </form>

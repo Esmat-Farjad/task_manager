@@ -45,8 +45,8 @@ class Task(models.Model):
     
 class Comments(models.Model):
     #relationship
-    task = models.ForeignKey(Task, on_delete=models.CASCADE,null=True)
-    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE,null=True)
+    task = models.ForeignKey(Task, related_name='task', on_delete=models.CASCADE,null=True)
+    user = models.ForeignKey(CustomUser, related_name='user', on_delete=models.CASCADE,null=True)
     #fields
     comment = models.TextField(max_length=350)
     com_date = models.DateField(auto_now=True)

@@ -22,7 +22,12 @@ def home(request):
     task = Task.objects.all().count()
     staff = User.objects.all().count()
     dept = Department.objects.all().count()
-    return render(request, 'home.html', {'task':task, 'staff':staff, 'dept':dept})
+    data = {
+        'num_task':task,
+        'num_stuff':staff,
+        'num_dept':dept
+    }
+    return render(request, 'home.html', {'data':data})
 
 def Login(request):
     if request.user.is_authenticated:
@@ -34,45 +39,38 @@ def Login(request):
             user=authenticate(request, username=user_name, password=pass1)
             if user is not None:
                 login(request, user)
-                if user.is_staff:
-                    sign = 'allTask'
-                    allDataValue = Task.objects.all().order_by('-start_date')
-                    return render(request, 'taskmanager/admin.html', {'data':allDataValue,'sign':sign})
-                else:
-                    id=user.id
-                    flag='all'
-                    all_tasks=Task.objects.filter(assign_to_id=id).order_by('-start_date')
-                    all_comment=Comments.objects.filter(user_id = id)
-                    return render(request, 'taskmanager/dashboard.html', {'flag':flag, 'tasks':all_tasks, 'all_comment':all_comment})
-                
+                return redirect('home')
             else:
                 messages.error(request, ('Invalid Credential !'))
     return render(request, 'taskmanager/login.html')            
 
         
-    
+@login_required(login_url='/taskmanager/login')
 def update_tasks(request, task_id, flag):
-    
+    my_user= request.user
+    id = my_user.id
     if flag == 'start':
         st=50
         Task.objects.filter(id=task_id).update(status=st)
-        user=request.user
-        fname=user.first_name
-        lname=user.last_name
-        id=user.id
+        # user=request.user
+        # fname=user.first_name
+        # lname=user.last_name
+        
         flag='all'
-        all_tasks=Task.objects.filter(assign_to_id=id) 
+        all_tasks = Task.objects.select_related('assign_to').filter(assign_to = id)
+        # all_tasks=Task.objects.filter(assign_to_id=id) 
     elif flag == 'done':
         st=80
         Task.objects.filter(id=task_id).update(status=st)
-        user=request.user
-        fname=user.first_name
-        lname=user.last_name
-        id=user.id
+        # user=request.user
+        # fname=user.first_name
+        # lname=user.last_name
         flag='all'
-        all_tasks=Task.objects.filter(assign_to_id=id).order_by('-start_date')
-    all_comment=Comments.objects.filter(user_id = request.user.id)
-    return render(request, 'taskmanager/dashboard.html', {'fname':fname, 'lname':lname, 'flag':flag,'tasks':all_tasks, 'all_comment':all_comment})           
+        all_tasks = Task.objects.select_related('assign_to').filter(assign_to = id).order_by('-start_date')
+        # all_tasks=Task.objects.filter(assign_to_id=id).order_by('-start_date')
+    all_comment=Comments.objects.select_related('task','user').filter(user = id)
+    print(all_comment.user.first_name)
+    return render(request, 'taskmanager/dashboard.html', {'flag':flag,'tasks':all_tasks, 'all_comment':all_comment, 'my_user':my_user})           
     
 
 def Signup(request):
@@ -96,18 +94,20 @@ def Signup(request):
 
 @login_required(login_url='/taskmanager/login')
 def dashboard(request):
-    all_tasks=Task.objects.all()
     st = -1
-    for val in all_tasks:
+    for val in Task.objects.all():
         if val.end_date < datetime.now().date():
             Task.objects.filter(id=val.id).update(status=st)
             
-    user=request.user
-    id=user.id
+    my_user=request.user
+    id=my_user.id
     flag='all'
-    all_comment=Comments.objects.filter(user_id = id)
-    all_tasks=Task.objects.filter(assign_to=id).order_by("-start_date")
-    return render(request, 'taskmanager/dashboard.html', {'flag':flag, 'tasks':all_tasks, 'all_comment':all_comment})
+    all_comment=Comments.objects.select_related('task','user').filter(user = id)
+    for a in all_comment:
+        print(a.task.assign_by.first_name)
+    all_tasks=Task.objects.select_related('assign_to').filter(assign_to=id).order_by("-start_date")
+    
+    return render(request, 'taskmanager/dashboard.html', {'flag':flag, 'tasks':all_tasks, 'all_comment':all_comment,'my_user':my_user})
 
 @login_required(login_url='/taskmanager/login')
 def assign_task(request):
@@ -135,36 +135,28 @@ def Logout(request):
 
 # dashboard operations
 def active_task(request, sign):
+    my_user = request.user
+    id = my_user.id
     if sign == 'active':
-        user=request.user
-        id=user.id
         st=1
         flag=sign
-        all_tasks=Task.objects.filter(assign_to=id,status=st)
+        all_tasks=Task.objects.select_related('assign_by').filter(assign_to=id,status=st)
     elif sign == 'c_task':
-        user=request.user
-        id=user.id
         st=100
         flag=sign
-        all_tasks=Task.objects.filter(assign_to=id,status=st)
+        all_tasks=Task.objects.select_related('assign_by').filter(assign_to=id,status=st)
     elif sign == 'e_task':
-        user=request.user
-        id=user.id
         st= -1
         flag=sign
-        all_tasks=Task.objects.filter(assign_to=id,status=st)
+        all_tasks=Task.objects.select_related('assign_by').filter(assign_to=id,status=st)
     elif sign == 'm_task':
-        user=request.user
-        id=user.id
         flag=sign
-        all_tasks=Task.objects.filter(assign_by=id)
+        all_tasks=Task.objects.select_related('assign_by').filter(assign_by=id)
     else:
-        user=request.user
-        id=user.id
         flag=sign
-        all_tasks=Task.objects.filter(assign_to=id).order_by('-start_date')
-    all_comment=Comments.objects.filter(user_id = request.user.id)
-    return render(request, 'taskmanager/dashboard.html', {'flag':flag, 'tasks':all_tasks, 'all_comment':all_comment})
+        all_tasks=Task.objects.select_related('assign_by').filter(assign_to=id).order_by('-start_date')
+    all_comment=Comments.objects.select_related('task','user').filter(user = id)
+    return render(request, 'taskmanager/dashboard.html', {'flag':flag, 'tasks':all_tasks, 'all_comment':all_comment,'my_user':my_user})
 
 # user profile page 
 @login_required(login_url='/taskmanager/login')
@@ -194,7 +186,7 @@ def user_profile(request,userID):
 @login_required(login_url='/taskmanager/login')
 def task_evaluate(request, tid):
     flag='all'
-    comp_task=Task.objects.filter(id=tid)
+    comp_task=Task.objects.select_related('assign_by').filter(id=tid)
     return render(request, 'taskmanager/task_evaluate.html',{'comp_task':comp_task, 'flag':flag})
 
 @login_required(login_url='/taskmanager/login')

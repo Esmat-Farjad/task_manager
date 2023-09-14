@@ -19,7 +19,7 @@
     }
     
     let y = document.getElementById("staff").value;
-    if ( y !== 0){
+    if ( y != 0){
       let counts2 = setInterval(updated1);
       let task = 0;
       function updated1() {
@@ -50,13 +50,13 @@
 }
 
 </script>
-<input type="number"id="staff" hidden value="{{staff}}">
-<input type="number" id="task" hidden value="{{task}}">
-<input type="number" id="dept" hidden value="{{dept}}">
+<input type="number"id="staff" hidden value="{{data.num_stuff}}">
+<input type="number" id="task" hidden value="{{data.num_task}}">
+<input type="number" id="dept" hidden value="{{data.num_dept}}">
 
-<div class="homepage p-5 ">
-  <div class="row">
+<div class="homepage">
     {% if user.is_authenticated %}
+    <div class="row">
       <div class="col-6 p-2 text-center">
         <h1 class="fw-bold mb-0 pb-0 mt-5">
             Task Manager
@@ -88,36 +88,167 @@
             
           </div>
         </div>
-      </div> 
+      </div>
+      <div class="col-6">
+        <img src="{% static 'media/main.svg' %}" alt="" />
+      </div>
+    </div>
     {%else%}
-    <div class="col-6 text-center p-5 ">
-      <div class="m-5 px-5">
-        <h1 class="fw-bold mb-0 pb-0 mt-5">Task Manager</h1>
-        <small class="text-muted d-block  p-0 m-0">An overall app to manage your workload in organization</small>
-        <small class="text-muted d-block text-start"><i class="fa-solid fa-chevron-right text-danger"></i>&nbsp;&nbsp;Efficient</small>
-        <small class="text-muted d-block text-start p-0 m-0"><i class="fa-solid fa-chevron-right text-danger"></i>&nbsp;&nbsp;Reliable</small>
-        <small class="text-muted d-block text-start p-0 m-0"><i class="fa-solid fa-chevron-right text-danger"></i>&nbsp;&nbsp;User Friendly</small>
-
-
-        <div class=" mt p-5 ">
-          <p class="mt-5 text-muted">Take your time and start...</p>
-          <a href="{% url 'taskmanager:login' %}" class="nav-link bg-maroon border shadow py-2 px-5 rounded-pill text-white"><i class="fa-solid fa-right-to-bracket"></i>&nbsp;&nbsp;SIGN IN</a>
-          <p class="my-3">or</p>
-          <a href="{% url 'taskmanager:signup' %}" class="nav-link bg-maroon border shadow py-2 px-5 rounded-pill text-white"><i class="fa-solid fa-user-plus"></i>&nbsp;&nbsp;SIGN UP
+    <div id="carouselExampleAutoplaying" class="carousel slide carousel-fade" data-bs-ride="carousel">
+      <div class="carousel-inner">
+        <div class="carousel-item active">
+          <img src="{% static 'media/caro4.jpg' %}" class="d-block w-100" style="filter:blur(3px) brightness(60%);" height="650" alt="...">
+          <div class="position-absolute start-50 top-50 translate-middle mb-5 text-center">
+          <h1 class="text-white">Apply to be one of our beta testers</h1>
+          <p class="mb-5 mt-4 text-white">Make your life easy start managing your task with task manager</p>
+          <a href="{% url 'taskmanager:login' %}" class="bg-hover px-3 py-2 d-inline rounded border border-white border-2 btn">
+            <i class="fa-solid fa-up-right-from-square"></i>&nbsp;SIGN IN
           </a>
+          <a href="{% url 'taskmanager:signup' %}" class="bg-hover px-3 py-2 d-inline rounded border border-white border-2 btn mx-2">
+            <i class="fa-solid fa-plus"></i>&nbsp;SIGN UP</a>
+          </div>
+          <div class="carousel-caption d-none d-md-block">
+            <h5>Task Manager</h5>
+            <p>Managing your task and make the workflow of you organization running smoothly</p>
+          </div>
         </div>
+        <div class="carousel-item">
+          <img src="{% static 'media/caro2.jpg' %}"  class="d-block w-100" style="filter:blur(3px) brightness(60%);" height="650" alt="...">
+          <div class="position-absolute start-50 top-50 translate-middle mb-5 text-center">
+            <h1 class="text-white fw-light ">Apply to be one of our beta testers</h1>
+            <p class="mb-5 mt-4 text-white">Make your life easy start managing your task with task manager</p>
+            <a href="{% url 'taskmanager:login' %}" class="bg-hover px-3 py-2 d-inline rounded border border-white border-2 btn">
+              <i class="fa-solid fa-up-right-from-square"></i>&nbsp;SIGN IN
+            </a>
+            <a href="{% url 'taskmanager:signup' %}" class="bg-hover px-3 py-2 d-inline rounded border border-white border-2 btn mx-2">
+              <i class="fa-solid fa-plus"></i>&nbsp;SIGN UP</a>
+          </div>
+          <div class="carousel-caption d-none d-md-block">
+            <h5>User Management</h5>
+            <p>Managing the human resource of your organization to get the ultimate team work</p>
+          </div>
+        </div>
+        <div class="carousel-item">
+          <img src="{% static 'media/caro3.jpg' %}" class="d-block w-100" style="filter:blur(3px) brightness(60%);" height="650" alt="...">
+          <div class="position-absolute start-50 top-50 translate-middle mb-5 text-center">
+            <h1 class="text-white fw-light ">Apply to be one of our beta testers</h1>
+            <p class="mb-5 mt-4 text-white">Make your life easy start managing your task with task manager</p>
+            <a href="{% url 'taskmanager:login' %}" class="bg-hover px-3 py-2 d-inline rounded border border-white border-2 btn">
+              <i class="fa-solid fa-up-right-from-square"></i>&nbsp;SIGN IN
+            </a>
+            <a href="{% url 'taskmanager:signup' %}" class="bg-hover px-3 py-2 d-inline rounded border border-white border-2 btn mx-2">
+              <i class="fa-solid fa-plus"></i>&nbsp;SIGN UP</a>
+          </div>
+          <div class="carousel-caption d-none d-md-block">
+            <h5>Department Management</h5>
+            <p>Distinct the different departments to clarify the tasks and other staff</p>
+          </div>
+        </div>
+      </div>
+      <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Previous</span>
+      </button>
+      <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Next</span>
+      </button>
+    </div>
+    <div class="container mt-5">
+      <div class="row">
+        <div class="col-md-4">
+          <div class="card p-3 border-0" style="width: 19rem;">
+            <div class="card-body">
+              <h5 class="card-title pb-2"><i class="fa-solid fa-briefcase"></i>&nbsp;Manage Task</h5>
+              <h6 class="card-subtitle mb-2 text-body-secondary ms-3">Card subtitle</h6>
+              <p class="card-text ms-3">Some quick example text to build on the card title and make up the bulk of the card's
+                content.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-4">
+          <div class="card p-3 border-0" style="width: 19rem;">
+            <div class="card-body">
+              <h5 class="card-title pb-2"><i class="fa-solid fa-users-gear"></i>&nbsp;Manage Users</h5>
+              <h6 class="card-subtitle mb-2 text-body-secondary ms-3">Card subtitle</h6>
+              <p class="card-text ms-3">Some quick example text to build on the card title and make up the bulk of the card's
+                content.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-4">
+          <div class="card p-3 border-0" style="width: 19rem;">
+            <div class="card-body">
+              <h5 class="card-title pb-2"><i class="fa-solid fa-users-viewfinder"></i>&nbsp;Manage Department</h5>
+              <h6 class="card-subtitle mb-2 text-body-secondary ms-3">Card subtitle</h6>
+              <p class="card-text ms-3">Some quick example text to build on the card title and make up the bulk of the card's
+                content.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="about container text-center mb-5" id="collapseExample">
+      <h1 class=" text-start mb-4">About Us</h1>
+      <p class="text-start">
+        <span class="fw-bold">Lorem Ipsum</span> is simply dummy text of the printing and typesetting industry. Lorem Ipsum
+        has been the industry's standard
+        dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type
+        specimen
+        book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially
+        unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and
+        more
+        recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+      </p>
+      <p class="text-start">
+        <span class="fw-bold d-block">Why do we use it ?</span>
+        It is a long established fact that a reader will be distracted by the readable content of a page when looking at its
+        layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to
+        using
+        'Content here, content here', making it look like readable English. Many desktop publishing packages and web page
+        editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites
+        still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose
+        (injected humour and the like).
+      </p>
+      <div class="my-5">
+        <small class="text-center mb-5 text-primary ">thanks for your well consideration&nbsp;<i class="fa-regular fa-thumbs-up"></i></small>
+      </div>
+      <div class="container">
+        <div class="row text-start">
+          <div class="col-md-6 col-sm-12">
+            <h1 class="mb-4 text-start">
+              Contact Us
+            </h1>
+            <form action="" class="form-control p-4 border-0">
+              {% csrf_token %}
+              <label for="fullname">
+                Full Name
+              </label>
+              <input type="text" class="form-control rounded-pill shadow-none py-2 " name="fullname" id="fullname" required placeholder="Your full name">
+              <label for="email" class="mt-2">Email</label>
+              <input type="email" class="form-control rounded-pill shadow-none py-2" name="email" id="email" required placeholder="Ex. abc@xyz.com">
+              <label for="message" class="mt-2">Query</label>
+              <textarea class="form-control rounded-bottom shadow-none" name="message" id="message" cols="10" rows="5" placeholder="Type your query here..."></textarea>
+              <button type="submit" class="btn bg-maroon my-2 px-4 text-white"><i class="fa-regular fa-paper-plane"></i>&nbsp;Send</button>
+            </form>
+          </div>
+          <div class="col-md-6 ps-5">
+            <img src="{% static 'media/contact.svg' %}" alt="">
+          </div>
         </div>
       </div>
     {% endif %}
-    <div class="col-6">
-      <img src="{% static 'media/verified.png' %}" alt="" />
-    </div>
-  </div>
+    
   <!-- about page for extra information about task manager -->
   
-  <div class="about p-4 collapse text-center border rounded shadow" id="collapseExample">
+  <div class=" container about p-4 collapse text-start" id="collapseExample">
 
-    <h1 class="fw-bold">About</h1>
+    <h1 class="fw-light mb-3">More Information</h1>
     <p class="text-start">
       <span class="fw-bold">Lorem Ipsum</span> is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard
       dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen
