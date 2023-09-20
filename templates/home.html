@@ -48,7 +48,9 @@
     document.getElementById("all_dept").innerHTML = 0;
   }
 }
-
+$(document).ready(function(){
+  counting();
+});
 </script>
 <input type="number"id="staff" hidden value="{{data.num_stuff}}">
 <input type="number" id="task" hidden value="{{data.num_task}}">
@@ -58,7 +60,7 @@
     {% if user.is_authenticated %}
     <div class="row">
       <div class="col-6 p-2 text-center">
-        <h1 class="fw-bold mb-0 pb-0 mt-5">
+        <h1 class="fw-500 mb-0 pb-0 mt-5">
             Task Manager
           </h1>
         <small class="text-muted p-0 m-0 ">An overall app to manage your workload in organization</small>
@@ -105,7 +107,7 @@
             <i class="fa-solid fa-up-right-from-square"></i>&nbsp;SIGN IN
           </a>
           <a href="{% url 'taskmanager:signup' %}" class="bg-hover px-3 py-2 d-inline rounded border border-white border-2 btn mx-2">
-            <i class="fa-solid fa-plus"></i>&nbsp;SIGN UP</a>
+            <i class="fa-solid fa-plus"></i>&nbsp;Get Started</a>
           </div>
           <div class="carousel-caption d-none d-md-block">
             <h5>Task Manager</h5>
@@ -221,10 +223,10 @@
       <div class="container">
         <div class="row text-start">
           <div class="col-md-6 col-sm-12">
-            <h1 class="mb-4 text-start">
+            <h1 class="mb-0 text-start">
               Contact Us
-            </h1>
-            <form action="" class="form-control p-4 border-0">
+            </h1><small class="text-muted mb-4">We are hearing your queries here. Please let us know...</small>
+            <form action="{% url 'taskmanager:contact' %}" method="POST" class="form-control p-4 border-0">
               {% csrf_token %}
               <label for="fullname">
                 Full Name

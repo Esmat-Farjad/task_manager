@@ -141,10 +141,7 @@
         width: 100%;
         margin-bottom: 5%;
       }
-      .alert{
-        opacity: 0;
-        font-size: x-small;
-      }
+    
       .icon-design:hover{
         background-image: linear-gradient(rgb(31, 32, 32),rgb(172, 36, 58));
         color: white;
@@ -187,40 +184,51 @@
         background-color: white;
         color: #070707;
         font-weight: bold;
-        
+      }
+      .user-avatar{
+        vertical-align: top;
+      }
+      .border-animation-2{
+        border: 1px solid red;
+        animation: animate 5s infinite;
+      
+      }
+      @keyframes animate{
+        from{background-color: rgb(172, 36, 58);}
+        to{ background-color:rgb(31, 32, 32);}
       }
     </style>
   </head>
-  <body onload="counting()" class="mb-0 pb-0">
+  <body  class="mb-0 pb-0">
+    <!-- DISPLAY MESSAGE START-->
+    {% if messages %}
+    {% for message in messages %}
+    {% if message.tags == 'success' %}
+    <div class="alert alert-success 
+    text-center my-3 text-success position-absolute py-0 px-3 start-50 top-0 mt-5 translate-middle start-0 top-0 z-3"
+      id="show-message">
+      <i class="fa-solid fa-circle-check fs-1 text-success m-0 p-0"></i>
+      <p class="m-0 p-0"><span class="fw-bold">Success: </span>{{message}}</p>
+    </div>
+    {% else %}
+    
+    <div class="alert alert-danger shadow border
+     text-center position-absolute start-50 top-0 mt-5 translate-middle z-3 text-danger py-0 px-3" id="show-message">
+      <i class="fa-solid fa-triangle-exclamation m-0 p-0"></i>
+      <p class="m-0 p-0"><span class="fw-bold">Error: </span>{{message}}</p>
+    </div>
+    
+    {% endif %}
+    {% endfor %}
+    <script>
+      setTimeout(() => {
+        document.getElementById("show-message").style.display = "none";
+      }, 3000);
+    </script>
+    {% endif %}
+    <!-- DISPLAY MESSAGE END -->
     {% include 'taskmanager/navbar.html' %} 
-        {% if messages %}
-        <script>
-          $(document).ready(function() {
-            $('.alert').animate({left:'30%', right:'30%',opacity: '1', fontSize:'20px'},"3000","linear");
-          });
-        </script>
-        {% for message in messages %}
-        {% if message.tags == 'success' %}
-        <div class="alert alert-success text-center my-3 position-absolute start-50 top-20 z-3 text-center" id="show-message">
-          <i class="fa-solid fa-circle-check fs-1 text-success"></i>
-          <p class="fw-bold m-0 p-0">Message</p>
-          <p class="m-0 p-0">{{message}}</p>
-        </div>
-        {% else %}
-        <div class="alert alert-danger text-center text-danger my-3 position-absolute start-50 top-20 z-3 text-center" id="show-message">
-          <i class="fa-solid fa-triangle-exclamation"></i>
-          <p class="fw-bold m-0 p-0">Message</p>
-          <p class="m-0 p-0">{{message}}</p>
-        </div>
-        {% endif %}
-        {% endfor %}
-        <script>
-          setTimeout(() => {
-            document.getElementById("show-message").style.display = "none";
-          }, 3000);
-        </script>
-        {% endif %}
-
+    
     {% block content%} 
 
     {% endblock content %} 

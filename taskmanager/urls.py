@@ -29,6 +29,11 @@ urlpatterns = [
     path('searchTask/', views.searchTask, name='searchTask'),
     path('getDetails/<sid>', views.getDetails, name='getDetails'),
     path('appliedFilter/',views.appliedFilter, name='appliedFilter'),
+    path('contact/', views.contact, name='contact'),
+    path('sendEmail/', views.sendEmail, name='sendEmail'),
+    path('verifyOTP/', views.verifyOTP, name='verifyOTP'),
+    path('resetPassword/', views.resetPassword, name='resetPassword'),
+    path('privacy_and_policy/', views.privacy_and_policy, name='privacy_and_policy'),
 ]
 
 

@@ -1,4 +1,5 @@
 from datetime import datetime, timedelta, time
+import random
 
 from django.http import JsonResponse
 from django.shortcuts import redirect, render
@@ -8,8 +9,11 @@ from django.contrib.auth import authenticate, login, logout, update_session_auth
 from django.contrib.auth.decorators import login_required
 from django.db.models import Count
 from django.contrib.auth import update_session_auth_hash
-from .models import Task, Comments, Profile, Department
+from .models import Query, Task, Comments, Profile, Department
 from django.contrib.auth import get_user_model
+from django.core.mail import send_mail
+from django.views.decorators.http import require_http_methods
+
 User=get_user_model()
 
 
@@ -41,7 +45,7 @@ def Login(request):
                 login(request, user)
                 return redirect('home')
             else:
-                messages.error(request, ('Invalid Credential !'))
+                messages.error(request, 'Invalid Credential !')
     return render(request, 'taskmanager/login.html')            
 
         
@@ -69,7 +73,7 @@ def update_tasks(request, task_id, flag):
         all_tasks = Task.objects.select_related('assign_to').filter(assign_to = id).order_by('-start_date')
         # all_tasks=Task.objects.filter(assign_to_id=id).order_by('-start_date')
     all_comment=Comments.objects.select_related('task','user').filter(user = id)
-    print(all_comment.user.first_name)
+  
     return render(request, 'taskmanager/dashboard.html', {'flag':flag,'tasks':all_tasks, 'all_comment':all_comment, 'my_user':my_user})           
     
 
@@ -103,8 +107,6 @@ def dashboard(request):
     id=my_user.id
     flag='all'
     all_comment=Comments.objects.select_related('task','user').filter(user = id)
-    for a in all_comment:
-        print(a.task.assign_by.first_name)
     all_tasks=Task.objects.select_related('assign_to').filter(assign_to=id).order_by("-start_date")
     
     return render(request, 'taskmanager/dashboard.html', {'flag':flag, 'tasks':all_tasks, 'all_comment':all_comment,'my_user':my_user})
@@ -161,6 +163,7 @@ def active_task(request, sign):
 # user profile page 
 @login_required(login_url='/taskmanager/login')
 def user_profile(request,userID):
+    uid = userID
     if request.method == 'POST':
         fname=request.POST['fname']
         lname=request.POST['lname']
@@ -179,7 +182,6 @@ def user_profile(request,userID):
     m_task=Task.objects.filter(assign_to_id=request.user.id, status=100).count()
     # day=datetime.now()
     # today=day.strftime('%A')
-    print(current_user)
     return render(request, 'taskmanager/user_profile.html', {'c_user':current_user, 'No_task':m_task})
 
 
@@ -288,7 +290,7 @@ def adminRoute(request, flag):
     active = Task.objects.filter(status = 1).count()
     comp = Task.objects.filter(status = 100).count()
     dept_task = Department.objects.annotate(task_count=Count('task'))
-    print(dept_task.values_list())
+
     job = {'pro': progress,
            'wait':waiting,
            'exp':expire,
@@ -315,6 +317,9 @@ def adminRoute(request, flag):
         allDataValue = Task.objects.all().count()
         member = User.objects.all().count()
         dept_list = Department.objects.all().count()
+    elif flag == 'query':
+        sign = flag
+        allDataValue = Query.objects.all().order_by('-data_sent')
   
     return render(request, 'taskmanager/admin.html', {'data':allDataValue,'sign':sign, 'no_stuff':member,'dept_list':dept_list,'job':job,'dept_task':dept_task})
 
@@ -413,4 +418,75 @@ def appliedFilter(request):
         f= Department.objects.values('Description').filter(id = tid)
         
         return render(request, 'taskmanager/admin.html', {'data':allDataValue,'sign':sign, 'dept_list':dept_list, 'filterMessage':f})
-        
+
+def contact(request):
+    if request.method == 'POST':
+        fullname = request.POST['fullname']
+        email = request.POST['email']
+        message = request.POST['message']
+        new_record = Query(fullname = fullname, email = email, text_message = message)
+        new_record.save()
+        messages.success(request, "Your message sent to the administrator successfully.")
+        return redirect('home')
+    
+
+
+
+@require_http_methods(["POST"])
+def sendEmail(request):
+    user_email = request.POST['email']
+    subject = "Reset Password"
+    check = User.objects.values_list('id').get(email = user_email)
+
+    if check:
+        host = "e.farjad456@gmail.com"
+        message_content = "Hello this is a testing email from task manager. your confirmation code is:"
+        num = random.randint(100000,199999)
+        new_word = f'{message_content}{num}'
+        send_mail(subject, new_word, host, [user_email])
+        # messages.success(request, "A link has been sent your email ")
+        status = 200
+        success = "Sent Successfully"
+        error = "None"
+        data = num
+        uid = check
+        data= {'status': status, 'data':data, 'uid':uid, 'message':success, 'error':error}
+        return JsonResponse(data, safe=False)
+    else:
+        messages.error(request, "Oops...user dose not found.")
+        status = 500
+        error = "Oops...Some problem occurred"
+        success = "Null"
+        data = 0
+        data= {'status': status, 'data':data, 'message':success, 'error':error}
+        return JsonResponse(data, safe=False)
+    
+@require_http_methods(["POST"])
+def verifyOTP(request):
+    user_otp = request.POST['user_otp']
+    sys_otp = request.POST['sys_otp']
+    uid = request.POST['uid']
+    if user_otp == sys_otp:
+        return render( request, 'taskmanager/reset_password.html', {'user_id':uid})
+    else:
+        messages.error(request, "You've entered the incorrect OTP")
+        return render(request, 'taskmanager/login.html')
+    
+@require_http_methods(["POST"]) 
+def resetPassword(request):
+       new = request.POST['new_password']
+       conf = request.POST['confirm_password']
+       uid = request.POST['uid']
+       if new == conf:
+           u=User.objects.get(id=uid)
+           u.set_password(new)
+           u.save()
+           messages.success(request, "Your password changed successfully ")
+           return render(request, 'taskmanager/login.html')
+       else:
+           messages.error(request, "the password dose not matched")
+           return render(request, "taskmanager/reset_password.html")
+ 
+def privacy_and_policy(request):
+    today = datetime.now()
+    return render(request, 'taskmanager/privacy_and_policy.html',{'today':today})    

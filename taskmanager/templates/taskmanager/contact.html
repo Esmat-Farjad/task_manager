@@ -1,0 +1,24 @@
+<div class="container">
+    <h5 class="m-5">
+        <i class="fa-solid fa-tags"></i>&nbsp;User Queries
+    </h5>
+    <div class=" m-5">
+        <table class="bg-dark text-white">
+            {% for value in data  %}
+                <tr class="">
+                    <td class="bg-dark text-white user-avatar"><i class="fa-solid fa-circle-user px-4 py-3 fs-1"></i></td>
+                    <td class="bg-dark text-white ">
+                        <div class="border border-secondary rounded p-3 shadow border-opacity-50 my-2">
+                            <p class="fs-5">{{value.fullname}}</p>
+                            <p class="">{{value.text_message}}</p>
+                            <small class="text-info mt-0 pt-0"><i class="fa-solid fa-at"></i>&nbsp;{{value.email}}</small>
+                            <small class="ms-5"><i class="fa-regular fa-clock"></i>&nbsp;{{value.data_sent}}</small>
+                        </div>
+                        
+                    </td>
+                </tr>
+            {% endfor %}
+            
+        </table>
+    </div>
+</div>

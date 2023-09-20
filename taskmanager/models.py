@@ -62,3 +62,11 @@ class Profile(models.Model):
     def __str__(self):
         return self.profile_image
     
+class Query(models.Model):
+    fullname = models.CharField(max_length=100)
+    email = models.EmailField(max_length=100)
+    text_message = models.TextField(max_length=250)
+    data_sent = models.DateTimeField(auto_now=True)
+    
+    def __str__(self):
+        return self.fullname

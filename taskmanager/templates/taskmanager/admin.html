@@ -38,6 +38,11 @@
                     <span class="p-2">checking over all data</span><span><i class=" ms-5 fa-solid fa-angle-right"></i></span>
                 </div>
             </a>
+            <a class="nav-link mt-1" href="{% url 'taskmanager:adminRoute' 'query' %}">
+                <div class="cl-effect-2 py-3 text-light">
+                    <span class="p-2">Queries</span><span><i class=" ms-5 fa-solid fa-angle-right"></i></span>
+                </div>
+            </a>
         </div>
         <!-- side menu ends -->
         <!-- body container starts -->
@@ -50,6 +55,8 @@
                 {% include 'taskmanager/allDept.html' %}
             {% elif sign == 'allData' %}
                 {% include 'taskmanager/summery.html' %}
+            {% elif sign == 'query' %}
+                {% include 'taskmanager/contact.html' %}
             {% endif %}
            
         </div>

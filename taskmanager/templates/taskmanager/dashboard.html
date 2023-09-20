@@ -96,7 +96,7 @@
           <div class="col-6">
             <!--the card design starts-->
             {% if task.status == 1 %} 
-              <div class="card shadow my-2 border border-success border-2">
+              <div class="card shadow my-2 border-animation">
             {% elif task.status == -1 %}
                 <div class="card shadow my-2 border border-danger border-2">
             {% elif task.status == 80 or task.status == 50 %}
@@ -228,7 +228,7 @@
           {% else %}
             <table>
               <tr>
-                <td style="vertical-align: top;" class="p-2"><img class="shadow rounded-circle" src="{{comment.task.assign_by.profile.image.url}}" alt="" width="30px" height="30px"></td>
+                <td class="p-2 user-avatar"><img class="shadow rounded-circle" src="{{comment.task.assign_by.profile.image.url}}" alt="" width="30px" height="30px"></td>
                 <td>
                   <span class="list-group-item p-3 rounded bg-dark shadow">
                     <small class="fw-bold d-block text-light">{{comment.task.assign_by.get_full_name}}&nbsp;<i class="fa-solid fa-pencil"></i></small>

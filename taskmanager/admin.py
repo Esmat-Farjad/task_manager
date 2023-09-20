@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Department,Task, Comments, Profile,CustomUser
+from .models import Department,Task, Comments, Profile,CustomUser,Query
 
 
 
@@ -10,6 +10,7 @@ admin.site.register(Task)
 admin.site.register(Comments)
 admin.site.register(Department)
 admin.site.register(Profile)
+admin.site.register(Query)
 
 
 

@@ -2,52 +2,132 @@
 <div class="container sign-in-mar">
   <div class="row">
     <div class="col-md-3"></div>
-    <div class="col-md-6 text-center">
-      <form
-        action=""
-        method="POST"
-        class="form-control px-5 py-5 shadow border rounded"
-      >
-        {% for user in user_value %}
-        <p>{{user}}</p>
-        {% endfor %}
+    <div class="col-md-6">
+      
+      <div id="carouselExample" class="carousel slide">
+        <div class="carousel-inner">
+          <div class="carousel-item active">
+            <div class="mx-5">
+              <form action="" method="POST" class="form-control px-5 py-5 shadow border rounded">
+                {% for user in user_value %}
+                <p>{{user}}</p>
+                {% endfor %}
+                
+                <h1 class="text-secondary text-center">Sign In</h1>
+                {% csrf_token %}
+                <input type="text" name="uname" id="username" class="form-control mt-5 mb-4 p-3 border" placeholder="Username"
+                  required />
+                <input type="password" name="pwd" id="password" class="form-control mt-4 mb-4 p-3 border" placeholder="Password"
+                  required />
+                  <small class="text-end text-primary cursor-pointer px-3 d-block" data-bs-target="#carouselExample" data-bs-slide="next">Forgot Password</small>
+                  
+                  <small class="d-inline-block my-3">
+                    To continue, Taskmanager will share your email name and profile photo with your colleagues and higher manager. 
+                    Before using the app you can review our <a href="{% url 'taskmanager:privacy_and_policy' %}" class="link-primary link-underline-opacity-0">Privacy and Policy</a>
+                    and <a href="{% url 'taskmanager:privacy_and_policy' %}" class="link-primary link-underline-opacity-0">Terms of Services</a>
+                  </small>
+                 <a class="link-primary link-underline-opacity-0 me-5" href="{% url 'taskmanager:signup'%}">Create Account</a>
+                <button type="submit" class="btn bg-maroon text-white px-4 py-2">
+                  Sign In
+                </button>
+              </form>
+            </div>
+          </div>
+          <!-- getting user email form start -->
+          <div class="carousel-item">
+            <form action="{% url 'taskmanager:sendEmail' %}" method="POST" id="emailForm" class="form-control px-5 py-5 shadow border mb-5 rounded">
+              <p class="fs-3 text-center mb-5">Reset Your Password</p>
+              <p class="text-start mb-0 pb-0">Enter your valid Email:</p>
+              {% csrf_token %}
+              <input type="email" name="email" id="email"
+              style="border:0; border-bottom:1px solid rgb(49, 145, 235);" 
+              class="form-control shadow-none border-none outline-none my-3"
+              placeholder="e.g: abc@xyz.com" required>
+              <p class="text-start">
+                Enter the email you've provided while registering and we will send you a link to reset your password.
+              </p>
+              <p class="text-start mt-5">
+                <small>
+                  didn't get the link <a href="">Resend The link</a>
+                </small>
+              </p>
+              <div class=" mt-5">
+              <button class="text-white btn d-inline bg-maroon px-3"  data-bs-target="#carouselExample" data-bs-slide="prev">
+                <i class="fa-solid fa-arrow-left"></i>&nbsp;Back</button>
+              <button type="submit" class="btn bg-maroon btn-submit px-3 text-white" id="submitButton"><span class="spinner-border-sm" id="spinner"></span>&nbsp;Submit</button>
+              </div>
+            </form>
+          </div>
+          <!-- getting user email form ended -->
+          <div class="carousel-item">
+           <div class="p-4 py-5 shadow border rounded">
+            <form action="{% url 'taskmanager:verifyOTP' %}" method="POST" id="codelForm" class="form-control border-0 ">
+              <h1 class="text-centermb-5 fw-light">
+                Confirmation
+              </h1>
+              <p class="text-start my-5">
+                 Please check your email we've send a six digit number to your email.
+                 please do not share the code with others 
+              </p>
+              {% csrf_token %}
+              <label class="float-start" for="otp">Enter the six Digit code</label>
+              <input type="number" 
+              style="border:none; border-bottom:1px solid rgb(49,145,235);"
+               name="user_otp" id="user_otp" 
+               class="form-control shadow-none"
+               placeholder="------">
+              <input type="number" id="sys_otp" name="sys_otp" hidden>
+              <input type="number" id="uid" name="uid" hidden>
+              <p class="text-start mt-5 fs-6">
+                <small id="resend"></small>
+                <a class="fs-6" href="" id="resend_link"></a>
+              </p>
+              <button type="submit" class="btn bg-maroon text-white my-5 px-3">Confirm</button>
+              </form>
+           </div>
+          </div>
+        </div>
+      </div>
+      
 
-        <h1 class="text-secondary text-center">Sign In</h1>
-        {% for message in messages %} {% if message.tags == 'success' %}
-        <p class="text-success text-center m-0 p-0">{{message | safe}}</p>
-        {% else %}
-        <p class="text-danger m-0 p-0 text-center">{{message | safe }}</p>
-        {% endif %} {% endfor %} {% csrf_token %}
-        <input
-          type="text"
-          name="uname"
-          id="username"
-          class="form-control mt-5 mb-4 p-3 border"
-          placeholder="Username"
-          required
-        />
-        <input
-          type="password"
-          name="pwd"
-          id="password"
-          class="form-control mt-4 mb-4 p-3 border"
-          placeholder="Password"
-          required
-        />
-        <button type="submit" class="btn btn-success px-4 py-2 m-5">
-          Sign In
-        </button>
-        <p class="m-0 p-0 text-start text-secondary">
-          Don't have an account ?
-          <span class="text-info cursor-pointer"
-            ><a class="link" href="{% url 'taskmanager:signup'%}"
-              >Create Account</a
-            ></span
-          >
-        </p>
-      </form>
+
+
+
     </div>
     <div class="col-md-3"></div>
   </div>
+  <script type="text/javascript">
+
+    const form = document.getElementById("emailForm");
+    form.addEventListener('submit', async event => {
+      event.preventDefault();
+      const formData = new FormData(form);
+      //formData.append('csrfmiddlewaretoken', '{{csrf_token}}');
+      console.log(formData);
+      var e = document.getElementById("submitButton");
+      e.classList.add("disabled");
+      var element = document.getElementById("spinner");
+      element.classList.add("spinner-border");
+
+      fetch('{% url "taskmanager:sendEmail" %}', {
+        method: 'POST',
+        body: formData,
+      }).then(response => response.json()).then(data => {
+        console.log(data);
+          $('#carouselExample').carousel('next');
+          document.getElementById("sys_otp").value = data.data;
+          document.getElementById("uid").value = data.uid[0];
+          setTimeout(() =>{
+            document.getElementById("resend").innerHTML = "Didn't get the code? ";
+            document.getElementById("resend_link").innerHTML = "Resend the code";
+          },10000);
+      }).catch(error => {
+        console.log(error);
+
+      });
+
+    });
+  </script>
 </div>
-{%endblock content%}
+
+{%endblock content %}

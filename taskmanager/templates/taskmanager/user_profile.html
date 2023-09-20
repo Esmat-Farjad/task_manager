@@ -98,8 +98,8 @@
         
         <script>
             const n=document.getElementById("num").value;
-            const m=document.getElementById("day").value;
-            const xArray =["Wednesday","Thursday","Friday","Saturday","Sunday", "Monday","Tuesday"];
+            const today_date = new Date();
+            const xArray =new Date();
             const yArray = new Array(n,0 );
 
             const data = [{
@@ -109,7 +109,7 @@
                 orientation: "v",
                 marker: { color: "",
                 line:{
-                    width: 2.5
+                    width: 1.5
                 } }
             }];
 
