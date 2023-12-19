@@ -1,0 +1,183 @@
+.nav-link:hover {
+    font-weight: bold;
+    transition: 0.3s;
+    color: white;
+  }
+
+  .cursor-pointer {
+    cursor: pointer;
+  }
+  .row-click-style {
+    cursor: pointer;
+  }
+  .cursor-pointer:hover {
+    font-weight: 600;
+    transition: 0.3s;
+  }
+  label::after {
+    content: " *";
+    color: red;
+  }
+  .cl-effect-1 {
+    transition: 0.5s;
+    cursor: pointer;
+    border: 1px solid white;
+  }
+  .cl-effect-1:hover {
+    background-image: linear-gradient(to right,#a73d3d,#242323);
+    /*background-image: linear-gradient(to right, #8c1c2b, black);*/
+    border-left: 10px solid black;
+    color: white;
+  }
+  .font-size {
+    font-size: 12px;
+    font-family: cursive;
+  }
+  .font-size6{
+    font-size: 10px;
+  }
+  .com_text{
+    font-size: 12px;
+  }
+  .font-size:hover {
+    font-weight:bold;
+  }
+  .bright {
+    border-left: 5px solid black;
+  }
+  .profile{
+    width:200px;
+  }
+  .cl-effect-2{
+    background-image: linear-gradient(to right,#a73d3d,#242323);
+    /*background-image: linear-gradient(to right, #8c1c2b, black);*/
+    border-left: 10px solid black;
+    color: white;
+  }
+  
+  .footer {
+    margin-top: auto;
+    /*background-image: linear-gradient(to right, #8c1c2b, black);*/
+    background-image: linear-gradient(to right,#a73d3d,#242323);
+  }
+  .change-password{
+    cursor: pointer;
+  }
+  .change-password:hover{
+    text-decoration:underline;
+  }
+  .bg-maroon{
+    /*background-image:linear-gradient(to right,#8c1c2b,black);*/
+    background-image: linear-gradient(to right,#a73d3d,#242323);
+    cursor: pointer;
+  }
+  .sign-in-mar{
+    margin-top: 6%;
+    margin-bottom: 6%;
+  }
+  .social-media{
+    font-size:30px;
+    padding: 7px;
+  }
+  .social-media:hover{
+    font-weight: bold;
+    font-size:x-large;
+    transition: 0.7s;
+  }
+  .about{
+    margin-top: 10%;
+  }
+  
+  .hover:hover{
+    background-color: rgb(193, 194, 187);
+    cursor: pointer;
+    font-weight: 700;
+  }
+  .adInput::placeholder{
+    color: rgb(185, 185, 185) !important;
+    text-transform: lowercase;
+  }
+  .homepage{
+    min-height: 78vh;
+  }
+  .card-footer{
+    height: 100px;
+  }
+  .card-body{
+    height: 200px;
+  }
+  .empty-folder{
+    font-size: 100px;
+  }
+  .scrollable{
+    overflow: scroll;
+  }
+  body{
+    height: 100%;
+    width: 100%;
+    margin-bottom: 5%;
+  }
+
+  .icon-design:hover{
+    background-image: linear-gradient(rgb(31, 32, 32),rgb(172, 36, 58));
+    color: white;
+  }
+  .text-active{
+    color:#31b062;
+  }
+  .progress-bar{
+    animation: grow 1.5s ease-out forwards;
+  }
+  @keyframes grow{
+    from{
+      transform: scaleX(0);
+    }
+  }
+  .fs-xsm{
+    font-size:small;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    color: rgb(201, 201, 201);
+    font-weight: lighter;
+  }
+  .border-animation{
+    border: 1px solid red;
+    animation: moving 5s infinite;
+  }
+  @keyframes moving{
+    from{border:1px solid rgb(9, 92, 95);}
+    to{border:1px solid rgb(18, 136, 233);}
+  }
+  .search-input::-webkit-input-placeholder {
+    color: white;
+    opacity: 0.5;
+  }
+  .bg-hover{
+    text-decoration: none;
+    color: rgb(255, 249, 249);
+    font-weight: 600;
+  }
+  .bg-hover:hover{
+    background-color: white;
+    color: #070707;
+    font-weight: bold;
+  }
+  .user-avatar{
+    vertical-align: top;
+  }
+  .border-animation-2{
+    border: 1px solid red;
+    animation: animate 5s infinite;
+  
+  }
+  @keyframes animate{
+    from{background-color: rgb(172, 36, 58);}
+    to{ background-color:rgb(31, 32, 32);}
+  }
+  .bg-transparent{
+    filter: brightness(70%);
+    pointer-events: none;
+    transition: all 0.5s ease;
+  }
+  .side-container{
+    transition: all 0.5s ease-in-out;
+  }
