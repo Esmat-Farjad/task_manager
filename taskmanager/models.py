@@ -1,7 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
-from django.db.models.signals import pre_save
-from django.dispatch import receiver
+
+
 
 comment_status= [("pending", "Pending"), ("approved", "Approved")]
 
@@ -12,6 +12,9 @@ class CustomUser(AbstractUser):
    
     def __str__(self):
         return self.username
+    
+        
+        
 
 class Department(models.Model):
     name = models.CharField(max_length=250)
@@ -23,8 +26,13 @@ class Department(models.Model):
 
 
 class Task(models.Model):
+    STATUS_CHOICES = [
+        ('not started','not started'),
+        ('in progress','in progress'),
+        ('done','done'),
+    ]
     # relationships
-    assign_by=models.ForeignKey(CustomUser,related_name='assigned_by' ,on_delete=models.CASCADE)
+    assign_by=models.ForeignKey(CustomUser,related_name='assigned_by',on_delete=models.CASCADE)
     assign_to=models.ForeignKey(CustomUser,related_name='assigned_to' ,on_delete=models.CASCADE)
     dept = models.ForeignKey(Department, on_delete=models.CASCADE, null=True, blank=True)
     
@@ -32,7 +40,7 @@ class Task(models.Model):
     task_name=models.CharField(max_length=100)
     task_desc=models.CharField(max_length=250)
     
-    status=models.IntegerField(default=0)
+    status=models.IntegerField(default="not started", choices=STATUS_CHOICES)
     # CharField
     # Choices
     

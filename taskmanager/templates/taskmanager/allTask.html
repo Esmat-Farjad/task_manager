@@ -23,7 +23,7 @@
     <!-- search input ends -->
     <!-- filter start -->
     <!-- filter end -->
-    <div class="container">
+    <div class="container mb-5">
         <table class="table table-hover mx-10 table-dark ">
             <thead>
                 <tr>
@@ -34,166 +34,142 @@
                     <th scope="col">Assigned To</th>
                 </tr>
             </thead>
-            <tbody>
-                {% if data %}
+            <tbody id="sidebarhandler">
+            {% if data %}
                 {% for task in data %}
-                <tr style="cursor:pointer" onclick="expandTask()">
-                    <td scope="row">{{forloop.counter}}</td>
-                    <td class="w-50  position-relative">
-                        <div class="expand-row" style="width: auto; overflow:hidden; height: 20px;">
-                            {{task.task_desc}}
-                        </div>
-                    </td>
-                    <td>{{task.status}}</td>
-                    <td>{{task.assign_to.get_full_name}}</td>
-                    <td>{{task.assign_by.get_full_name}}</td>
-                </tr>
+               
+                    <tr style="cursor:pointer" 
+                    data-task-id="{{task.id}}" 
+                    data-task-desc="{{task.task_desc}}"
+                    data-task-name="{{task.task_name}}"
+                    data-task-status="{{task.status}}"
+                    data-task-assignto="{{task.assign_to.get_full_name}}"
+                    data-task-assignby="{{task.assign_by.get_full_name}}"
+                    data-task-start="{{task.start_date}}"
+                    data-task-end="{{task.end_date}}"
+                    >
+                        <td scope="row" >{{forloop.counter}}</td>
+                        <td class="w-50  position-relative">
+                            <div class="expand-row" style="width: auto; overflow:hidden; height: 20px;">
+                                {{task.task_desc}}
+                            </div>
+                        </td>
+                    
+                        <td >
+                            {% if task.status == 0 %}
+                            <span class="border bg-primary border-primary rounded-pill px-2 py-1 " id="inProgress">
+                                <i class="fa-solid fa-circle-notch fa-spin"></i>
+                                &nbsp;in progress
+                            </span>
+                            {% elif task.status == 1 %}
+                            <span class="border border-success bg-success rounded-pill px-2 py-1 " id="Done">
+                                <i class="fa-solid fa-clock"></i>
+                                &nbsp;Done
+                            </span>
+                            {% else %}
+                            <span class="border border-secondary bg-secondary rounded-pill px-2 py-1 " id="notStarted">
+                                <i class="fa-solid fa-clock"></i>
+                                &nbsp;not started
+                            </span>
+                            {% endif %}
+                            
+                        </td>
+                        <td >{{task.assign_to.get_full_name}}</td>
+                        <td >{{task.assign_by.get_full_name}}</td>
+                    </tr>
+            
                 {% endfor %}
+                {% else %}
+                    <div class="text-center my-5 text-secondary">
+                        <h1 class="empty-folder"><i class="fa-regular fa-folder-open"></i></h1>
+                        <h3 class="fw-bold">Oops... ! No Record Found.&nbsp;<i class="fa-solid fa-chart-simple"></i></h3>
+                    </div>
                 {% endif %}
             </tbody>
         </table>
     </div>
-    <div class="">
-        {% if data %}
-            <div class="container px-5">
-            <ol class="list-group">
-                {% for task in data  %}
-                    {% if task.status == 1 %}
-                        <li class="list-group-item bg-dark my-3 border border-success border-2 border-opacity-50 shadow p-4">
-                    {% elif task.status == 50 %}
-                        <li class="list-group-item bg-dark my-3 border border-warning border-2 border-opacity-50 shadow p-4">
-                    {% elif task.status == 80 %}
-                        <li class="list-group-item bg-dark my-3 border border-warning border-2 shadow p-4">
-                    {% elif task.status == 100 %}
-                        <li class="list-group-item bg-dark my-3 border border-info border-2 border-opacity-50 shadow p-4">
-                    {% elif task.status == -1 %}
-                        <li class="list-group-item bg-dark my-3 border border-danger border-2 border-opacity-50 shadow p-4">
-                    {% endif %}
-                        <div class="bg-dark text-white">
-                            <div class="list-title fs-4"><i class="fa-solid fa-circle-chevron-right"></i>&nbsp;{{task.task_name}}</div>
-                            <div class="list-body" width="30px">
-                                <small>{{task.task_desc}}</small>
-                            </div>
-                            <div class=" my-2 border border-secondary shadow py-2 px-3 border-opacity-50">
-                                <div class="fw-bold"> 
-                                    <small>Assigned By:</small>
-                                    {% if task.assign_by.get_full_name == '' %}
-                                        <small class="text-info"><i class="fa-solid fa-user-tie "></i>&nbsp;Administrator</small>
-                                    {% else %}
-                                        <small><i class="fa-solid fa-user "></i>&nbsp;{{task.assign_by.get_full_name}}</small>
-                                        <small class="d-block">({{task.assign_by.department.name}}) department</small>
-                                    {% endif %}
-                                </div>
-                                
-                                
-                                <small class="fs-6">Assigned To: </small>
-                                <small><i class="fa-solid fa-user "></i>&nbsp;{{task.assign_to.get_full_name}}</small>
-                                <small>({{task.assign_to.department.name}}) department</small>
-                                <small class="fs-6 ms-4"><i class="fa-solid fa-calendar-day "></i>&nbsp;Started Date: </small><small>{{task.start_date}}</small>
-                                <small class="fs-6 ms-4"><i class="fa-regular fa-calendar "></i>&nbsp;Expiration Date: </small><small>{{task.end_date}}</small>
-
-                                <small class="fs-6 ms-4">Status: </small>
-                                {% if task.status == 1 %}
-                                    <small class="text-active">Active&nbsp;<i class="fa-regular fa-circle-dot"></i></small>
-                                    <div class="">
-                                        <a href="{% url 'taskmanager:manageTask' task.id 'Remove' %}" class="nav-link text-danger">
-                                            <i class="fa-solid fa-eraser border border-danger border-opacity-50 p-1 my-1 shadow"></i>&nbsp;Remove</a>
-                                        <a href="{% url 'taskmanager:manageTask' task.id 'edit' %}" class="nav-link text-light">
-                                            <i class="fa-regular fa-pen-to-square border border-white border-opacity-50 p-1 shadow fs-6 "></i>&nbsp;edit/Re-assign
-                                        </a>
-                                    </div>
-                                {% elif task.status == -1 %}
-                                    <small class="text-danger">Expired&nbsp;<i class="fa-solid fa-triangle-exclamation"></i></small>
-                                    <div class="">
-                                        <a href="{% url 'taskmanager:manageTask' task.id 'Remove' %}" class="nav-link text-danger">
-                                            <i class="fa-solid fa-eraser border border-danger border-opacity-50 p-1 my-1 shadow"></i>&nbsp;Remove
-                                        </a>
-                                        <a href="{% url 'taskmanager:manageTask' task.id 'edit' %}" class="nav-link text-light">
-                                            <i class="fa-regular fa-pen-to-square border border-white border-opacity-50 p-1 shadow fs-6 "></i>&nbsp;edit/Re-assign
-                                        </a>
-                                    </div>
-                                {% elif task.status == 50 %}
-                                    <span class="progress">
-                                        <span class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="50" aria-valuemin="0"
-                                            aria-valuemax="100" style="width:50%">
-                                            50% completed
-                                        </span>
-                                    </span>
-                                {% elif task.status == 80 %}
-                                    <span class="progress">
-                                        <span class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="80" aria-valuemin="0"
-                                            aria-valuemax="100" style="width:80%">
-                                            80% completed
-                                        </span>
-                                    </span>
-                                {% elif task.status == 100 %}
-                                    <small class="text-info">Completed&nbsp;<i class="fa-solid fa-circle-check"></i></small>
-                                    <div class="">
-                                    <a href="{% url 'taskmanager:manageTask' task.id 'Remove' %}" 
-                                    class="nav-link text-danger">
-                                    <i class="fa-solid fa-eraser border border-danger border-opacity-50 p-1 my-1 shadow"></i>&nbsp;Remove</a>
-                                    <a href="{% url 'taskmanager:manageTask' task.id 'edit' %}" 
-                                    class="nav-link text-light">
-                                    <i class="fa-regular fa-pen-to-square border border-white border-opacity-50 p-1 shadow fs-6 "></i>&nbsp;edit/Re-assign</a>
-                                    </div>
-                                {% endif %}
-                            </div>
-                        </div>
-                    </li>
-                {% endfor %}
-            </ol>
-            </div>
-        {% else %}
-            <div class="text-center my-5 text-secondary">
-                <h1 class="empty-folder"><i class="fa-regular fa-folder-open"></i></h1>
-                <h3 class="fw-bold">Oops... ! No Record Found.&nbsp;<i class="fa-solid fa-chart-simple"></i></h3>
-            </div>
-        {% endif %}
     </div>
 </div>
 <div class="side-container bg-dark w-50 h-100 d-none position-absolute top-0 end-0 m-0 p-0 border rounded border-secondary border-secondary-emphasise shadow-lg z-100">
     <h4 id="close-sidebar" class="p-3 cursor-pointer">&#x2715;</h4>
     <div class="data-container pt-0 px-5 pb-5">
         <div class="mb-5">
-            <h5 class="">This is task to be done !</h5>
+            <h5 class="" id="task-name"></h5>
+            <p class="" id="task-description"></p>
         </div>
-        <div class="row">
-            <div class="col col-lg-3">
-                <p>Description</p>
-                <p>Status</p>
-                <p>Assigned to</p>
+        <div>
+            <span class="text-secondary">Status</span>
+            <span class="text-white">
+                <span class="border bg-primary border-primary rounded-pill px-2 py-1 d-none" id="inProgress">
+                    <i class="fa-solid fa-circle-notch fa-spin"></i>
+                    &nbsp;in progress
+                </span>
+                <span class="border border-secondary bg-secondary rounded-pill px-2 py-1 d-none" id="notStarted">
+                    <i class="fa-solid fa-clock"></i>
+                    &nbsp;not started
+                </span>
+                <span class="border border-success bg-success rounded-pill px-2 py-1 d-none" id="Done">
+                    <i class="fa-solid fa-clock"></i>
+                    &nbsp;Done
+                </span>  
+            </span>
+            <div>
+                <span class="text-secondary">Assign to: </span>
+                <span class="" id="task-assignTo"></span>
             </div>
-            <div class="col">
-                <p class="">this is description</p>
-                <p class="">
-                    <span class="border text-info border-info rounded-pill px-2 py-1">
-                        <i class="fa-solid fa-circle-notch fa-spin"></i>
-                        &nbsp;in progress
-                    </span>
-                    <span class="border text-secondary border-secondary rounded-pill px-2 py-1">
-                        <i class="fa-solid fa-clock"></i>
-                        &nbsp;not started
-                    </span>
-                    <span class="border text-success border-success rounded-pill px-2 py-1">
-                        <i class="fa-solid fa-circle-check"></i>
-                        &nbsp;done
-                    </span>
-                </p>
-                <p class="">assigned to me</p>
+            <div>
+                <span class="text-secondary">Assign by: </span>
+                <span class="" id="task-assignBy"></span>
             </div>
+        </div>
+        <div>
+            <span class="text-secondary">Start Date:</span>
+            <span id="startDate"></span>
+            <span class="ms-5 text-secondary">End Date:</span>
+            <span id="endDate"></span>
+        </div>
+        <div class="m-3">
+            <button class="btn btn-danger text-white">Delete</button>
+            <button class="btn btn-warning text-white">Edit</button>
+            
         </div>
     </div>
 </div>
 </div>
 <script>
-function expandTask() {
+const sideBarHandler = document.querySelector("#sidebarhandler");
+sideBarHandler.addEventListener('click', function(e) {
+    e.preventDefault();
+    let taskid = e.target.closest('tr').dataset.taskId;
+    let taskdesc = e.target.closest('tr').dataset.taskDesc;
+    let task_name = e.target.closest('tr').dataset.taskName;
+    let taskstatus = e.target.closest('tr').dataset.taskStatus;
+    let assignto = e.target.closest('tr').dataset.taskAssignto;
+    let assignby = e.target.closest('tr').dataset.taskAssignby;
+    let startDate = e.target.closest('tr').dataset.taskStart;
+    let endDate = e.target.closest('tr').dataset.taskEnd;
+    if(taskstatus == -1) {
+        document.querySelector("#notStarted").classList.remove("d-none");
+    } else if(taskstatus == 0) {
+        document.querySelector("#inProgress").classList.remove("d-none");
+    } else if(taskstatus == 1) {
+        document.querySelector("#Done").classList.remove("d-none");
+
+    }
+
     let sideBar = document.querySelector(".side-container");
     let mainContainer = document.querySelector(".main-container");
 
+    document.getElementById('task-assignTo').innerHTML = assignto;
+    document.getElementById('task-assignBy').innerHTML = assignby;
+    document.getElementById('task-name').innerHTML = task_name;
+    document.getElementById('task-description').innerHTML = taskdesc;
+    document.getElementById('startDate').innerHTML = startDate;
+    document.getElementById('endDate').innerHTML = endDate;
     sideBar.classList.remove("d-none");
     mainContainer.classList.add("bg-transparent");
 
-}
+});
 document.querySelector("#close-sidebar").addEventListener('click', function()
 {
     if(! document.querySelector(".side-container").classList.contains("d-none")) {

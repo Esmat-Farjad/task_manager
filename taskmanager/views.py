@@ -1,14 +1,14 @@
-from datetime import datetime, timedelta, time
+from datetime import datetime
 import random
 
 from django.http import JsonResponse
 from django.shortcuts import redirect, render
-from django.contrib.auth.models import User
+# from django.contrib.auth.models import User
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout, update_session_auth_hash
 from django.contrib.auth.decorators import login_required
 from django.db.models import Count
-from django.contrib.auth import update_session_auth_hash
+# from django.contrib.auth import update_session_auth_hash
 from .models import Query, Task, Comments, Profile, Department
 from django.contrib.auth import get_user_model
 from django.core.mail import send_mail
@@ -126,7 +126,7 @@ def assign_task(request):
         status=True
         new_record=Task(task_name=taskname, task_desc=task_desc, end_date=end_date, assign_to_id=assign_to,dept_id=dept, assign_by=assign_by, status=status)
         new_record.save()
-        messages.success(request, f"Task assigned successfully")
+        messages.success(request, "Task assigned successfully")
     
     return render(request, 'taskmanager/add_task.html',{'users':users})
     
@@ -163,7 +163,7 @@ def active_task(request, sign):
 # user profile page 
 @login_required(login_url='/taskmanager/login')
 def user_profile(request,userID):
-    uid = userID
+    # uid = userID
     if request.method == 'POST':
         fname=request.POST['fname']
         lname=request.POST['lname']
@@ -489,4 +489,11 @@ def resetPassword(request):
  
 def privacy_and_policy(request):
     today = datetime.now()
-    return render(request, 'taskmanager/privacy_and_policy.html',{'today':today})    
+    return render(request, 'taskmanager/privacy_and_policy.html',{'today':today})  
+def expandTask(request):
+    if request.method == 'POST':
+        taskid = request.POST['taskid']
+        task = Task.objects.select_related('assign_to','assign_by').filter(id=taskid)
+        print(task)
+        data = {"status":200, "data":list(task), "message":"success"}
+        return JsonResponse(data, safe=False)  
