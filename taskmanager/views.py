@@ -103,13 +103,19 @@ def dashboard(request):
         if val.end_date < datetime.now().date():
             Task.objects.filter(id=val.id).update(status=st)
             
-    my_user=request.user
-    id=my_user.id
+    my_user = request.user
+    id = request.user.id
     flag='all'
-    all_comment=Comments.objects.select_related('task','user').filter(user = id)
-    all_tasks=Task.objects.select_related('assign_to').filter(assign_to=id).order_by("-start_date")
-    
-    return render(request, 'taskmanager/dashboard.html', {'flag':flag, 'tasks':all_tasks, 'all_comment':all_comment,'my_user':my_user})
+    all_comment=Comments.objects.select_related('task','user').filter(user = request.user.id)
+    all_tasks=Task.objects.select_related('assign_by').filter(assign_to=id).order_by('-start_date')
+    print(all_tasks)
+    context = {
+        'flag':flag,
+        'tasks':all_tasks,
+        'all_comments':all_comment,
+        'my_user':my_user,
+    }
+    return render(request, 'taskmanager/dashboard.html', context)
 
 @login_required(login_url='/taskmanager/login')
 def assign_task(request):
