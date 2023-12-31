@@ -1,96 +1,91 @@
-<div class="position-relative m-0 p-0 border border-secondary border-secondary-emphasise">
-<div class="main-container p-0 m-0">
-    <div class="d-flex justify-content-center text-light m-4">
-        <h5 class="">
-            All Tasks
-        </h5>
-    </div>
-    <!-- Search input start -->
-    <div class="row mt-3 mb-4">
-        <div class="col-md-3"></div>
-        <div class="col-md-6">
-            <form action="{% url 'taskmanager:searchTask' %}" method="POST" class="form-control border-0 bg-dark d-flex"
-                role="search">
-                {% csrf_token %}
-                <input type="text" name="task_title" id="task_title" class="form-control search-input bg-dark text-white"
-                    placeholder="Enter the task title to find...">
-                <button type="submit" class="btn bg-maroon rounded text-white mx-2"><i
-                        class="fa-solid fa-magnifying-glass fs-5"></i></button>
-            </form>
+<div class="position-relative m-0 p-0 ">
+    <div class="p-0 m-0">
+        <div class="d-flex justify-content-center text-light m-4">
+            <h5 class="">
+                All Tasks
+            </h5>
         </div>
-        <div class="col-md-3"></div>
-    </div>
-    <!-- search input ends -->
-    <!-- filter start -->
-    <!-- filter end -->
-    <div class="container mb-5">
-        <table class="table table-hover mx-10 table-dark ">
-            <thead>
-                <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">Task</th>
-                    <th scope="col">Status</th>
-                    <th scope="col">Assigned By</th>
-                    <th scope="col">Assigned To</th>
-                </tr>
-            </thead>
-            <tbody id="sidebarhandler">
-            {% if data %}
-                {% for task in data %}
-               
-                    <tr style="cursor:pointer" 
-                    data-task-id="{{task.id}}" 
-                    data-task-desc="{{task.task_desc}}"
-                    data-task-name="{{task.task_name}}"
-                    data-task-status="{{task.status}}"
-                    data-task-assignto="{{task.assign_to.get_full_name}}"
-                    data-task-assignby="{{task.assign_by.get_full_name}}"
-                    data-task-start="{{task.start_date}}"
-                    data-task-end="{{task.end_date}}"
-                    >
-                        <td scope="row" >{{forloop.counter}}</td>
-                        <td class="w-50  position-relative">
-                            <div class="expand-row" style="width: auto; overflow:hidden; height: 20px;">
-                                {{task.task_desc}}
-                            </div>
-                        </td>
-                    
-                        <td >
-                            {% if task.status == 0 %}
-                            <span class="border bg-primary border-primary rounded-pill px-2 py-1 " id="inProgress">
-                                <i class="fa-solid fa-circle-notch fa-spin"></i>
-                                &nbsp;in progress
-                            </span>
-                            {% elif task.status == 1 %}
-                            <span class="border border-success bg-success rounded-pill px-2 py-1 " id="Done">
-                                <i class="fa-solid fa-clock"></i>
-                                &nbsp;Done
-                            </span>
-                            {% else %}
-                            <span class="border border-secondary bg-secondary rounded-pill px-2 py-1 " id="notStarted">
-                                <i class="fa-solid fa-clock"></i>
-                                &nbsp;not started
-                            </span>
-                            {% endif %}
-                            
-                        </td>
-                        <td >{{task.assign_to.get_full_name}}</td>
-                        <td >{{task.assign_by.get_full_name}}</td>
+        <!-- Search input start -->
+        <div class="row mt-3 mb-4">
+            <div class="col-md-3"></div>
+            <div class="col-md-6">
+                <form action="{% url 'taskmanager:searchTask' %}" method="POST" class="form-control border-0 bg-dark d-flex"
+                    role="search">
+                    {% csrf_token %}
+                    <input type="text" name="task_title" id="task_title" class=" shadow-none form-control search-input bg-dark text-white"
+                        placeholder="Enter the task title to find...">
+                    <button type="submit" class="btn bg-maroon rounded text-white mx-2"><i
+                            class="fa-solid fa-magnifying-glass fs-5"></i></button>
+                </form>
+            </div>
+            <div class="col-md-3"></div>
+        </div>
+        <div class="">
+            <table class="table table-hover mx-10 table-dark ">
+                <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Task</th>
+                        <th scope="col">Status</th>
+                        <th scope="col">Assigned By</th>
+                        <th scope="col">Assigned To</th>
                     </tr>
-            
-                {% endfor %}
-                {% else %}
-                    <div class="text-center my-5 text-secondary">
-                        <h1 class="empty-folder"><i class="fa-regular fa-folder-open"></i></h1>
-                        <h3 class="fw-bold">Oops... ! No Record Found.&nbsp;<i class="fa-solid fa-chart-simple"></i></h3>
-                    </div>
-                {% endif %}
-            </tbody>
-        </table>
+                </thead>
+                <tbody id="sidebarhandler">
+                {% if data %}
+                    {% for task in data %}
+                
+                        <tr style="cursor:pointer" 
+                        data-task-id="{{task.id}}" 
+                        data-task-desc="{{task.task_desc}}"
+                        data-task-name="{{task.task_name}}"
+                        data-task-status="{{task.status}}"
+                        data-task-assignto="{{task.assign_to.get_full_name}}"
+                        data-task-assignby="{{task.assign_by.get_full_name}}"
+                        data-task-start="{{task.start_date}}"
+                        data-task-end="{{task.end_date}}"
+                        >
+                            <td scope="row" >{{forloop.counter}}</td>
+                            <td class="w-50  position-relative">
+                                <div class="expand-row" style="width: auto; overflow:hidden; height: 20px;">
+                                    {{task.task_desc}}
+                                </div>
+                            </td>
+                            <td >
+                                {% if task.status == 0 %}
+                                <span class="border bg-primary border-primary rounded-pill px-2 py-1 " id="inProgress">
+                                    <i class="fa-solid fa-circle-notch fa-spin"></i>
+                                    &nbsp;in progress
+                                </span>
+                                {% elif task.status == 1 %}
+                                <span class="border border-success bg-success rounded-pill px-2 py-1 " id="Done">
+                                    <i class="fa-solid fa-clock"></i>
+                                    &nbsp;Done
+                                </span>
+                                {% else %}
+                                <span class="border border-secondary bg-secondary rounded-pill px-2 py-1 " id="notStarted">
+                                    <i class="fa-solid fa-clock"></i>
+                                    &nbsp;not started
+                                </span>
+                                {% endif %}
+                            </td>
+                            <td >{{task.assign_to.get_full_name}}</td>
+                            <td >{{task.assign_by.get_full_name}}</td>
+                        </tr>
+                
+                    {% endfor %}
+                    {% else %}
+                        <div class="text-center my-5 text-secondary">
+                            <h1 class="empty-folder"><i class="fa-regular fa-folder-open"></i></h1>
+                            <h3 class="fw-bold">Oops... ! No Record Found.&nbsp;<i class="fa-solid fa-chart-simple"></i></h3>
+                        </div>
+                    {% endif %}
+                </tbody>
+            </table>
+        </div>
+        </div>
     </div>
-    </div>
-</div>
-<div class="side-container bg-dark w-50 h-100 d-none position-absolute top-0 end-0 m-0 p-0 border rounded border-secondary border-secondary-emphasise shadow-lg z-100">
+<div class="side-container bg-dark w-25 h-100 d-none position-absolute top-0 end-0 m-0 p-0 border rounded border-secondary border-secondary-emphasise shadow-lg z-100">
     <h4 id="close-sidebar" class="p-3 cursor-pointer">&#x2715;</h4>
     <div class="data-container pt-0 px-5 pb-5">
         <div class="mb-5">
@@ -98,7 +93,7 @@
             <p class="" id="task-description"></p>
         </div>
         <div>
-            <span class="text-secondary">Status</span>
+            <span class="text-secondary me-5">Status</span>
             <span class="text-white">
                 <span class="border bg-primary border-primary rounded-pill px-2 py-1 d-none" id="inProgress">
                     <i class="fa-solid fa-circle-notch fa-spin"></i>
@@ -114,11 +109,11 @@
                 </span>  
             </span>
             <div>
-                <span class="text-secondary">Assign to: </span>
+                <span class="text-secondary me-5">Assign to: </span>
                 <span class="" id="task-assignTo"></span>
             </div>
             <div>
-                <span class="text-secondary">Assign by: </span>
+                <span class="text-secondary me-5">Assign by: </span>
                 <span class="" id="task-assignBy"></span>
             </div>
         </div>
@@ -129,8 +124,8 @@
             <span id="endDate"></span>
         </div>
         <div class="m-3">
-            <button class="btn btn-danger text-white">Delete</button>
-            <button class="btn btn-warning text-white">Edit</button>
+            <button class="btn btn-danger text-white">Remove Task</button>
+            <button class="btn btn-warning text-white">Update Task</button>
             
         </div>
     </div>
@@ -176,7 +171,7 @@ document.querySelector("#close-sidebar").addEventListener('click', function()
         document.querySelector(".side-container").classList.add("d-none");
         document.querySelector(".main-container").classList.remove("bg-transparent");
     }
-})
+});
 </script>
 
 

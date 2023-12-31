@@ -1,9 +1,16 @@
+body{
+    /* font-family: 'Barlow', sans-serif; */
+    font-family: 'Nunito', sans-serif;
+}
 .nav-link:hover {
     font-weight: bold;
     transition: 0.3s;
     color: white;
   }
-
+.static-page{
+  width: 100vw;
+  height: 100vh;
+}
   .cursor-pointer {
     cursor: pointer;
   }

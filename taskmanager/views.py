@@ -490,10 +490,3 @@ def resetPassword(request):
 def privacy_and_policy(request):
     today = datetime.now()
     return render(request, 'taskmanager/privacy_and_policy.html',{'today':today})  
-def expandTask(request):
-    if request.method == 'POST':
-        taskid = request.POST['taskid']
-        task = Task.objects.select_related('assign_to','assign_by').filter(id=taskid)
-        print(task)
-        data = {"status":200, "data":list(task), "message":"success"}
-        return JsonResponse(data, safe=False)  

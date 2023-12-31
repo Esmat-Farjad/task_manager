@@ -34,7 +34,7 @@ urlpatterns = [
     path('verifyOTP/', views.verifyOTP, name='verifyOTP'),
     path('resetPassword/', views.resetPassword, name='resetPassword'),
     path('privacy_and_policy/', views.privacy_and_policy, name='privacy_and_policy'),
-    path('expandtask/', views.expandTask, name='expandTask'),
+
 ]
 
 

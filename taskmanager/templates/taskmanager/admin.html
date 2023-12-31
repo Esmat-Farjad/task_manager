@@ -1,7 +1,7 @@
 {% extends 'taskmanager/base.html' %}
 {% load static %}
 {% block content %}
-<div class="row h-100">
+<div class="row static-page">
     <!-- side menu starts -->
         <div class="col-md-2 bg-dark text-white shadow border p-4 rounded">
             <h5 class="text-center my-4">Dashboard Menu</h5>
@@ -46,7 +46,7 @@
         </div>
         <!-- side menu ends -->
         <!-- body container starts -->
-        <div class="col-md-10 bg-dark text-white p-0 m-0">
+        <div class="col-md-10 bg-dark text-white p-5">
             {% if sign == 'allTask' %}
                 {% include 'taskmanager/allTask.html' %}
             {% elif sign == 'allStuff' %}

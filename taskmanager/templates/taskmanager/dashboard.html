@@ -1,80 +1,90 @@
 {% extends 'taskmanager/base.html' %} {% block content %} 
 {%load static%}
 
-<div class="row my-5">
-<!-- The menu starts form here -->
-  <div class="col-2 shadow border">
-    <div class="p-3">
-      <h5 class="text-secondary mt-5">Dashboard Menu</h5>
-      {% if flag == 'all' %}
-      <a href="{% url 'taskmanager:active_task' 'all' %}" class="nav-link">
-        <div class="bright py-3 mt-3 text-light bg-maroon">
-          <span class="p-2">All Tasks</span>
+<div class="row static-page">
+  <!-- The menu starts form here -->
+  <div class="col-md-2 shadow border col-sm-12 ">
+    <!-- Mobild mode  -->
+      <div class="d-md-none menu-handler d-lg-none d-sm-block mt-4" >
+        <span class=" cursor-pointer">
+          <i class="fa-solid fa-bars"></i>
+          &nbsp;Menue
+        </span>
+      </div>
+      <!-- mobile mode  -->
+      <div class="menu-content d-sm-none d-lg-block d-md-block">
+        <div class="p-3">
+          <h5 class="text-secondary mt-5">Dashboard Menu</h5>
+          {% if flag == 'all' %}
+          <a href="{% url 'taskmanager:active_task' 'all' %}" class="nav-link">
+            <div class="bright py-3 mt-3 text-light bg-maroon">
+              <span class="p-2">All Tasks</span>
+            </div>
+          </a>
+          {% else %}
+          <a href="{% url 'taskmanager:active_task' 'all' %}" class="nav-link">
+            <div class="py-3 mt-3 cl-effect-1">
+              <span class="p-2">All Tasks</span>
+            </div>
+          </a>
+          {% endif %} 
+          {% if flag == 'active' %}
+          <a class="nav-link" href="{% url 'taskmanager:active_task' 'active' %}">
+            <div class="bright py-3 text-light bg-maroon">
+              <span class="p-2">Active Tasks</span>
+            </div></a
+          >
+          {% else %}
+          <a class="nav-link" href="{% url 'taskmanager:active_task' 'active'%}">
+            <div class="py-3 cl-effect-1">
+              <span class="p-2">Active Tasks</span>
+            </div></a
+          >
+          {% endif %} 
+          {% if flag == 'c_task' %}
+          <a class="nav-link" href="{% url 'taskmanager:active_task' 'c_task'%}">
+            <div class="bright py-3 text-light bg-maroon">
+              <span class="p-2">Completed Tasks</span>
+            </div></a
+          >
+          {% else %}
+          <a class="nav-link" href="{% url 'taskmanager:active_task' 'c_task'%}">
+            <div class="py-3 cl-effect-1">
+              <span class="p-2">Completed Tasks</span>
+            </div></a
+          >
+          {% endif %} 
+          {% if flag == 'e_task' %}
+          <a class="nav-link" href="{% url 'taskmanager:active_task' 'e_task'%}">
+            <div class="bright py-3 text-light bg-maroon">
+              <span class="p-2">Expired Tasks</span>
+            </div></a
+          >
+          {% else %}
+          <a class="nav-link" href="{% url 'taskmanager:active_task' 'e_task'%}">
+            <div class="py-3 cl-effect-1">
+              <span class="p-2">Expired Tasks</span>
+            </div></a
+          >
+          {% endif %} 
+          {% if flag == 'm_task' %}
+          <a class="nav-link" href="{% url 'taskmanager:active_task' 'm_task'%}">
+            <div class="bright py-3 text-light bg-maroon">
+              <span class="p-2">Your Assigned Task</span>
+            </div></a
+          >
+          {% else %}
+          <a class="nav-link" href="{% url 'taskmanager:active_task' 'm_task'%}">
+            <div class="py-3 cl-effect-1">
+              <span class="p-2">Your Assigned Task</span>
+            </div></a
+          >
+          {% endif %}
         </div>
-      </a>
-      {% else %}
-      <a href="{% url 'taskmanager:active_task' 'all' %}" class="nav-link">
-        <div class="py-3 mt-3 cl-effect-1">
-          <span class="p-2">All Tasks</span>
-        </div>
-      </a>
-      {% endif %} 
-      {% if flag == 'active' %}
-      <a class="nav-link" href="{% url 'taskmanager:active_task' 'active' %}">
-        <div class="bright py-3 text-light bg-maroon">
-          <span class="p-2">Active Tasks</span>
-        </div></a
-      >
-      {% else %}
-      <a class="nav-link" href="{% url 'taskmanager:active_task' 'active'%}">
-        <div class="py-3 cl-effect-1">
-          <span class="p-2">Active Tasks</span>
-        </div></a
-      >
-      {% endif %} 
-      {% if flag == 'c_task' %}
-      <a class="nav-link" href="{% url 'taskmanager:active_task' 'c_task'%}">
-        <div class="bright py-3 text-light bg-maroon">
-          <span class="p-2">Completed Tasks</span>
-        </div></a
-      >
-      {% else %}
-      <a class="nav-link" href="{% url 'taskmanager:active_task' 'c_task'%}">
-        <div class="py-3 cl-effect-1">
-          <span class="p-2">Completed Tasks</span>
-        </div></a
-      >
-      {% endif %} 
-      {% if flag == 'e_task' %}
-      <a class="nav-link" href="{% url 'taskmanager:active_task' 'e_task'%}">
-        <div class="bright py-3 text-light bg-maroon">
-          <span class="p-2">Expired Tasks</span>
-        </div></a
-      >
-      {% else %}
-      <a class="nav-link" href="{% url 'taskmanager:active_task' 'e_task'%}">
-        <div class="py-3 cl-effect-1">
-          <span class="p-2">Expired Tasks</span>
-        </div></a
-      >
-      {% endif %} 
-      {% if flag == 'm_task' %}
-      <a class="nav-link" href="{% url 'taskmanager:active_task' 'm_task'%}">
-        <div class="bright py-3 text-light bg-maroon">
-          <span class="p-2">Your Assigned Task</span>
-        </div></a
-      >
-      {% else %}
-      <a class="nav-link" href="{% url 'taskmanager:active_task' 'm_task'%}">
-        <div class="py-3 cl-effect-1">
-          <span class="p-2">Your Assigned Task</span>
-        </div></a
-      >
-      {% endif %}
-    </div>
+      </div>
   </div>
-
-  <div class="col-8 shadow border">
+  
+  <div class="col-md-8 shadow border col-sm-12">
     <div class="row">
       <div class="d-flex justify-content-center mt-5">
         <h5 class="text-secondary">Your Tasks Dashboard</h5>
@@ -87,125 +97,67 @@
         <i class="fa-solid fa-chalkboard-user"></i>
       </h6>
       {% endif %}
-      
     </div>
     <!-- task card starts -->
-    <div class="row mb-5">    
+    <div class="row my-5"> 
       {% if tasks %}
-        {% for task in tasks %}
-          <div class="col-6">
-            <!--the card design starts-->
-            {% if task.status == 1 %} 
-              <div class="card shadow my-2 border-animation">
-            {% elif task.status == -1 %}
-                <div class="card shadow my-2 border border-danger border-2">
-            {% elif task.status == 80 or task.status == 50 %}
-                <div class="card shadow my-2 border border-warning border-2">
-            {% elif task.status == 100 %}
-              <div class="card shadow my-2 border border-primary border-2">
-            {% else %}
-              <div class="card shadow my-2 border border-secondary border-opacity-50">
-            {% endif %}
-            <!-- the card design ends-->
-              <div class="card-header bg-white">
-                <p class="fw-bold pt-3">{{task.task_name}}</p>
-              </div>
-              <div class="card-body scrollable">
-                <p>{{task.task_desc}}</p>
-                <div class="fs-6">
-                  <small class="me-5"><b>Start Date: </b><i class="fa-solid fa-calendar-day"></i> &nbsp;{{task.start_date}}</small>
-                  <small class=" ms-5"><b>Dead line: <i class="fa-regular fa-calendar"></i>&nbsp; </b>{{task.end_date}}</small>
-                  <p>
-                    
-                    {% if task.assign_by.is_staff%}
-                      <b>Assigned By: </b>
-                    <span class="text-primary">Administrator</span>
-                    {% elif task.assign_by_id == my_user.id %}
-                      <b>Assigned To: </b>
-                      {{task.assign_to.get_full_name}}
-                    {% else %}
-                      <b>Assigned By: </b>
-                      {{task.assign_by.get_full_name}}
-                    {% endif %}
-                  </p>
-                </div>
-              </div>
-              <div class="card-footer bg-white">
-                <span class="fw-bold">Status: </span>
-                {% if task.status == -1 and task.assign_by_id == my_user.id %}
-                 Expired&nbsp;<i class="fa-solid fa-circle-info text-warning"></i>
-                <a href="{% url 'taskmanager:evaluation' task.id 'RT' %}" class="nav-link btn text-light bg-maroon py-2 px-3 shadow my-2">
-                  <i class="fa-solid fa-arrow-up-right-from-square"></i> &nbsp; Evaluate
-                </a>
-                {% elif task.status == -1 and task.assign_by_id != my_user.id %}
-                <p class="">
-                  <i class="fa-solid fa-circle-info text-warning fs-5"></i> Expired
-                </p>
-                {% elif task.status == 1 and task.assign_by_id == my_user.id %}
-                
-                   Active&nbsp;<i class="fa-solid fa-circle text-success"></i>
-                  <a href="{% url 'taskmanager:manageTask' task.id 'Remove' %}" class="nav-link btn text-light bg-maroon py-2 px-3 shadow my-2">Cancel</a>
-               
-                {% elif task.status == 1 and task.assign_by_id != my_user.id %}
-                <p class="p-0 m-0 d-inline">
-                  <span class="text-success">Active</span>&nbsp;
-                  <i class="fa-solid fa-circle text-success"></i>
-                  <span class="d-flex justify-content-start">
-                    <a href="{% url 'taskmanager:update_tasks' task.id 'start' %}" class="nav-link bg-maroon text-light py-2 px-3 shadow btn my-2">start</a>
-                  </span>
-                </p>
-                {% elif task.status == 50 and task.assign_by_id == my_user.id %}
-                <div class="progress">
-                  <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="50" aria-valuemin="0"
-                    aria-valuemax="100" style="width:50%">
-                    50% completed
-                  </div>
-                </div>
-                {% elif task.status == 50 and task.assign_by_id != my_user.id %}
-                <div class="progress">
-                  <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="50" aria-valuemin="0"
-                    aria-valuemax="100" style="width:50%">
-                    50% completed
-                  </div>
-                </div>
-                  <span class="d-flex justify-content-start">
-                    <a href="{% url 'taskmanager:update_tasks' task.id 'done' %}" class="nav-link bg-maroon text-light py-2 px-3 shadow btn my-2">complete</a>
-                  </span>
-                {% elif task.status == 80 and task.assign_by.id == my_user.id %}
-                  <div class="progress">
-                    <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="80" aria-valuemin="0"
-                      aria-valuemax="100" style="width:80%">
-                      80% completed
-                    </div>
-                  </div>
-                  <span class="d-flex justify-content-start">
-                    <a href="{% url 'taskmanager:evaluation' task.id 'CT' %}" class="nav-link bg-maroon text-light py-2 px-3 shadow btn my-2">
-                      <i class="fa-regular fa-circle-check"></i>&nbsp;Confirm</a>
-                  </span>
-                {% elif task.status == 80 and task.assign_by_id != my_user.id %}
-                <p>
-                  <i class="fa-solid fa-arrows-spin fa-spin text-primary fs-5"></i>&nbsp; confirming...
-                </p>
-                {% elif task.status == 100 %}
-                <p class="text-success">
-                  <i class="fa-solid fa-circle-check"></i>&nbsp; Completed
-                </p>
-                {% endif %}
-              </div>
-            </div>
-          </div>
-        {% endfor %}
-      <!-- task card ends -->
+      
+        <table class="table table-static">
+          <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Task</th>
+                <th scope="col">Status</th>
+                <th scope="col">Assigned To</th>
+                <th scope="col">Assigned By</th>
+                <th scope="col">Comments</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for task in tasks %}  
+              <tr>
+                  <td scope="row" >{{forloop.counter}}</td>
+                  <td class="w-50  position-relative">
+                      <div class="expand-row" style="width: auto; overflow:hidden; height: 20px;">
+                          {{task.task_desc}}
+                      </div>
+                  </td>
+                  <td class="text-white">
+                      {% if task.status == 0 %}
+                      <span class="border bg-primary border-primary rounded-pill px-2 py-1 " id="inProgress">
+                          <i class="fa-solid fa-circle-notch fa-spin"></i>
+                          &nbsp;in progress
+                      </span>
+                      {% elif task.status == 1 %}
+                      <span class="border border-success bg-success rounded-pill px-2 py-1 " id="Done">
+                          <i class="fa-solid fa-clock"></i>
+                          &nbsp;Done
+                      </span>
+                      {% else %}
+                      <span class="border border-secondary bg-secondary rounded-pill px-2 py-1 " id="notStarted">
+                          <i class="fa-solid fa-clock"></i>
+                          &nbsp;not started
+                      </span>
+                      {% endif %}
+                  </td>
+                  <td >{{task.assign_to.get_full_name}}</td>
+                  <td >{{task.assign_by.get_full_name}}</td>
+                  <td>{{task.comments_set}}</td>
+              </tr>
+              {% endfor %}
+          </tbody>
+      </table>
+      
       {% else %}
           <div class="text-center my-5 text-secondary">
-            <h1 class="empty-folder"><i class="fa-regular fa-folder-open"></i></h1>
-            <h3 class="fw-bold">Oops... ! No Record Found.&nbsp;<i class="fa-solid fa-chart-simple"></i></h3>
-        </div>
-      {% endif %} 
+              <h1 class="empty-folder"><i class="fa-regular fa-folder-open"></i></h1>
+              <h3 class="fw-bold">Oops... ! No Record Found.&nbsp;<i class="fa-solid fa-chart-simple"></i></h3>
+          </div>
+      {% endif %}
+      </div>
     </div>
-  </div>
   <!-- collapse Example for evaluation -->
-  <div class="col-2 border shadow py-4">
+  <div class="col-md-2 col-sm-12 d-sm-none border d-lg-block d-md-block shadow py-4">
     <div class="my-3">
       <h5 class="text-center text-muted ">Comment Received </h5>
       {% if all_comment %}
@@ -253,5 +205,11 @@
     </div>
   </div>
 </div>
+<script>
+  const menuHandler = document.querySelector(".menu-handler").addEventListener('click', function(){
+  let menuContent = document.querySelector(".menu-content");
+  menuContent.classList.toggle("d-sm-none");
+  });
+</script>
 
 {% endblock content %}
