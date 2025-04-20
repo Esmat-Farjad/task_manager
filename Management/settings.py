@@ -27,6 +27,9 @@ SECRET_KEY = 'django-insecure-o^&_y&dgfh$-6%8to9erfuev*hvfs64^en662+0%au%2r7ry_q
 DEBUG = True
 
 ALLOWED_HOSTS = ['*']
+CSRF_TRUSTED_ORIGINS = [
+    'https://task-manager-2-wpzj.onrender.com'
+]
 
 
 # Application definition
